@@ -12,7 +12,7 @@
             rules="required"
 
         />
-
+        <button type="submit">Войти</button>
     </Form>
 </template>
 
@@ -21,17 +21,18 @@ import { defineComponent } from 'vue'
 import { LoginDto } from '@/dtos/login.dto'
 import { Form, useForm } from 'vee-validate'
 import TextField from '../UI/form/TextField.vue'
+import axios from 'axios';
+
+
 export default defineComponent({
     name: 'LoginForm',
     components: {
         TextField,
         Form
     },
-    // setup(){
-    //     const { errors } = useForm();    
-    // },
     data(){
         return{
+            apiUrlExtension: 'log-in', 
             fieldsValues: new LoginDto,
             fieldsData: {
                 email: {
@@ -47,7 +48,27 @@ export default defineComponent({
     },
     methods: {
         onSubmit(){
+            console.log(this, this.$router);
             console.log('errors')
+             axios.post(this.fullApiUrl, this.fieldsValues)
+          .then(
+            (response) => {
+              console.log(response, this);
+              if(response.status === 201 && response.data){
+                  console.log('correct');
+                  this.$router.push('/home');
+                  //redirect + save user to state
+              }
+            }
+          ).catch(function(error){
+              console.log(error, this);
+          })
+        }
+    },
+    computed: {
+        fullApiUrl():string {
+        return `${this.$store.state.APIURL}${this.apiUrlExtension}`;
+        
         }
     }
 })

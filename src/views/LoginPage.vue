@@ -23,15 +23,8 @@ export default defineComponent({
   },
   data(){
     return{
-      apiUrlExtension: '/log-in', 
     }
   },
-  computed: {
-    fullApiUrl():string {
-      return `${this.$store.state.APIURL}${this.apiUrlExtension}`;
-       
-    }
-  }
 });
 </script>
 

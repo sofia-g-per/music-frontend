@@ -1,6 +1,8 @@
 <template>
     <div class="form-field">
-        <label :for="fieldData.name" @click="Test" class="form-field__label">{{fieldData.label}}</label>
+        <label :for="fieldData.name" @click="Test" class="form-field__label">
+          {{fieldData.label}}
+        </label>
         <Field :name="fieldData.name" type="text" v-bind="$attrs" />
         <ErrorMessage class="form-field__error-label" :name="fieldData.name"/>
     </div>
@@ -22,8 +24,6 @@ export default defineComponent({
   },  
   props: ['fieldData'], 
     setup(props) {
-    // const { fieldData } = toRefs(props);
-    // const name = fieldData.name as string;
     const { errorMessage } = useField(props.fieldData.name as string);
     return {
       errorMessage
