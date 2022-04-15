@@ -1,30 +1,49 @@
 <template>
   <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <!-- <router-link to="/">Login</router-link> |
+    <router-link to="/about">About</router-link> -->
   </div>
   <router-view/>
 </template>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+  /* ------------------------------ */
+  /* VARIABLES */
+  /* ------------------------------ */
+  :root{
+    --bg-color: black;
+    --font-color: white;
+    --accent-color-1: rgb(147, 0, 201);
+    --accent-color-2: rgb(255, 0, 81);
 
-#nav {
-  padding: 30px;
-}
+    --main-font-family: sans-serif;
+  }
+  /* ------------------------------ */
+  /* GENERAL */
+  /* ------------------------------ */
+  body{
+    background-color: var(--bg-color);
+    color: var(--font-color);
+    font-family: var(--main-font-family);
+    box-sizing: border-box;
+  }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+  *{
+    margin: 0;
+  }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+  /* ------------------------------ */
+  /* TEXT */
+  /* ------------------------------ */
+  .section-heading{
+
+  }
+  
+  /* ------------------------------ */
+  /* CONTAINERS */
+  /* ------------------------------ */
+  .container--2-clmn{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
 </style>
