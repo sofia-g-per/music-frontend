@@ -38,6 +38,7 @@ export default defineComponent({
        .then((response) => {
               if(response.status === 200 && response.data){
                   this.songs = response.data;
+                  console.log('songs',this.songs);
               }
 
         })
@@ -45,7 +46,6 @@ export default defineComponent({
             console.log(error);
             // если пользователь не авторизован
             if(error.response && error.response.status === 403) {
-                  console.log('router')
                   this.$router.push({name: 'login'})
               }
         })
@@ -58,7 +58,7 @@ export default defineComponent({
             playlistToPlay.type = "liked";
             playlistToPlay.playlist = this.songs;
             let songInPlaylistId = this.songs.findIndex(song => song.song.id === songId )
-            this.$store.dispatch('playSong', {
+            this.$store.dispatch('handleClickSong', {
                 songInPlaylistId,
                 playlistToPlay
             })

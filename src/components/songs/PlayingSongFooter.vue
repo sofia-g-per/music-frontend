@@ -8,6 +8,9 @@
             <!-- add is featured -->
             <p v-for="artist in songData.artists" :key="artist.artistId" class="music-list-item__info__artist main-text">{{artist.artist.stagename}}</p>
         </div>
+        <div class="music-list-item__audio">
+            <audio :src="audioPath"></audio>
+        </div>
         <slot class="music-list-item__buttons" name="music-item-buttons">
 
         </slot>
@@ -21,7 +24,20 @@ export default defineComponent({
     name: "MusicListItem",
     props: [
         'songData'
-    ]
+    ],
+    computed: {
+        audioPath(): string{
+            let audiopath =  this.$store.getters.filePath(
+                'songs',
+                this.songData.filePath
+            );
+
+            console.log('audioPAth', audiopath);
+
+
+            return audiopath;
+        }
+    }
 
 })
 </script>
@@ -38,7 +54,6 @@ export default defineComponent({
     .music-list-item__info{
         width: 100%;
     }
-
     .music-list-item__buttons{
         display: flex;
         justify-content: space-evenly;

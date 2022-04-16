@@ -7,20 +7,24 @@
   <router-view></router-view>
 
 <!-- проигрываемая песня -->
-  <music-list-item 
+  <playing-song-footer 
     v-if="currentSong" 
-    :songData="currentSong.song">
-  </music-list-item>
+    :songData="currentSong.song"
+  >
+    <!-- <template v-slot:music-item-buttons>
+
+    </template> -->
+  </playing-song-footer>
 
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import MusicListItem from './components/songs/MusicListItem.vue'
+import PlayingSongFooter from './components/songs/PlayingSongFooter.vue'
 
 export default defineComponent({
   components:{
-    MusicListItem
+    PlayingSongFooter
   },
   computed:{
     currentSong(){
