@@ -22,6 +22,11 @@ export default defineComponent({
     props: [
         'songData'
     ],
+    watchers:{
+        songData(){
+            console.log('child change', this.songData);
+        }
+    }
 
 })
 </script>

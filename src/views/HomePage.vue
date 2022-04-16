@@ -57,8 +57,7 @@ export default defineComponent({
             let playlistToPlay = new PlayingPlaylist;
             playlistToPlay.type = "liked";
             playlistToPlay.playlist = this.songs;
-            let songInPlaylistId = this.songs.find(song => song.song.id === songId )
-    console.log(songId, playlistToPlay, songInPlaylistId)
+            let songInPlaylistId = this.songs.findIndex(song => song.song.id === songId )
             this.$store.dispatch('playSong', {
                 songInPlaylistId,
                 playlistToPlay

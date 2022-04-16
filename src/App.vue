@@ -3,8 +3,38 @@
     <!-- <router-link to="/">Login</router-link> |
     <router-link to="/about">About</router-link> -->
   </div>
-  <router-view/>
+
+  <router-view></router-view>
+
+<!-- проигрываемая песня -->
+  <music-list-item 
+    v-if="currentSong" 
+    :songData="currentSong.song">
+  </music-list-item>
+
 </template>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+import MusicListItem from './components/songs/MusicListItem.vue'
+
+export default defineComponent({
+  components:{
+    MusicListItem
+  },
+  computed:{
+    currentSong(){
+      console.log('currentSong changed')
+      if(this.$store.state.currentSongId !== null){
+        console.log(this.$store.state.currentPlaylist.playlist[this.$store.state.currentSongId])
+        return this.$store.state.currentPlaylist.playlist[this.$store.state.currentSongId];
+      }else{
+        return null;
+      }
+    },
+  }
+})
+</script>
 
 <style>
   /* ------------------------------ */
