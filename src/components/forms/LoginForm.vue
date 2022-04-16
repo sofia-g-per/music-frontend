@@ -50,7 +50,7 @@ export default defineComponent({
         onSubmit(){
             console.log(this, this.$router);
             console.log('errors')
-             axios.post(this.fullApiUrl, this.fieldsValues)
+             axios.post(this.fullApiUrl, this.fieldsValues, { withCredentials: true })
           .then(
             (response) => {
               console.log(response, this);
