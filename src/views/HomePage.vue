@@ -2,11 +2,11 @@
     <div >
         <h1>HOME</h1>
         <ul class="song-list" v-if="songs">
-            <music-list-item 
+            <music-list-item @click="playSong(song.song.id)"
                 v-for="song in songs" 
                 :key="song.id"
                 :songData="song.song"
-                ></music-list-item>
+            ></music-list-item>
         </ul>
         <p v-else>У вас ещё нет избранных песен</p>
     </div>
@@ -14,6 +14,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { PlayingPlaylist } from '@/interfaces/currentPlaylist';
 import MusicListItem from '@/components/songs/MusicListItem.vue';
 import axios from 'axios';
 
@@ -35,17 +36,34 @@ export default defineComponent({
     mounted(){
         axios.get(this.fullApiUrl, { withCredentials: true })
        .then((response) => {
-              console.log(response, this);
               if(response.status === 200 && response.data){
-                  console.log('correct');
                   this.songs = response.data;
-                  console.log(this.songs);
-                  //redirect + save user to state
+              }
+
+        })
+        .catch((error) =>{
+            console.log(error);
+            // если пользователь не авторизован
+            if(error.response && error.response.status === 403) {
+                  console.log('router')
+                  this.$router.push({name: 'login'})
               }
         })
-        .catch(function(error){
-              console.log(error, this);
-        })
+    },
+    methods: {
+        // emit event instead
+        playSong(songId:number ){
+            console.log('clicked')
+            let playlistToPlay = new PlayingPlaylist;
+            playlistToPlay.type = "liked";
+            playlistToPlay.playlist = this.songs;
+            let songInPlaylistId = this.songs.find(song => song.song.id === songId )
+    console.log(songId, playlistToPlay, songInPlaylistId)
+            this.$store.dispatch('playSong', {
+                songInPlaylistId,
+                playlistToPlay
+            })
+        }
     }
     
 })

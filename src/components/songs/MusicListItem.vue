@@ -21,7 +21,8 @@ export default defineComponent({
     name: "MusicListItem",
     props: [
         'songData'
-    ]
+    ],
+
 })
 </script>
 <style scoped>
