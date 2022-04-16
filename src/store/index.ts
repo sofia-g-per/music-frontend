@@ -10,27 +10,27 @@ export default createStore({
     },
 
     currentPlaylist: new PlayingPlaylist,
-    currentSongId: 0,
+    currentsongInPlaylistId: 0,
   },
   mutations: {
   },
   actions: {
-    playSong(state, {songId, songPlaylist}){
+    playSong(state, payload){
       //если песня находятся в проигрываемом сейчас плейлисте
-      console.log('play song function', songId, songPlaylist);
+      console.log('play song function', payload);
       if(this.state.currentPlaylist && this.state.currentPlaylist.type 
-      && this.state.currentPlaylist.type === songPlaylist.type
-      && this.state.currentPlaylist.id === songPlaylist.id){
+      && this.state.currentPlaylist.type === payload.playlistToPlay.type
+      && this.state.currentPlaylist.id === payload.playlistToPlay.id){
         
-        this.state.currentSongId = songId;
-        console.log('songid changed', this.state.currentSongId);
+        this.state.currentsongInPlaylistId = payload.songInPlaylistId;
+        console.log('songInPlaylistId changed', this.state.currentsongInPlaylistId);
 
 
       }else{
 
-        this.state.currentPlaylist = songPlaylist,
-        this.state.currentSongId = songId
-        console.log('playlist changed', this.state.currentPlaylist, this.state.currentSongId);
+        this.state.currentPlaylist = payload.playlistToPlay,
+        this.state.currentsongInPlaylistId = payload.songInPlaylistId
+        console.log('playlist changed', this.state.currentPlaylist, this.state.currentsongInPlaylistId);
 
       }
     }
