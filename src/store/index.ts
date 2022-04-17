@@ -8,6 +8,7 @@ export default createStore({
     APIExtensions: {
       login: 'log-in',
       getFavouriteSongs: 'liked-songs', 
+      searchFavouriteSongs: 'search-liked-songs'
     },
     APIFilePaths:{
       avatars: 'avatars/',
@@ -58,16 +59,16 @@ export default createStore({
     },
     playCurrentSong(){
       if(this.state.currentSongDefined){
-        this!.state!.currentSongAudio!.play();
+        this.state.currentSongAudio!.play();
       }
     },
     playNextSong(){
       if(this.state.currentSongDefined){
-        this!.state!.currentSongId! as number;
-        if(this!.state!.currentSongId! < this.state.currentPlaylist.playlist.length - 1){
-          this!.state!.currentSongId! += 1;
+        this.state.currentSongId as number;
+        if(this.state.currentSongId < this.state.currentPlaylist.playlist.length - 1){
+          this.state.currentSongId += 1;
         }else{
-          this!.state!.currentSongId! = 0;
+          this.state.currentSongId = 0;
         }
         this.dispatch('embedNewAudio',({filePath: this.getters.currentAudioPath}));
         this.dispatch('playCurrentSong');

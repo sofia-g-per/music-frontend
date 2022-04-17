@@ -1,6 +1,7 @@
 <template>
     <div >
         <h1>HOME</h1>
+        <the-search-bar :searchAPIURL="searchAPIURL"></the-search-bar>
         <ul class="song-list" v-if="songs">
             <music-list-item @click="playSong(song.song.id)"
                 v-for="song in songs" 
@@ -16,12 +17,14 @@
 import { defineComponent } from 'vue'
 import { PlayingPlaylist } from '@/interfaces/currentPlaylist';
 import MusicListItem from '@/components/songs/MusicListItem.vue';
+import TheSearchBar from '@/components/UI/TheSearchBar.vue';
 import axios from 'axios';
 
 export default defineComponent({
     name: "HomePage",
     components: {
-        MusicListItem
+        MusicListItem,
+        TheSearchBar
     },
     data(){
         return{
@@ -31,6 +34,9 @@ export default defineComponent({
     computed: {
         fullApiUrl():string {
             return `${this.$store.state.APIURL}${this.$store.state.APIExtensions.getFavouriteSongs}`;
+        }, 
+        searchAPIURL(){
+            return this.$store.state.APIExtensions.searchFavouriteSongs;
         }
     },
     mounted(){
@@ -53,7 +59,6 @@ export default defineComponent({
     methods: {
         // emit event instead
         playSong(songId:number ){
-            console.log('clicked')
             let playlistToPlay = new PlayingPlaylist;
             playlistToPlay.type = "liked";
             playlistToPlay.playlist = this.songs;
