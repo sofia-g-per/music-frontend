@@ -9,11 +9,13 @@
             <p v-for="artist in songData.artists" :key="artist.artistId" class="music-list-item__info__artist main-text">{{artist.artist.stagename}}</p>
         </div>
         <div class="music-list-item__audio">
-            <audio :src="audioPath"></audio>
+            <!-- <audio :src="audioPath"></audio> -->
         </div>
-        <slot class="music-list-item__buttons" name="music-item-buttons">
-
-        </slot>
+        <div class="music-list-item__buttons" >
+            <button class="play-btn" @click="onClickPlay">
+                play
+            </button>
+        </div>
     </li>
 </template>
 
@@ -36,6 +38,11 @@ export default defineComponent({
 
 
             return audiopath;
+        }
+    },
+    methods: {
+        onClickPlay(){
+            this.$store.dispatch('playCurrentSong')
         }
     }
 

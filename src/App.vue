@@ -29,7 +29,7 @@ export default defineComponent({
   computed:{
     currentSong(){
       console.log('currentSong changed')
-      if(this.$store.state.currentSongId !== null){
+      if(this.$store.state.currentSongDefined){
         console.log(this.$store.state.currentPlaylist.playlist[this.$store.state.currentSongId])
         return this.$store.state.currentPlaylist.playlist[this.$store.state.currentSongId];
       }else{
