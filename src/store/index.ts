@@ -27,7 +27,6 @@ export default createStore({
   },
   actions: {
     embedNewAudio(state, {filePath}){
-      console.log('filepath', filePath)
       this.state.currentSongAudio = new Howl({
         src: [filePath],
         onend: ()=> {this.dispatch('playNextSong')}
@@ -41,36 +40,35 @@ export default createStore({
         
         this.state.currentSongId = payload.songInPlaylistId;
         
-        if(this.state.currentSongId){
-          this.dispatch('embedNewAudio',({filePath: this.getters.currentAudioPath}));
-        }
+        this.dispatch('embedNewAudio',({filePath: this.getters.currentAudioPath}));
+        this.dispatch('playCurrentSong');
+
 
       }else{
 
         this.state.currentPlaylist = payload.playlistToPlay;
         this.state.currentSongId = payload.songInPlaylistId;
 
-        if(this.state.currentSongId){
-          
-          this.dispatch('embedNewAudio',({filePath: this.getters.currentAudioPath}));
-        }
+        this.dispatch('embedNewAudio',({filePath: this.getters.currentAudioPath}));
+        this.dispatch('playCurrentSong');
 
         this.state.currentSongDefined = true;
 
       }
     },
     playCurrentSong(){
-      console.log(this.state.currentSongDefined)
       if(this.state.currentSongDefined){
-        console.log(this!.state!.currentSongAudio!)
         this!.state!.currentSongAudio!.play();
       }
     },
     playNextSong(){
       if(this.state.currentSongDefined){
         this!.state!.currentSongId! as number;
-        this!.state!.currentSongId! += 1;
-        //проверитт есть ли следующая песня
+        if(this!.state!.currentSongId! < this.state.currentPlaylist.playlist.length - 1){
+          this!.state!.currentSongId! += 1;
+        }else{
+          this!.state!.currentSongId! = 0;
+        }
         this.dispatch('embedNewAudio',({filePath: this.getters.currentAudioPath}));
         this.dispatch('playCurrentSong');
       }
@@ -79,12 +77,10 @@ export default createStore({
   },
   getters: {
     filePath: (state)=> (fileCategory, fileName)=>{
-      console.log()
       return `http://localhost:3000/${state.APIFilePaths[fileCategory]}${fileName}`;
     },
     currentAudioPath: (state, getters)=> {
       if(state.currentSongId){
-        console.log('song in getter', state.APIFilePaths, state.APIFilePaths.songs);
         const currentSong = state.currentPlaylist.playlist[state.currentSongId] as any;
         return getters.filePath('songs', currentSong.song.filePath)
     }else{
