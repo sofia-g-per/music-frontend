@@ -3,7 +3,7 @@
         <label :for="fieldData.name" class="form-field__label">
           {{fieldData.label}}
         </label>
-        <Field :name="fieldData.name" type="text" v-bind="$attrs" />
+        <Field :name="fieldData.name" type="checkbox" v-bind="$attrs" :value="fieldData.value"/>
         <ErrorMessage class="form-field__error-label" :name="fieldData.name"/>
     </div>
 </template>
@@ -14,7 +14,7 @@ import { Field, ErrorMessage, useField } from 'vee-validate'
 
 export default defineComponent({
 
-  name: "TextField",
+  name: "BooleanField",
 
   components: {
     Field,
@@ -26,6 +26,8 @@ export default defineComponent({
     return {
       errorMessage
     }
-  },
+  }
+
+
 })
 </script>

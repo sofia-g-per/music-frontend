@@ -57,7 +57,6 @@ export default defineComponent({
               if(response.status === 201 && response.data){
                   console.log('correct');
                   this.$router.push('/home');
-                  //redirect + save user to state
               }
             }
           ).catch(function(error){
