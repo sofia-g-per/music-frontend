@@ -30,6 +30,23 @@
             :field-data="fieldsData.roleId" 
             v-model="fieldsValues.roleId"
         />
+        <!-- показывается если выбрана роль артист -->
+        <div
+            v-if="fieldsValues.roleId && fieldsValues.roleId === fieldsData.roleId.value"
+            :fieldsValues="fieldsValues"
+            :fieldsData="fieldsData"
+        >
+            <text-field 
+                :field-data="fieldsData.artist.stagename" 
+                v-model="artistFieldsValues.stagename"
+                rules="required"
+            />
+            <text-field 
+                :field-data="fieldsData.artist.description" 
+                v-model="artistFieldsValues.description"
+                rules="required"
+            />
+        </div>
         <button type="submit">Зарегистрироваться</button>
     </Form>
 </template>
@@ -41,7 +58,7 @@ import TextField from '../UI/form/TextField.vue'
 import BooleanField from '../UI/form/BooleanField.vue'
 import axios from 'axios';
 import { CreateUserDto } from '@/dtos/createUser.dto';
-
+import { CreateArtistDto } from '@/dtos/createArtist.dto';
 
 export default defineComponent({
     name: 'LoginForm',
@@ -54,6 +71,7 @@ export default defineComponent({
         return{
             apiUrlExtension: 'sign-up', 
             fieldsValues: new CreateUserDto,
+            artistFieldsValues: new CreateArtistDto,
             fieldsData: {
                 email: {
                     name: 'email',
@@ -79,14 +97,24 @@ export default defineComponent({
                     name: 'roleId',
                     value: 'artist',
                     label: 'Вы хотите зарегистрироваться как артист?'
+                },
+                artist: {
+                    stagename: {
+                        name: 'stagename',
+                        label: 'Псевдоним'
+                    },
+                    description: {
+                        name: 'description',
+                        label: 'Описание'
+                    },
                 }
             }
         }
     },
     methods: {
         onSubmit(){
-            if(this.fieldsValues.roleId && this.fieldsValues.roleId.length > 0){
-                this.fieldsValues.roleId = this.fieldsValues.roleId[0];
+            if(this.fieldsValues.roleId){
+                this.fieldsValues.artist = this.artistFieldsValues;
                 console.log(this.fieldsValues)
             }
         axios.post(this.fullApiUrl, this.fieldsValues)
