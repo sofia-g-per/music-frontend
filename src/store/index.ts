@@ -1,7 +1,7 @@
 import { PlayingPlaylist } from '../interfaces/currentPlaylist';
 import { createStore } from 'vuex'
 import {Howl, Howler} from 'howler';
-
+import { UserDto } from '@/dtos/userDto.dto'
 export default createStore({
   state: {
     APIURL: "http://localhost:3000/api/",
@@ -15,6 +15,8 @@ export default createStore({
       coverImg: 'coverImg/',
       songs: 'songs/',
     },
+
+
     currentPlaylist: new PlayingPlaylist,
     currentSongId: 0,
     currentSongAudio: new Howl({
@@ -23,6 +25,8 @@ export default createStore({
       html5: true
     }),
     currentSongDefined: false,
+
+    user: new UserDto,
   },
   mutations: {
   },
@@ -72,6 +76,23 @@ export default createStore({
         }
         this.dispatch('embedNewAudio',({filePath: this.getters.currentAudioPath}));
         this.dispatch('playCurrentSong');
+      }
+    },
+
+    saveUser(state, {user}){
+      console.log('saving user')
+      this.state.user = user;
+      console.log(this.state.user)
+    },
+    authorizedGuard(){
+      if(!this.state.user.id){
+        return {name: 'login'};
+      }
+    },
+    isArtistGuard(){
+      if(!this.state.user.artist){
+        //change
+        return {name: 'login'}
       }
     }
 

@@ -5,6 +5,7 @@ import store from './store'
 import { defineRule } from 'vee-validate'
 import { required, email } from '@vee-validate/rules';
 
+//для влидации данных в формах
 defineRule('required', required)
 defineRule('email', email)
 
