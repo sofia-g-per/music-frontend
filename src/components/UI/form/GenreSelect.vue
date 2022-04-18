@@ -1,44 +1,28 @@
 <template>
-    <div v-if="options">
-        <label class="typo__label">Жанры: </label>
             <multiselect 
-                v-model="value" 
                 :options="options"
                 mode="tags"
                 :multiple="true"
-                :close-on-select="false"
                 placeholder="Выбор жанров"
-                :searchable="true"
                 label="name"
-                track-by="name"
+                track-by="id"
                 custom-label="Введите название жанра"
-                :show-no-results="false"
-                
-                >
+            >
             </multiselect>
-    </div>
-    <p v-else>Произошла ошибка при загрузки жанров</p>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Multiselect from '@vueform/multiselect'
 import axios from 'axios'
-
 export default defineComponent({
     name: "GenreSelect",
     components: {
         Multiselect
     },
-    data () {
-        return {
-        value: null,
-        options: [],
-        // options: [
-        //     {name: 'hi'},
-        //     {name: 'hey'},
-        //     {name: 'hello'},
-        // ]
+    data(){
+        return{
+            options:[]
         }
     },
     methods: {
@@ -52,20 +36,20 @@ export default defineComponent({
         },
     },
     mounted() {
-        axios.get(this.fullApiUrl)
+        axios.get(`${this.$store.state.APIURL}${this.$store.state.APIExtensions.getGenres}`)
        .then((response) => {
-              if(response.status === 200 && response.data){
-                  this.options = response.data;
-                  console.log('genres', this.options);
-              }
+            if(response.status === 200 && response.data){
+                this.options = response.data;
+                console.log('genres', this.options);
+            }
 
         })
         // .catch((error) =>{        
         // })
     },
-    computed:{
-        fullApiUrl(){
-            return `${this.$store.state.APIURL}${this.$store.state.APIExtensions.getGenres}`;
+    watchers:{
+        options(){
+            console.log(this.options);
         }
     }
 

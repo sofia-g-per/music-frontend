@@ -20,9 +20,14 @@
             v-model="fieldsValues.audioFile" 
         >     
         </file-field>
-        <genre-select>
-            
+        <genre-select 
+        v-model="fieldsValues.genreIds">
+
         </genre-select>
+        <artist-select 
+        v-model="fieldsValues.artistIds">
+
+        </artist-select>
         <button type="submit">Добавить песню</button>
     </Form>
 </template>
@@ -33,6 +38,7 @@ import { Form } from 'vee-validate'
 import TextField from '../UI/form/TextField.vue'
 import FileField from '../UI/form/FileField.vue';
 import GenreSelect from '../UI/form/GenreSelect.vue';
+import ArtistSelect from '../UI/form/ArtistSelect.vue';
 import axios from 'axios';
 import { CreateSongDto } from '@/dtos/createSong.dto';
 
@@ -42,7 +48,8 @@ export default defineComponent({
         TextField,
         Form,
         FileField,
-        GenreSelect
+        GenreSelect,
+        ArtistSelect
     },
     data(){
         return{
@@ -95,8 +102,10 @@ export default defineComponent({
     methods: {
         onSubmit(){
 
-        console.log(this.fieldsValues)
-        axios.post(this.fullApiUrl, this.fieldsValues)
+        this.fieldsValues = this.fieldsValues.genreIds.map(genre => {
+            return genre.id
+        });
+        axios.post(this.fullApiUrl, this.fieldsValues, { withCredentials: true })
           .then(
             (response) => {
               console.log(response);
@@ -112,7 +121,7 @@ export default defineComponent({
     },
     computed: {
         fullApiUrl():string {
-            return `${this.$store.state.APIURL}${this.apiUrlExtension}`;
+            return `${this.$store.state.APIURL}${this.apiUrlExtension.uploadSong}`;
         }
     },
 

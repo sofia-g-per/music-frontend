@@ -6,7 +6,7 @@ export class CreateArtistDto {
     description?: string;
 
     //существующие жанры
-    genreIds?: [];
+    genreIds: [];
 
     //новые жанры
     genres?: CreateGenreDto[];

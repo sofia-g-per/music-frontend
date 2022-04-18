@@ -46,6 +46,12 @@
                 v-model="artistFieldsValues.description"
                 rules="required"
             />
+            <genre-select 
+                :options="options"
+                v-model="artistFieldsValues.genreIds"
+            >
+
+            </genre-select>
         </div>
         <button type="submit">Зарегистрироваться</button>
     </Form>
@@ -53,7 +59,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { Form, useForm } from 'vee-validate'
+import { Form } from 'vee-validate'
+import GenreSelect from '../UI/form/GenreSelect.vue'
 import TextField from '../UI/form/TextField.vue'
 import BooleanField from '../UI/form/BooleanField.vue'
 import axios from 'axios';
@@ -65,7 +72,8 @@ export default defineComponent({
     components: {
         TextField,
         BooleanField,
-        Form
+        Form,
+        GenreSelect
     },
     data(){
         return{
@@ -108,14 +116,18 @@ export default defineComponent({
                         label: 'Описание'
                     },
                 }
-            }
+            },
+            options: []
         }
     },
     methods: {
         onSubmit(){
             if(this.fieldsValues.roleId){
+                this.artistFieldsValues.genreIds = this.artistFieldsValues.genreIds.map(genre => {
+                    return genre.id
+                });
                 this.fieldsValues.artist = this.artistFieldsValues;
-                console.log(this.fieldsValues)
+                console.log(this.fieldsValues.artist)
             }
         axios.post(this.fullApiUrl, this.fieldsValues)
           .then(
@@ -135,6 +147,7 @@ export default defineComponent({
         fullApiUrl():string {
             return `${this.$store.state.APIURL}${this.apiUrlExtension}`;
         }
-    }
+    },
+
 })
 </script>

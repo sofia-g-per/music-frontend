@@ -9,7 +9,9 @@ export default createStore({
       login: 'log-in',
       getFavouriteSongs: 'liked-songs', 
       searchFavouriteSongs: 'search-liked-songs',
-      getGenres: 'genres'
+      getGenres: 'genres',
+      getArtists: 'artists',
+      uploadSong: 'upload-song'
     },
     APIFilePaths:{
       avatars: 'avatars/',
@@ -80,6 +82,7 @@ export default createStore({
         this.dispatch('playCurrentSong');
       }
     },
+    
 
     saveUser(state, {user}){
       this.state.user = user;
