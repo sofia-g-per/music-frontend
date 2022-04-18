@@ -1,16 +1,29 @@
 <template>
-    <div>
-        <label class="typo__label">Simple select / dropdown</label>
-            <multiselect v-model="value" :options="options" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="Pick some" label="name" track-by="name" :preselect-first="true">
-                <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
+    <div v-if="options">
+        <label class="typo__label">Жанры: </label>
+            <multiselect 
+                v-model="value" 
+                :options="options"
+                mode="tags"
+                :multiple="true"
+                :close-on-select="false"
+                placeholder="Выбор жанров"
+                :searchable="true"
+                label="name"
+                track-by="name"
+                custom-label="Введите название жанра"
+                :show-no-results="false"
+                
+                >
             </multiselect>
-        <pre class="language-json"><code>{{ value  }}</code></pre>
     </div>
+    <p v-else>Произошла ошибка при загрузки жанров</p>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Multiselect from 'vue-multiselect'
+import Multiselect from '@vueform/multiselect'
+import axios from 'axios'
 
 export default defineComponent({
     name: "GenreSelect",
@@ -19,16 +32,43 @@ export default defineComponent({
     },
     data () {
         return {
-        value: [],
+        value: null,
+        // options: [],
         options: [
-            { name: 'Vue.js', language: 'JavaScript' },
-            { name: 'Adonis', language: 'JavaScript' },
-            { name: 'Rails', language: 'Ruby' },
-            { name: 'Sinatra', language: 'Ruby' },
-            { name: 'Laravel', language: 'PHP' },
-            { name: 'Phoenix', language: 'Elixir' }
+            {name: 'hi'},
+            {name: 'hey'},
+            {name: 'hello'},
         ]
         }
+    },
+    methods: {
+        addTag (newTag) {
+        const tag = {
+            name: newTag,
+            code: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
+        }
+        this.taggingOptions.push(tag)
+        this.taggingSelected.push(tag)
+        },
+    },
+    mounted() {
+    //     axios.get(this.fullApiUrl)
+    //    .then((response) => {
+    //           if(response.status === 200 && response.data){
+    //               this.options = response.data;
+    //               console.log('genres', this.options);
+    //           }
+
+    //     })
+        // .catch((error) =>{        
+        // })
+    },
+    computed:{
+        fullApiUrl(){
+            return `${this.$store.state.APIURL}${this.$store.state.APIExtensions.getGenres}`;
+        }
     }
+
 })
 </script>
+<style src="@vueform/multiselect/themes/default.css"></style>

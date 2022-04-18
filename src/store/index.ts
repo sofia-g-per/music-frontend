@@ -8,7 +8,8 @@ export default createStore({
     APIExtensions: {
       login: 'log-in',
       getFavouriteSongs: 'liked-songs', 
-      searchFavouriteSongs: 'search-liked-songs'
+      searchFavouriteSongs: 'search-liked-songs',
+      getGenres: 'genres'
     },
     APIFilePaths:{
       avatars: 'avatars/',

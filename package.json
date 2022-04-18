@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@vee-validate/rules": "^4.5.11",
+    "@vueform/multiselect": "^2.3.3",
     "@websanova/vue-upload": "^2.1.9",
     "axios": "^0.26.1",
     "core-js": "^3.6.5",

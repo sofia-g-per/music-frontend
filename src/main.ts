@@ -4,7 +4,7 @@ import router from './router'
 import store from './store'
 import { defineRule } from 'vee-validate'
 import { required, email, mimes } from '@vee-validate/rules';
-
+// import "@vueform/multiselect/themes/default.css"
 //для валидации данных в формах
 defineRule('required', required)
 defineRule('email', email)

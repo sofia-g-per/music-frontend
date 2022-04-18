@@ -18,20 +18,11 @@
         <file-field 
             :field-data="fieldsData.audioFile" 
             v-model="fieldsValues.audioFile" 
-        >
-            
+        >     
         </file-field>
-
-        <!-- <div class="form-field">
-            <label :for="fieldsData.audioFile.name" class="form-field__label">
-                {{fieldsData.audioFile.label}}
-            </label>
-            <Field :name="fieldsData.audioFile.name" rules="mimes:audio/mpeg"  v-model="fieldsValues.audioFile"  type="file" v-slot="{handleChange, handleBlur}">
-                <input type="file" @change="handleChange" @blur="handleBlur" />
-            </Field>
-            <ErrorMessage class="form-field__error-label" :name="fieldsData.audioFile.name"/>
-        </div> -->
-        
+        <genre-select>
+            
+        </genre-select>
         <button type="submit">Добавить песню</button>
     </Form>
 </template>
@@ -41,18 +32,17 @@ import { defineComponent } from 'vue'
 import { Form } from 'vee-validate'
 import TextField from '../UI/form/TextField.vue'
 import FileField from '../UI/form/FileField.vue';
+import GenreSelect from '../UI/form/GenreSelect.vue';
 import axios from 'axios';
 import { CreateSongDto } from '@/dtos/createSong.dto';
-import { Field, ErrorMessage, useField } from 'vee-validate'
 
 export default defineComponent({
     name: 'AddSongForm',
     components: {
         TextField,
         Form,
-        // Field,
-        // ErrorMessage,
-        FileField
+        FileField,
+        GenreSelect
     },
     data(){
         return{
@@ -104,10 +94,8 @@ export default defineComponent({
     },
     methods: {
         onSubmit(){
-            if(this.fieldsValues.roleId){
-                this.fieldsValues.artist = this.artistFieldsValues;
-                console.log(this.fieldsValues)
-            }
+
+        console.log(this.fieldsValues)
         axios.post(this.fullApiUrl, this.fieldsValues)
           .then(
             (response) => {
@@ -125,17 +113,8 @@ export default defineComponent({
     computed: {
         fullApiUrl():string {
             return `${this.$store.state.APIURL}${this.apiUrlExtension}`;
-        },
-        file(){
-            console.log(this.fieldsValues.audioFile)
-            return this.fieldsValues.audioFile;
         }
     },
-    //     setup() {
-    //     const { errorMessage } = useField('audioFile');
-    //     return {
-    //         errorMessage
-    //     }
-    // }
+
 })
 </script>
