@@ -3,10 +3,11 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import { defineRule } from 'vee-validate'
-import { required, email } from '@vee-validate/rules';
+import { required, email, mimes } from '@vee-validate/rules';
 
-//для влидации данных в формах
+//для валидации данных в формах
 defineRule('required', required)
 defineRule('email', email)
+defineRule('mimes', mimes)
 
 createApp(App).use(store).use(router).mount('#app')

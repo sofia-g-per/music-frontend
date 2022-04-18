@@ -22,7 +22,8 @@ export default createStore({
     currentSongAudio: new Howl({
       src: [null],
       format: 'mp3',
-      html5: true
+      html5: true,
+      autoplay: false
     }),
     currentSongDefined: false,
 
@@ -80,9 +81,7 @@ export default createStore({
     },
 
     saveUser(state, {user}){
-      console.log('saving user')
       this.state.user = user;
-      console.log(this.state.user)
     },
     authorizedGuard(){
       if(!this.state.user.id){

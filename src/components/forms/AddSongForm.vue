@@ -6,108 +6,99 @@
             rules="required"
         />
         <text-field 
-            :field-data="fieldsData.surname" 
-            v-model="fieldsValues.surname"
+            :field-data="fieldsData.description" 
+            v-model="fieldsValues.description"
             rules="required"
         />
         <text-field 
-            :field-data="fieldsData.username" 
-            v-model="fieldsValues.username"
+            :field-data="fieldsData.lyrics" 
+            v-model="fieldsValues.lyrics"
             rules="required"
         />
-        <text-field 
-            :field-data="fieldsData.email" 
-            v-model="fieldsValues.email"
-            rules="required|email"
-        />
-
-        <text-field 
-            :field-data="fieldsData.password" 
-            v-model="fieldsValues.password"
-            rules="required"
-        />
-        <boolean-field
-            :field-data="fieldsData.roleId" 
-            v-model="fieldsValues.roleId"
-        />
-        <!-- показывается если выбрана роль артист -->
-        <div
-            v-if="fieldsValues.roleId && fieldsValues.roleId === fieldsData.roleId.value"
-            :fieldsValues="fieldsValues"
-            :fieldsData="fieldsData"
+        <file-field 
+            :field-data="fieldsData.audioFile" 
+            v-model="fieldsValues.audioFile" 
         >
-            <text-field 
-                :field-data="fieldsData.artist.stagename" 
-                v-model="artistFieldsValues.stagename"
-                rules="required"
-            />
-            <text-field 
-                :field-data="fieldsData.artist.description" 
-                v-model="artistFieldsValues.description"
-                rules="required"
-            />
-        </div>
-        <button type="submit">Зарегистрироваться</button>
+            
+        </file-field>
+
+        <!-- <div class="form-field">
+            <label :for="fieldsData.audioFile.name" class="form-field__label">
+                {{fieldsData.audioFile.label}}
+            </label>
+            <Field :name="fieldsData.audioFile.name" rules="mimes:audio/mpeg"  v-model="fieldsValues.audioFile"  type="file" v-slot="{handleChange, handleBlur}">
+                <input type="file" @change="handleChange" @blur="handleBlur" />
+            </Field>
+            <ErrorMessage class="form-field__error-label" :name="fieldsData.audioFile.name"/>
+        </div> -->
+        
+        <button type="submit">Добавить песню</button>
     </Form>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { Form, useForm } from 'vee-validate'
+import { Form } from 'vee-validate'
 import TextField from '../UI/form/TextField.vue'
-import BooleanField from '../UI/form/BooleanField.vue'
+import FileField from '../UI/form/FileField.vue';
 import axios from 'axios';
-import { CreateUserDto } from '@/dtos/createUser.dto';
-import { CreateArtistDto } from '@/dtos/createArtist.dto';
+import { CreateSongDto } from '@/dtos/createSong.dto';
+import { Field, ErrorMessage, useField } from 'vee-validate'
 
 export default defineComponent({
-    name: 'LoginForm',
+    name: 'AddSongForm',
     components: {
         TextField,
-        BooleanField,
-        Form
+        Form,
+        // Field,
+        // ErrorMessage,
+        FileField
     },
     data(){
         return{
             apiUrlExtension: 'add-song', 
-            fieldsValues: new CreateUserDto,
-            artistFieldsValues: new CreateArtistDto,
+            fieldsValues: new CreateSongDto,
+            // artistFieldsValues: new CreateArtistDto,
             fieldsData: {
-                email: {
+                name: {
                     name: 'email',
                     label: 'Почта'
                 },
-                password: {
+                released_at: {
                     name: 'password',
                     label: 'Пароль'
                 },
-                name: {
+                description: {
                     name: 'name',
                     label: 'Имя'
                 },
-                surname: {
+                lyrics: {
                     name: 'surname',
                     label: 'Фамилия'
                 },
-                username: {
-                    name: 'username',
-                    label: 'Имя пользователя'
+                audioFile: {
+                    name: 'audioFile',
+                    label: 'Аудиофайл песни'
                 },
-                roleId: {
-                    name: 'roleId',
-                    value: 'artist',
-                    label: 'Вы хотите зарегистрироваться как артист?'
-                },
-                artist: {
-                    stagename: {
-                        name: 'stagename',
-                        label: 'Псевдоним'
-                    },
-                    description: {
-                        name: 'description',
-                        label: 'Описание'
-                    },
-                }
+                // artistIds: {
+                //     name: 'username',
+                //     label: 'Имя пользователя'
+                // },
+                // genres: {
+                //     name: 'roleId',
+                //     value: 'artist',
+                //     label: 'Вы хотите зарегистрироваться как артист?'
+                // },
+                // genreIds: {
+                //     stagename: {
+                //         name: 'stagename',
+                //         label: 'Псевдоним'
+                //     },
+                //     description: {
+                //         name: 'description',
+                //         label: 'Описание'
+                //     },
+                // }
             }
         }
     },
@@ -134,7 +125,17 @@ export default defineComponent({
     computed: {
         fullApiUrl():string {
             return `${this.$store.state.APIURL}${this.apiUrlExtension}`;
+        },
+        file(){
+            console.log(this.fieldsValues.audioFile)
+            return this.fieldsValues.audioFile;
         }
-    }
+    },
+    //     setup() {
+    //     const { errorMessage } = useField('audioFile');
+    //     return {
+    //         errorMessage
+    //     }
+    // }
 })
 </script>

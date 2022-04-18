@@ -56,8 +56,9 @@ export default defineComponent({
               console.log(response, this);
               if(response.status === 201 && response.data){
                   console.log('correct');
+                  console.log(response.data)
                   this.$store.dispatch('saveUser', {user: response.data})
-                  this.$router.push('/home');
+                  this.$router.push('/');
               }
             }
           ).catch(function(error){

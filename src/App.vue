@@ -1,8 +1,5 @@
 <template>
-  <div id="nav">
-    <!-- <router-link to="/">Login</router-link> |
-    <router-link to="/about">About</router-link> -->
-  </div>
+  <the-header></the-header>
 
   <router-view></router-view>
 
@@ -21,9 +18,10 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import PlayingSongFooter from './components/songs/PlayingSongFooter.vue'
-
+import TheHeader from './components/UI/TheHeader.vue'
 export default defineComponent({
   components:{
+    TheHeader,
     PlayingSongFooter
   },
   computed:{
