@@ -33,12 +33,12 @@ export default defineComponent({
     data () {
         return {
         value: null,
-        // options: [],
-        options: [
-            {name: 'hi'},
-            {name: 'hey'},
-            {name: 'hello'},
-        ]
+        options: [],
+        // options: [
+        //     {name: 'hi'},
+        //     {name: 'hey'},
+        //     {name: 'hello'},
+        // ]
         }
     },
     methods: {
@@ -52,14 +52,14 @@ export default defineComponent({
         },
     },
     mounted() {
-    //     axios.get(this.fullApiUrl)
-    //    .then((response) => {
-    //           if(response.status === 200 && response.data){
-    //               this.options = response.data;
-    //               console.log('genres', this.options);
-    //           }
+        axios.get(this.fullApiUrl)
+       .then((response) => {
+              if(response.status === 200 && response.data){
+                  this.options = response.data;
+                  console.log('genres', this.options);
+              }
 
-    //     })
+        })
         // .catch((error) =>{        
         // })
     },
