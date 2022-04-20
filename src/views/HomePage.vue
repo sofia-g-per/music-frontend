@@ -1,10 +1,13 @@
 <template>
     <the-search-bar :searchAPIURL="searchUrl" @onSearchResponse="handleSearchResponse" />
-    <div v-if="songs" class="song-list">
+    <div v-if="songs && songs.length > 0" class="song-list">
         <music-list-item
             v-for="song in songs" :key="song.id" :songData="song"
         >
         </music-list-item>
+    </div>
+    <div v-else class="page-error">
+        <span>К сожалению, по вашему запросу ничего не найдено</span>
     </div>
 </template>
 

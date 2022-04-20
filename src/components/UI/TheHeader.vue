@@ -37,18 +37,28 @@ export default defineComponent({
 </script>
 
 <style scoped>
+    .main-header{
+        min-height: 3vh;
+        padding: 2rem;
+    }
   a{
     color: var(--font-color);
+    font-size: 1.8rem;
+    text-transform: uppercase;
     text-decoration: none;
     transition: .3s;
   }
 
   a:hover{
-      opacity: .6;
+      color: var(--accent-color-1);
   }
 
   .site-nav{
       display: flex;
       justify-content: space-around;
+  }
+  .main-header__auth-links{
+      display: flex;
+      gap: 1rem;
   }
 </style>

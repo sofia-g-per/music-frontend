@@ -48,6 +48,7 @@ export default defineComponent({
     --accent-color-2: rgb(255, 0, 81);
 
     --main-font-family: sans-serif;
+    font-size: 62.5%;
   }
   /* ------------------------------ */
   /* GENERAL */
@@ -70,6 +71,14 @@ export default defineComponent({
 
   }
 
+  .page-error{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--accent-color-2);
+    padding: 20vw 0;
+  }
+
   
   /* ------------------------------ */
   /* CONTAINERS */
@@ -80,8 +89,11 @@ export default defineComponent({
   }
 
   .song-list{
-    margin: 0 2rem;
     border-radius: 1rem;
+        display: flex;
+    flex-direction: column;
+    align-items: center;
+
   }
   /* ------------------------------ */
   /* FORM */

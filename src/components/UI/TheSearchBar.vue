@@ -31,11 +31,7 @@ export default defineComponent({
             })
             .then((response) => {
                 if(response.status === 200 && response.data){
-                    if(response.data){
-                        this.$emit('onSearchResponse', response.data);
-
-                    }
-                    
+                    this.$emit('onSearchResponse', response.data);                    
                 }
 
             })
@@ -58,7 +54,9 @@ export default defineComponent({
     .search-bar{
         width: 50%;
         background: var(--bg-color);
-        border-bottom: 2px solid var(--font-color);
+        padding: .4rem;
+        border: 1px solid var(--font-color);
+        border-radius: 1rem;
         color: var(--font-color)
     }
 
