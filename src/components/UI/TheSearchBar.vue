@@ -15,6 +15,9 @@ export default defineComponent({
             searchQuery: '',
         }
     },
+    emits: [
+        'onSearchResponse'
+    ],
     props: [
         'searchAPIURL'
     ],
@@ -28,9 +31,11 @@ export default defineComponent({
             })
             .then((response) => {
                 if(response.status === 200 && response.data){
-                    this.songs = response.data;
-                    console.log('songs',this.songs);
-                    //emit event to show search results
+                    if(response.data){
+                        this.$emit('onSearchResponse', response.data);
+
+                    }
+                    
                 }
 
             })
@@ -54,6 +59,7 @@ export default defineComponent({
         width: 50%;
         background: var(--bg-color);
         border-bottom: 2px solid var(--font-color);
+        color: var(--font-color)
     }
 
     .search-bar::placeholder{

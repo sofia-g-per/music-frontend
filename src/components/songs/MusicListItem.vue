@@ -1,7 +1,7 @@
 <template>
     <li class="music-list-item">
         <div class="music-list-item__info">
-            <h5 class="music-list-item__info__title heading-tretriary">{{songData.name}}</h5>
+            <h4 class="music-list-item__info__title heading-tretriary">{{songData.name}}</h4>
             <!-- add is featured -->
             <p v-for="artist in songData.artists" :key="artist.artistId" class="music-list-item__info__artist main-text">{{artist.artist.stagename}}</p>
         </div>
@@ -25,6 +25,8 @@ export default defineComponent({
 <style scoped>
     .music-list-item{
         width: 100%;
+        padding: 2vw 2vw 4vw 2vw;
+        min-width: 20rem;
         display: flex;
         border-bottom: 1px solid var(--font-color);
         cursor: pointer;
@@ -32,7 +34,7 @@ export default defineComponent({
     }
 
     .music-list-item:hover{
-        transform: scale(1.1) translate(-2px, -3px);
+        transform: scale(1.035) translate(-1px, -2px);
     }
     /* .music-list-item__cover-img{
         width: 4rem;

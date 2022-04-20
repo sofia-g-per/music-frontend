@@ -1,12 +1,13 @@
 <template>
     <div >
         <h1>HOME</h1>
-        <the-search-bar :searchAPIURL="searchAPIURL"></the-search-bar>
+        <the-search-bar :searchAPIURL="searchAPIURL" @onSearchResponse="handleSearchResponse" />
         <ul class="song-list" v-if="songs">
             <music-list-item @click="playSong(song.song.id)"
                 v-for="song in songs" 
                 :key="song.id"
                 :songData="song.song"
+                :onSearchReponse="handleSearchResponse"
             >
                 <template name="music-item-buttons">
                     <button @click="addToFavourites(song.id)">
@@ -80,6 +81,9 @@ export default defineComponent({
                     }
 
                 })
+        },
+        handleSearchResponse(response:[]){
+            this.songs = response;
         }
     }
     

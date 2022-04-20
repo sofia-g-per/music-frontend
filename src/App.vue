@@ -26,7 +26,6 @@ export default defineComponent({
   },
   computed:{
     currentSong(){
-      console.log('currentSong changed')
       if(this.$store.state.currentSongDefined){
         console.log(this.$store.state.currentPlaylist.playlist[this.$store.state.currentSongId])
         return this.$store.state.currentPlaylist.playlist[this.$store.state.currentSongId];
@@ -80,6 +79,10 @@ export default defineComponent({
     grid-template-columns: 1fr 1fr;
   }
 
+  .song-list{
+    margin: 0 2rem;
+    border-radius: 1rem;
+  }
   /* ------------------------------ */
   /* FORM */
   /* ------------------------------ */

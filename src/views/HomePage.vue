@@ -1,10 +1,9 @@
 <template>
-    <the-search-bar></the-search-bar>
+    <the-search-bar :searchAPIURL="searchUrl" @onSearchResponse="handleSearchResponse" />
     <div v-if="songs" class="song-list">
         <music-list-item
-            v-for="song in songs" :key="song.id"
+            v-for="song in songs" :key="song.id" :songData="song"
         >
-
         </music-list-item>
     </div>
 </template>
@@ -38,10 +37,15 @@ export default defineComponent({
     },
     computed: {
         getSongsURL(){
-            return this.$store.dispatch('fullURL', 'getSongs')
+            return this.$store.getters.fullURL('getSongs')
         },
         searchUrl(){
-            return this.$store.dispatch('fullURL', 'globalSearch')
+            return this.$store.getters.fullURL('globalSearch')
+        }
+    },
+    methods: {
+        handleSearchResponse(response:[]){
+            this.songs = response;
         }
     }
 })

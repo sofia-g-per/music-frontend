@@ -14,7 +14,7 @@ export default createStore({
       getArtists: 'artists',
       uploadSong: 'upload-song',
       likeSong: 'like-song',
-      getDongs: 'get-all-songs'
+      getSongs: 'get-all-songs'
     },
     APIFilePaths:{
       avatars: 'avatars/',
@@ -123,7 +123,7 @@ export default createStore({
     }
     },
     fullURL:(state) => (pathName:string)=>{
-      `${state.APIURL}${state.APIExtensions[pathName]}`;
+      return `${state.APIURL}${state.APIExtensions[pathName]}`;
     }
   },
   modules: {
