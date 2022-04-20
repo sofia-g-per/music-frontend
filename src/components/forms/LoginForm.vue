@@ -48,22 +48,17 @@ export default defineComponent({
     },
     methods: {
         onSubmit(){
-            console.log(this, this.$router);
-            console.log('errors')
              axios.post(this.fullApiUrl, this.fieldsValues, { withCredentials: true })
           .then(
             (response) => {
-              console.log(response, this);
               if(response.status === 201 && response.data){
-                  console.log('correct');
-                  console.log(response.data)
                   this.$store.dispatch('saveUser', {user: response.data})
                   this.$router.push('/');
               }
             }
-          ).catch(function(error){
-              console.log(error, this);
-          })
+          )
+        //   .catch(function(error){
+        //   })
         }
     },
     computed: {
