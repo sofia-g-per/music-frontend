@@ -70,6 +70,7 @@ export default defineComponent({
   .section-heading{
 
   }
+
   
   /* ------------------------------ */
   /* CONTAINERS */
@@ -77,5 +78,28 @@ export default defineComponent({
   .container--2-clmn{
     display: grid;
     grid-template-columns: 1fr 1fr;
+  }
+
+  /* ------------------------------ */
+  /* FORM */
+  /* ------------------------------ */
+  .form-field{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .form-field__error-label{
+    color: var(--accent-color-2);
+  }
+
+  .form-field__input{
+    background: var(--bg-color);
+    border: 2px solid var(--font-color);
+    color: var(--font-color);
+  }
+
+  .form-field__input.form-field--error{
+    border-color: var(--accent-color-2);
   }
 </style>

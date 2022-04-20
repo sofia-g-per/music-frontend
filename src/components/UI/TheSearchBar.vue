@@ -1,6 +1,6 @@
 <template>
     <div class="search-bar__wrapper">
-        <input type="text" class="search-bar" @keydown.enter="handleSearch" v-model="searchQuery">
+        <input type="text" class="search-bar" placholder="Введите запрос..." @keydown.enter="handleSearch" v-model="searchQuery">
     </div>
 </template>
 
@@ -20,8 +20,7 @@ export default defineComponent({
     ],
     methods:{
         handleSearch(){
-            const fullApiUrl = `${this.$store.state.APIURL}${this.searchAPIURL}`
-            axios.get(fullApiUrl, { 
+            axios.get(this.searchAPIURL, { 
                 withCredentials: true,
                 params: {
                    searchQuery: this.searchQuery
@@ -42,3 +41,26 @@ export default defineComponent({
     }
 })
 </script>
+
+
+<style scoped>
+
+    .search-bar__wrapper{
+        display: flex;
+        width: 100%;
+        justify-content: center;
+    }
+    .search-bar{
+        width: 50%;
+        background: var(--bg-color);
+        border-bottom: 2px solid var(--font-color);
+    }
+
+    .search-bar::placeholder{
+        color: var(--font-color);
+    }
+
+    .search-bar:focus{
+        border-bottom-color: var(--accent-color-1);
+    }
+</style>

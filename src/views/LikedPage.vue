@@ -7,7 +7,13 @@
                 v-for="song in songs" 
                 :key="song.id"
                 :songData="song.song"
-            ></music-list-item>
+            >
+                <template name="music-item-buttons">
+                    <button @click="addToFavourites(song.id)">
+                        Добавить
+                    </button>
+                </template>
+            </music-list-item>
         </ul>
         <p v-else>У вас ещё нет избранных песен</p>
     </div>
@@ -36,7 +42,7 @@ export default defineComponent({
             return `${this.$store.state.APIURL}${this.$store.state.APIExtensions.getFavouriteSongs}`;
         }, 
         searchAPIURL(){
-            return this.$store.state.APIExtensions.searchFavouriteSongs;
+            return `${this.$store.state.APIURL}${this.$store.state.APIExtensions.searchFavouriteSongs}`;
         }
     },
     mounted(){
@@ -44,12 +50,10 @@ export default defineComponent({
        .then((response) => {
               if(response.status === 200 && response.data){
                   this.songs = response.data;
-                  console.log('songs',this.songs);
               }
 
         })
         .catch((error) =>{
-            console.log(error);
             // если пользователь не авторизован
             if(error.response && error.response.status === 403) {
                   this.$router.push({name: 'login'})
@@ -57,7 +61,6 @@ export default defineComponent({
         })
     },
     methods: {
-        //  transfer to state 
         playSong(songId:number ){
             let playlistToPlay = new PlayingPlaylist;
             playlistToPlay.type = "liked";
@@ -67,6 +70,16 @@ export default defineComponent({
                 songInPlaylistId,
                 playlistToPlay
             })
+        },
+        addToFavourites(songId){
+            axios.post(`${this.$store.state.APIURL}${this.$store.state.APIExtensions.likeSong}`, {songId: songId}, { withCredentials: true })
+            .then((response) => {
+                    if(response.status === 200 && response.data){
+                        this.songs = response.data;
+                        console.log('song liked');
+                    }
+
+                })
         }
     }
     

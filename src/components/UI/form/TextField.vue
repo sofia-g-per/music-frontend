@@ -3,7 +3,7 @@
         <label :for="fieldData.name" class="form-field__label">
           {{fieldData.label}}
         </label>
-        <Field :name="fieldData.name" type="text" v-bind="$attrs" />
+        <Field class="form-field__input" :name="fieldData.name" type="text" v-bind="$attrs" />
         <ErrorMessage class="form-field__error-label" :name="fieldData.name"/>
     </div>
 </template>
@@ -29,3 +29,7 @@ export default defineComponent({
   },
 })
 </script>
+
+<style>
+
+</style>

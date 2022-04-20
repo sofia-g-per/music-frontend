@@ -1,8 +1,8 @@
 <template>
-    <li class="music-list-item">
-        <div v-if="songData.coverImg" class="music-list-item__cover-img">
+    <li class="music-list-item playing-song-footer">
+        <!-- <div v-if="songData.coverImg" class="music-list-item__cover-img">
             <img class="music-list-item__cover-img__img" :src="songData.coverImg" alt="Обложка песни {{songData.name}}">
-        </div>
+        </div> -->
         <div class="music-list-item__info">
             <h3 class="music-list-item__info__title heading-tretriary">{{songData.name}}</h3>
             <!-- add is featured -->
@@ -13,7 +13,7 @@
         </div>
         <div class="music-list-item__buttons" >
             <button class="play-btn" @click="onClickPlay">
-                play
+                <img src="@/assets/images/play-icon.svg" alt="Запустить песню">
             </button>
         </div>
     </li>
@@ -49,13 +49,13 @@ export default defineComponent({
 })
 </script>
 <style scoped>
+    .playing-song-footer{
+        border-top: 1px solid var(--font-color);
+    }
     .music-list-item{
+        padding: 1rem 0;
         width: 100%;
         display: flex;
-    }
-
-    .music-list-item__cover-img{
-        width: 4rem;
     }
 
     .music-list-item__info{
@@ -64,5 +64,18 @@ export default defineComponent({
     .music-list-item__buttons{
         display: flex;
         justify-content: space-evenly;
+    }
+
+    .play-btn{
+        color: var(--font-color);
+        background: none;
+        width: 3rem;
+        transition: .3s;
+        opacity: .6;
+    }
+
+    .play-btn:hover{
+        /* transform: scale(1.1); */
+        opacity: 1;
     }
 </style>

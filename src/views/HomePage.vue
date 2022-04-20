@@ -1,8 +1,8 @@
 <template>
     <the-search-bar></the-search-bar>
-    <div v-if="searchResults" class="song-list">
+    <div v-if="songs" class="song-list">
         <music-list-item
-            v-for="result in searchResults" :key="result.id"
+            v-for="song in songs" :key="song.id"
         >
 
         </music-list-item>
@@ -13,6 +13,7 @@
 import { defineComponent } from 'vue'
 import TheSearchBar from '@/components/UI/TheSearchBar.vue'
 import MusicListItem from '@/components/songs/MusicListItem.vue'
+import axios from 'axios'
 export default defineComponent({
     name: 'HomePage',
     components:{
@@ -21,8 +22,27 @@ export default defineComponent({
     },
     data() {
         return {
-            searchResults: [],
+            songs: [],
         }
     },
+    mounted(){
+        axios.get(this.getSongsURL)
+       .then((response) => {
+              if(response.status === 200 && response.data){
+                  this.songs = response.data;
+              }
+
+        })
+        // .catch((error) =>{
+        // })
+    },
+    computed: {
+        getSongsURL(){
+            return this.$store.dispatch('fullURL', 'getSongs')
+        },
+        searchUrl(){
+            return this.$store.dispatch('fullURL', 'globalSearch')
+        }
+    }
 })
 </script>

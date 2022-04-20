@@ -15,19 +15,19 @@
             v-model="fieldsValues.lyrics"
             rules="required"
         />
-        <file-field 
+         <file-field 
             :field-data="fieldsData.audioFile" 
             v-model="fieldsValues.audioFile" 
         >     
         </file-field>
-        <genre-select 
-        v-model="fieldsValues.genreIds">
+        <!-- <genre-select 
+            v-model="fieldsValues.genreIds">
 
         </genre-select>
         <artist-select 
-        v-model="fieldsValues.artistIds">
+            v-model="fieldsValues.artistIds"> 
 
-        </artist-select>
+        </artist-select> -->
         <button type="submit">Добавить песню</button>
     </Form>
 </template>
@@ -37,8 +37,8 @@ import { defineComponent } from 'vue'
 import { Form } from 'vee-validate'
 import TextField from '../UI/form/TextField.vue'
 import FileField from '../UI/form/FileField.vue';
-import GenreSelect from '../UI/form/GenreSelect.vue';
-import ArtistSelect from '../UI/form/ArtistSelect.vue';
+// import GenreSelect from '../UI/form/GenreSelect.vue';
+// import ArtistSelect from '../UI/form/ArtistSelect.vue';
 import axios from 'axios';
 import { CreateSongDto } from '@/dtos/createSong.dto';
 
@@ -48,8 +48,8 @@ export default defineComponent({
         TextField,
         Form,
         FileField,
-        GenreSelect,
-        ArtistSelect
+        // GenreSelect,
+        // ArtistSelect
     },
     data(){
         return{
@@ -58,54 +58,51 @@ export default defineComponent({
             // artistFieldsValues: new CreateArtistDto,
             fieldsData: {
                 name: {
-                    name: 'email',
-                    label: 'Почта'
-                },
-                released_at: {
-                    name: 'password',
-                    label: 'Пароль'
+                    name: 'name',
+                    label: 'Название'
                 },
                 description: {
-                    name: 'name',
-                    label: 'Имя'
+                    name: 'description',
+                    label: 'Описание'
                 },
                 lyrics: {
-                    name: 'surname',
-                    label: 'Фамилия'
+                    name: 'lyrics',
+                    label: 'текст'
                 },
                 audioFile: {
                     name: 'audioFile',
                     label: 'Аудиофайл песни'
-                },
-                // artistIds: {
-                //     name: 'username',
-                //     label: 'Имя пользователя'
-                // },
-                // genres: {
-                //     name: 'roleId',
-                //     value: 'artist',
-                //     label: 'Вы хотите зарегистрироваться как артист?'
-                // },
-                // genreIds: {
-                //     stagename: {
-                //         name: 'stagename',
-                //         label: 'Псевдоним'
-                //     },
-                //     description: {
-                //         name: 'description',
-                //         label: 'Описание'
-                //     },
-                // }
+                }
             }
         }
     },
     methods: {
         onSubmit(){
+        // console.log(this.fieldsValues.genreIds)
+        // if(this.fieldsValues.genreIds){
+        //     this.fieldsValues.genreIds = this.fieldsValues.genreIds.map(genre => {
+        //         return genre.id
+        //     });
+        // }
+        console.log(this.fullApiUrl)
+        var formData = new FormData();
+        console.log(this.fieldsValues.audioFile)
+        for ( const [key, value] of Object.entries(this.fieldsValues) ) {
+                if(key === 'audioFile'){
+                    formData.append(key, this.fieldsValues[key][0]);
+                    
+                }else{
+                    formData.append(key, this.fieldsValues[key]);
 
-        this.fieldsValues = this.fieldsValues.genreIds.map(genre => {
-            return genre.id
-        });
-        axios.post(this.fullApiUrl, this.fieldsValues, { withCredentials: true })
+                }
+            }
+        console.log(formData)
+        axios.post(this.fullApiUrl, formData, { 
+            withCredentials: true,  
+            headers: {
+                'Content-Type': 'multipart/form-data'
+                }
+            })
           .then(
             (response) => {
               console.log(response);
@@ -115,13 +112,13 @@ export default defineComponent({
               }
             }
           ).catch(function(error){
-              console.log(error, this);
+              console.log(error);
           })
         }
     },
     computed: {
         fullApiUrl():string {
-            return `${this.$store.state.APIURL}${this.apiUrlExtension.uploadSong}`;
+            return `${this.$store.state.APIURL}${this.$store.state.APIExtensions.uploadSong}`;
         }
     },
 

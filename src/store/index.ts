@@ -8,10 +8,13 @@ export default createStore({
     APIExtensions: {
       login: 'log-in',
       getFavouriteSongs: 'liked-songs', 
+      globalSearch: 'global-search',
       searchFavouriteSongs: 'search-liked-songs',
       getGenres: 'genres',
       getArtists: 'artists',
-      uploadSong: 'upload-song'
+      uploadSong: 'upload-song',
+      likeSong: 'like-song',
+      getDongs: 'get-all-songs'
     },
     APIFilePaths:{
       avatars: 'avatars/',
@@ -29,6 +32,7 @@ export default createStore({
       autoplay: false
     }),
     currentSongDefined: false,
+    isPlaying: false,
 
     user: new UserDto,
   },
@@ -67,7 +71,13 @@ export default createStore({
     },
     playCurrentSong(){
       if(this.state.currentSongDefined){
-        this.state.currentSongAudio!.play();
+        if(!this.state.isPlaying){
+          this.state.currentSongAudio!.play();
+          this.state.isPlaying = true;
+        }else{
+          this.state.currentSongAudio!.pause();
+          this.state.isPlaying = false;
+        }
       }
     },
     playNextSong(){
@@ -111,7 +121,10 @@ export default createStore({
     }else{
       return false;
     }
-  }
+    },
+    fullURL:(state) => (pathName:string)=>{
+      `${state.APIURL}${state.APIExtensions[pathName]}`;
+    }
   },
   modules: {
   }

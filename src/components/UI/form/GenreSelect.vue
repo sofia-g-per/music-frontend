@@ -1,12 +1,16 @@
 <template>
             <multiselect 
+                v-model="value"
                 :options="options"
                 mode="tags"
                 :multiple="true"
                 placeholder="Выбор жанров"
                 label="name"
-                track-by="id"
+                track-by="name"
                 custom-label="Введите название жанра"
+                :searchable="true"
+
+                @select="onValueChange"
             >
             </multiselect>
 </template>
@@ -22,7 +26,8 @@ export default defineComponent({
     },
     data(){
         return{
-            options:[]
+            options:[],
+            value:[]
         }
     },
     methods: {
@@ -34,23 +39,25 @@ export default defineComponent({
         this.taggingOptions.push(tag)
         this.taggingSelected.push(tag)
         },
+        onValueChange(){
+            console.log('artist chanegs', this.value);
+        }
+    },
+    watchers: {
+        onValueChange(){
+            console.log('artist chanegs', this.value);
+        }
     },
     mounted() {
         axios.get(`${this.$store.state.APIURL}${this.$store.state.APIExtensions.getGenres}`)
        .then((response) => {
             if(response.status === 200 && response.data){
                 this.options = response.data;
-                console.log('genres', this.options);
             }
 
         })
         // .catch((error) =>{        
         // })
-    },
-    watchers:{
-        options(){
-            console.log(this.options);
-        }
     }
 
 })

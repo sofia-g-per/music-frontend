@@ -35,3 +35,20 @@ export default defineComponent({
     }
 })
 </script>
+
+<style scoped>
+  a{
+    color: var(--font-color);
+    text-decoration: none;
+    transition: .3s;
+  }
+
+  a:hover{
+      opacity: .6;
+  }
+
+  .site-nav{
+      display: flex;
+      justify-content: space-around;
+  }
+</style>
