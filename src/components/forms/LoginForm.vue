@@ -1,5 +1,5 @@
 <template>
-    <Form method="post" @submit="onSubmit">
+    <Form method="post" @submit="onSubmit" class="form">
         <text-field 
             :field-data="fieldsData.email" 
             v-model="fieldsValues.email"

@@ -1,6 +1,8 @@
 <template>
-    <router-link to="/home">Главная</router-link>
+    <router-link to="/">Главная</router-link>
     <router-link to="/liked">Избранное</router-link>
+    <router-link to="/my-playlists">Мои плейлисты</router-link>    
+
 </template>
 
 <script lang="ts">

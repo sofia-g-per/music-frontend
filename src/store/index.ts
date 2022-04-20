@@ -1,3 +1,4 @@
+import { CreatePlaylistDto } from './../dtos/createPlaylist.dto';
 import { PlayingPlaylist } from '../interfaces/currentPlaylist';
 import { createStore } from 'vuex'
 import {Howl, Howler} from 'howler';
@@ -14,7 +15,9 @@ export default createStore({
       getArtists: 'artists',
       uploadSong: 'upload-song',
       likeSong: 'like-song',
-      getSongs: 'get-all-songs'
+      getSongs: 'get-all-songs',
+      getCurrentArtistSongs: 'get-song-by-current-artist',
+      createPlaylist: 'create-playlist'
     },
     APIFilePaths:{
       avatars: 'avatars/',

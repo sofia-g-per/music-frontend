@@ -1,5 +1,5 @@
 <template>
-    <Form method="post" @submit="onSubmit">
+    <Form method="post" @submit="onSubmit" class="form">
         <text-field 
             :field-data="fieldsData.name" 
             v-model="fieldsValues.name"
@@ -78,15 +78,7 @@ export default defineComponent({
     },
     methods: {
         onSubmit(){
-        // console.log(this.fieldsValues.genreIds)
-        // if(this.fieldsValues.genreIds){
-        //     this.fieldsValues.genreIds = this.fieldsValues.genreIds.map(genre => {
-        //         return genre.id
-        //     });
-        // }
-        console.log(this.fullApiUrl)
         var formData = new FormData();
-        console.log(this.fieldsValues.audioFile)
         for ( const [key, value] of Object.entries(this.fieldsValues) ) {
                 if(key === 'audioFile'){
                     formData.append(key, this.fieldsValues[key][0]);
@@ -96,7 +88,6 @@ export default defineComponent({
 
                 }
             }
-        console.log(formData)
         axios.post(this.fullApiUrl, formData, { 
             withCredentials: true,  
             headers: {
@@ -105,10 +96,9 @@ export default defineComponent({
             })
           .then(
             (response) => {
-              console.log(response);
               if(response.status === 201 && response.data){
                   console.log('correct');
-                  this.$router.push('/');
+                  this.$router.push('/my-songs');
               }
             }
           ).catch(function(error){

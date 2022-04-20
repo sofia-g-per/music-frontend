@@ -4,10 +4,8 @@
             <listener-nav v-if="isAuth"></listener-nav>
             <artist-nav v-if="isArtist"></artist-nav>
         </div>
-        <div v-if="isAuth" class="main-header__auth-user">
-
-        </div>
-        <div v-else class="main-header__auth-links">
+        <div v-if="!isAuth" class="main-header__auth-links">
+            <router-link to="/">Главная</router-link>
             <router-link to="/login">Вход</router-link>
             <router-link to="/sign-up">Регистрация</router-link>
         </div>
@@ -41,17 +39,6 @@ export default defineComponent({
         min-height: 3vh;
         padding: 2rem;
     }
-  a{
-    color: var(--font-color);
-    font-size: 1.8rem;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: .3s;
-  }
-
-  a:hover{
-      color: var(--accent-color-1);
-  }
 
   .site-nav{
       display: flex;

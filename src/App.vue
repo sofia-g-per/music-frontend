@@ -1,7 +1,10 @@
 <template>
   <the-header></the-header>
 
-  <router-view></router-view>
+  <div class="page-wrapper">
+    <router-view></router-view>
+
+  </div>
 
 <!-- проигрываемая песня -->
   <playing-song-footer 
@@ -71,6 +74,17 @@ export default defineComponent({
 
   }
 
+  .page-title{
+    padding: 2rem;
+  }
+
+  .page-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
   .page-error{
     display: flex;
     justify-content: center;
@@ -79,6 +93,17 @@ export default defineComponent({
     padding: 20vw 0;
   }
 
+  a{
+    color: var(--font-color);
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: .3s;
+  }
+
+  a:hover{
+      color: var(--accent-color-1);
+  }
   
   /* ------------------------------ */
   /* CONTAINERS */
@@ -93,15 +118,28 @@ export default defineComponent({
         display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 2rem 0;
+    min-width: 60vw;
 
   }
   /* ------------------------------ */
   /* FORM */
   /* ------------------------------ */
+  .form{
+    width: 60vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+    max-width: 25rem;
+
+  }
+
   .form-field{
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1rem;
+    padding: 1rem;
   }
 
   .form-field__error-label{

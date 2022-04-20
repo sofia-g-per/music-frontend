@@ -1,5 +1,5 @@
 <template>
-    <router-link class="btn" to="/add-song">Добавить песню</router-link>
+    <router-link class="btn" to="/add-playlist">Добавить плейлист</router-link>
     <div class="song-list">
         <music-list-item v-for="song in songs" :key="song.id" :songData="song">
 

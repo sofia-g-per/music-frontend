@@ -1,7 +1,6 @@
 <template>
-    <div >
-        <h1>HOME</h1>
         <the-search-bar :searchAPIURL="searchAPIURL" @onSearchResponse="handleSearchResponse" />
+        <h1 class="page-title">Ваши избранные песни</h1>
         <ul class="song-list" v-if="songs">
             <music-list-item @click="playSong(song.song.id)"
                 v-for="song in songs" 
@@ -17,7 +16,6 @@
             </music-list-item>
         </ul>
         <p v-else>У вас ещё нет избранных песен</p>
-    </div>
 </template>
 
 <script lang="ts">

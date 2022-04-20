@@ -54,7 +54,7 @@ export default defineComponent({
     .search-bar{
         width: 50%;
         background: var(--bg-color);
-        padding: .4rem;
+        padding: .8rem;
         border: 1px solid var(--font-color);
         border-radius: 1rem;
         color: var(--font-color)
