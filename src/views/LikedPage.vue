@@ -8,11 +8,6 @@
                 :songData="song.song"
                 :onSearchReponse="handleSearchResponse"
             >
-                <template name="music-item-buttons">
-                    <button @click="addToFavourites(song.id)">
-                        Добавить
-                    </button>
-                </template>
             </music-list-item>
         </ul>
         <p v-else>У вас ещё нет избранных песен</p>
@@ -69,16 +64,6 @@ export default defineComponent({
                 songInPlaylistId,
                 playlistToPlay
             })
-        },
-        addToFavourites(songId){
-            axios.post(`${this.$store.state.APIURL}${this.$store.state.APIExtensions.likeSong}`, {songId: songId}, { withCredentials: true })
-            .then((response) => {
-                    if(response.status === 200 && response.data){
-                        this.songs = response.data;
-                        console.log('song liked');
-                    }
-
-                })
         },
         handleSearchResponse(response:[]){
             this.songs = response;

@@ -4,6 +4,11 @@
         <music-list-item
             v-for="song in songs" :key="song.id" :songData="song"
         >
+            <template v-if="isAuth">
+                <button class="icon-btn" @click.stop="likeSong(song.id)">
+                    🤍
+                </button>
+            </template>
         </music-list-item>
     </div>
     <div v-else class="page-error">
@@ -44,11 +49,30 @@ export default defineComponent({
         },
         searchUrl(){
             return this.$store.getters.fullURL('globalSearch')
+        },
+        likeSongUrl(){
+            return this.$store.getters.fullURL('likeSong')
+        },
+        isAuth(){
+            return this.$store.state.user && this.$store.state.user.id
         }
     },
     methods: {
         handleSearchResponse(response:[]){
             this.songs = response;
+        },
+        likeSong(songId:number){
+            const like = {songId: songId}
+            axios.post(this.likeSongUrl, like, {withCredentials: true})
+            .then((response) => {
+              if(response.status === 200 && response.data){
+                  this.songs = response.data;
+              }
+
+            })
+            .catch((error) =>{
+                console.log(error)
+            })
         }
     }
 })

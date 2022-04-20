@@ -28,7 +28,7 @@
             v-model="fieldsValues.artistIds"> 
 
         </artist-select> -->
-        <button type="submit">Добавить песню</button>
+        <button  class="main-btn" type="submit">Добавить песню</button>
     </Form>
 </template>
 

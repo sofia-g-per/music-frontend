@@ -1,6 +1,6 @@
 <template>
     <div class="search-bar__wrapper">
-        <input type="text" class="search-bar" placholder="Введите запрос..." @keydown.enter="handleSearch" v-model="searchQuery">
+        <input type="text" class="search-bar" placeholder="Введите запрос..." @keydown.enter="handleSearch" v-model="searchQuery">
     </div>
 </template>
 
@@ -50,6 +50,7 @@ export default defineComponent({
         display: flex;
         width: 100%;
         justify-content: center;
+        position: relative;
     }
     .search-bar{
         width: 50%;
@@ -66,5 +67,13 @@ export default defineComponent({
 
     .search-bar:focus{
         border-bottom-color: var(--accent-color-1);
+    }
+    .search-bar::after{
+        content:'';
+        display: block;
+        background-image: url('../../assets/images/search-icon.png');
+        width: 2rem;
+        position: absolute;
+        right: 0;
     }
 </style>

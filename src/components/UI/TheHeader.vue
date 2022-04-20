@@ -38,6 +38,8 @@ export default defineComponent({
     .main-header{
         min-height: 3vh;
         padding: 2rem;
+        border-bottom: 2px solid var(--font-color);
+        margin-bottom: 2rem;
     }
 
   .site-nav{

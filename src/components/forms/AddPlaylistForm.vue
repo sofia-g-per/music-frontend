@@ -24,7 +24,7 @@
             </div>
         </div>
 
-        <button type="submit">Добавить песню</button>
+        <button class="main-btn" type="submit">Добавить песню</button>
     </Form>
 </template>
 
@@ -110,5 +110,15 @@ export default defineComponent({
 .song-select{
     max-height: 50vh;
     overflow-y: scroll;
+}
+
+.music-list-item{
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+}
+
+.music-list-item__artist-wrapper{
+    padding-left: 1rem;
 }
 </style>

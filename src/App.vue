@@ -49,6 +49,7 @@ export default defineComponent({
     --font-color: white;
     --accent-color-1: rgb(147, 0, 201);
     --accent-color-2: rgb(255, 0, 81);
+    --accent-color-2--dark: rgb(17, 0, 36); 
 
     --main-font-family: sans-serif;
     font-size: 62.5%;
@@ -61,11 +62,43 @@ export default defineComponent({
     color: var(--font-color);
     font-family: var(--main-font-family);
     box-sizing: border-box;
+    height: 100vh;
   }
 
   *{
     margin: 0;
+        box-sizing: border-box;
   }
+
+  .icon-btn{
+    background: none;
+    outline: none;
+    border: none;
+    cursor:pointer;
+  }
+
+    .icon-btn:focus,
+    .icon-btn:hover{
+      border:none;
+      outline: none;
+      padding: 0 1rem;
+    }
+
+    .main-btn{
+      border: 2px solid white ;
+      background: none;
+      padding: 1rem;
+      color: white;
+      cursor: pointer;
+      transition: .5s;
+      margin: 2rem 0;
+    }
+
+    .main-btn:hover{
+      background: rgb(38, 0, 78);
+      color: white !important;
+
+    }
 
   /* ------------------------------ */
   /* TEXT */

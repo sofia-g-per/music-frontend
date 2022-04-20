@@ -4,7 +4,6 @@
 
     </div>
     <div class="login-page__form-container">
-      <h1 class="section-header">Вход в музыкальный мир</h1>
       <login-form></login-form>
     </div>
   </div>

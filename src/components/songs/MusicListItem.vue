@@ -7,7 +7,7 @@
                 <p v-for="artist in songData.artists" :key="artist.artistId" class="music-list-item__info__artist main-text">{{artist.artist.stagename}}</p>
             </div>
         </div>
-        <slot class="music-list-item__buttons" name="music-item-buttons">
+        <slot class="music-list-item__buttons">
 
         </slot>
     </li>

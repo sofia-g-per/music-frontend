@@ -18,7 +18,7 @@ export default createStore({
       getSongs: 'get-all-songs',
       getCurrentArtistSongs: 'get-song-by-current-artist',
       createPlaylist: 'create-playlist',
-      getUsersPlaylists: 'users-playlists'
+      getUsersPlaylists: 'users-playlists',
     },
     APIFilePaths:{
       avatars: 'avatars/',

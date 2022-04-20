@@ -12,7 +12,7 @@
             rules="required"
 
         />
-        <button type="submit">Войти</button>
+        <button  class="main-btn" type="submit">Войти</button>
     </Form>
 </template>
 
