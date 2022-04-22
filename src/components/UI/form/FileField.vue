@@ -23,8 +23,7 @@ export default defineComponent({
         'defaultError'
     ],
     components: {
-        Field,
-        ErrorMessage
+        Field
     }, 
     computed:{
         file(){

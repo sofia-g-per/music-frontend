@@ -22,6 +22,7 @@
             defaultError="Прикрепите файл в формате mp3"
         >     
         </file-field>
+        <p class="form-field__error-label">{{formError}}</p>
         <button  class="main-btn" type="submit">Добавить</button>
     </Form>
 </template>
@@ -62,7 +63,8 @@ export default defineComponent({
                     name: 'audioFile',
                     label: 'Аудиофайл песни'
                 }
-            }
+            },
+            formError: ''
         }
     },
     setup(){
@@ -100,7 +102,7 @@ export default defineComponent({
             }
           )            
           .catch((error)=>{
-              if(error.status === 400){
+              if(error.response && error.reponse.status === 400){
                   this.errors = error.data;
               }else{
                   this.formError = 'Простите, произошла ошибка при загрузке данных'

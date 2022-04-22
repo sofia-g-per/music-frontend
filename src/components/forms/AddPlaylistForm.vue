@@ -19,18 +19,18 @@
                     </div>
                 </div>
                 <div class="music-list-item__buttons">
-                    <input type="checkbox" v-model="songIds" :value="song.id">
+                    <Field type="checkbox" v-model="songIds" name="songIds" :value="song.id"/>
                 </div>
             </div>
         </div>
-
+         <p class="form-field__error-label">{{formError}}</p>
         <button class="main-btn" type="submit">Добавить</button>
     </Form>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { Form } from 'vee-validate'
+import { Form, Field } from 'vee-validate'
 import TextField from '../UI/form/TextField.vue'
 import axios from 'axios';
 import { CreatePlaylistDto } from '@/dtos/createPlaylist.dto';
@@ -40,6 +40,7 @@ export default defineComponent({
     components: {
         TextField,
         Form,
+        Field
     },
     data(){
         return{
@@ -57,6 +58,7 @@ export default defineComponent({
             },
             songs: [],
             songIds: [],
+            formError: ''
         }
     },
     methods: {
@@ -104,6 +106,13 @@ export default defineComponent({
               }
 
         })
+        .catch((error)=>{
+              if(error.response && error.reponse.status === 400){
+                  this.errors = error.data;
+              }else{
+                  this.formError = 'Простите, произошла ошибка при загрузке данных'
+              }
+          })
 
     },
 
