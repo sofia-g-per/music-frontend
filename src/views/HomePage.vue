@@ -1,5 +1,11 @@
 <template>
-    <the-search-bar :searchAPIURL="searchUrl" @onSearchResponse="handleSearchResponse" />
+    <the-search-bar :searchAPIURL="searchUrl" @onSearchResponse="handleSearchResponse">
+        <template>
+            <div class="genre-filter">
+                
+            </div>
+        </template>
+    </the-search-bar>
     <div v-if="songs && songs.length > 0" class="song-list">
         <music-list-item
             v-for="song in songs" :key="song.id" :songData="song"

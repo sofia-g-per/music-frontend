@@ -97,11 +97,9 @@ export default defineComponent({
                 formData.append(key, this.fieldsValues[key]);
             }
         }
-        console.log(this.genreIds)
         if(this.genreIds && this.genreIds.length > 0){
             formData.append('genreIds', this.genreIds);
         }
-        console.log(formData)
         axios.post(this.fullApiUrl, formData, { 
             withCredentials: true,  
             headers: {

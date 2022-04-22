@@ -1,8 +1,10 @@
 <template>
     <header class="main-header">
-        <div class="site-nav">
-            <listener-nav v-if="isAuth"></listener-nav>
+        <div class="site-nav" v-if="isAuth">
+            <listener-nav ></listener-nav>
             <artist-nav v-if="isArtist"></artist-nav>
+            <a @click.prevent="logOut">Выйти</a>
+
         </div>
         <div class="main-header__auth-links" v-if="!isAuth" >
             <router-link to="/">Главная</router-link>
@@ -16,7 +18,6 @@
 import { defineComponent } from 'vue'
 import ArtistNav from './nav/ArtistNav.vue'
 import ListenerNav from '@/components/UI/nav/ListenerNav.vue'
-import { isArgumentPlaceholder } from '@babel/types'
 export default defineComponent({
     name: "TheHeader",
     components: {
@@ -25,11 +26,18 @@ export default defineComponent({
     },
     computed:{
         isAuth(){
+            console.log(this.$store.state.isAuth)
             return this.$store.state.isAuth;
         },
         isArtist(){
             console.log(this.$store.getters.user, this.$store.getters.user.artist)
             return this.isAuth && this.$store.getters.user && this.$store.getters.user.artist;
+        }
+    },
+    methods:{
+        logOut(){
+            this.$store.dispatch('logOut');
+            this.$router.push({name:'login'});
         }
     }
 })

@@ -1,6 +1,9 @@
 <template>
     <div class="search-bar__wrapper">
         <input type="text" class="search-bar" placeholder="Поиск по сайту..." @keydown.enter="handleSearch" v-model="searchQuery">
+        <slot>
+
+        </slot>
     </div>
 </template>
 

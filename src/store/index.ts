@@ -108,6 +108,10 @@ export default createStore({
       localStorage.setItem('user', JSON.stringify(item));
       this.state.isAuth = true;
     },
+    logOut(){
+      this.state.isAuth = false;
+      localStorage.removeItem('user');
+    },
     authorizedGuard(){
       if(!this.getters.user){
         return {name: 'login'};
