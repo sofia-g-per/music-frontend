@@ -1,5 +1,5 @@
 <template>
-    <Form method="post" @submit="onSubmit" class="form">
+    <Form method="post" :validation-schema="schema" @submit="onSubmit" class="form">
         <text-field 
             :field-data="fieldsData.name" 
             v-model="fieldsValues.name"
@@ -18,6 +18,8 @@
          <file-field 
             :field-data="fieldsData.audioFile" 
             v-model="fieldsValues.audioFile" 
+            rules="required|mimes:audio/mpeg"
+            defaultError="Прикрепите файл в формате mp3"
         >     
         </file-field>
         <button  class="main-btn" type="submit">Добавить</button>
@@ -61,6 +63,15 @@ export default defineComponent({
                     label: 'Аудиофайл песни'
                 }
             }
+        }
+    },
+    setup(){
+        const schema = {
+            name: 'required',
+            audioFile: "required|mimes:audio/mpeg"
+        };
+        return {
+            schema
         }
     },
     methods: {

@@ -64,14 +64,13 @@ import { CreateArtistDto } from '@/dtos/createArtist.dto';
 import { defineRule } from 'vee-validate';
 
 export default defineComponent({
-    name: 'LoginForm',
+    name: 'SignUpForm',
     components: {
         TextField,
         Field,
         Form
     },
     setup(){
-
         const schema = {
             name: 'required',
             surname: 'required',
