@@ -1,5 +1,5 @@
 <template>
-    <Form method="post" @submit="onSubmit" class="playlist-form">
+    <Form method="post" :validation-schema="schema" @submit="onSubmit" class="playlist-form">
         <text-field 
             :field-data="fieldsData.name" 
             v-model="fieldsValues.name"
@@ -23,14 +23,14 @@
                 </div>
             </div>
         </div>
-         <p class="form-field__error-label">{{formError}}</p>
+        <p class="form-field__error-label" v-show="errors.songIds">{{errors.songIds}}</p>
         <button class="main-btn" type="submit">Добавить</button>
     </Form>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { Form, Field } from 'vee-validate'
+import { Form, Field, useForm, ErrorMessage } from 'vee-validate'
 import TextField from '../UI/form/TextField.vue'
 import axios from 'axios';
 import { CreatePlaylistDto } from '@/dtos/createPlaylist.dto';
@@ -41,6 +41,27 @@ export default defineComponent({
         TextField,
         Form,
         Field
+    },
+    setup(){
+        const schema = {
+            name: 'required',
+            songIds: (value) => {
+                if (value && value.length) {
+                    return true;
+                }
+                
+                return 'Выберите хотя бы одну песню';
+                }
+      }
+
+        const { errors } = useForm({
+            validationSchema: schema,
+            });
+
+        return {
+            schema,
+            errors
+        }
     },
     data(){
         return{
@@ -102,7 +123,6 @@ export default defineComponent({
        .then((response) => {
               if(response.status === 200 && response.data){
                   this.songs = response.data;
-                  console.log(this.songs)
               }
 
         })

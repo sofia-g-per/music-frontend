@@ -24,11 +24,10 @@ export default defineComponent({
     },
     computed:{
         isAuth(){
-            return this.$store.state.user && this.$store.state.user.id
+            return this.$store.dispatch('authorizedGuard')
         },
         isArtist(){
-
-            return this.isAuth && this.$store.state.user.artist
+            return this.$store.dispatch('isArtistGuard')
         }
     }
 })

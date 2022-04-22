@@ -96,20 +96,20 @@ export default createStore({
         this.dispatch('playCurrentSong');
       }
     },
-    
 
     saveUser(state, {user}){
-      this.state.user = user;
+      localStorage.setItem('user', JSON.stringify(user));
+      console.log(this.getters.user)
     },
     authorizedGuard(){
-      if(!this.state.user.id){
+      if(!this.getters.user){
         return {name: 'login'};
       }
     },
     isArtistGuard(){
-      if(!this.state.user.artist){
+      if(!this.getters.user || !this.getters.user.artist){
         //change
-        return {name: 'login'}
+        return {name: 'home'}
       }
     }
 
@@ -128,6 +128,13 @@ export default createStore({
     },
     fullURL:(state) => (pathName:string)=>{
       return `${state.APIURL}${state.APIExtensions[pathName]}`;
+    },
+    user(){
+      if(localStorage.getItem('user')){
+        return JSON.parse(localStorage.getItem('user') as string);
+      }else{
+        return false
+      }
     }
   },
   modules: {
