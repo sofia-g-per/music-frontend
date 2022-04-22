@@ -1,5 +1,5 @@
 <template>
-        <the-search-bar :searchAPIURL="searchAPIURL" @onSearchResponse="handleSearchResponse" />
+        <the-search-bar :searchAPIURL="searchAPIURL" @onSearchResponse="handleSearchResponse" :withFilters="false" />
         <h1 class="page-title">Ваши избранные песни</h1>
         <ul class="song-list" v-if="songs">
             <music-list-item @click="playSong(song.song.id)"

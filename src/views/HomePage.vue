@@ -1,10 +1,5 @@
 <template>
-    <the-search-bar :searchAPIURL="searchUrl" @onSearchResponse="handleSearchResponse">
-        <template>
-            <div class="genre-filter">
-                
-            </div>
-        </template>
+    <the-search-bar :searchAPIURL="searchUrl" @onSearchResponse="handleSearchResponse" :withFilters="true">
     </the-search-bar>
     <div v-if="songs && songs.length > 0" class="song-list">
         <music-list-item
@@ -36,6 +31,8 @@ export default defineComponent({
     data() {
         return {
             songs: [],
+            genres: [],
+            genreIds: []
         }
     },
     mounted(){
@@ -46,8 +43,16 @@ export default defineComponent({
               }
 
         })
-        // .catch((error) =>{
-        // })
+
+        axios.get(`${this.$store.state.APIURL}${this.$store.state.APIExtensions.getGenres}`)
+        .then((response) => {
+          if(response.status === 200 && response.data){
+              this.genres =  response.data;
+          }
+       })
+        .catch((error)=>{
+              console.log(error)
+        })
     },
     computed: {
         getSongsURL(){
@@ -60,7 +65,7 @@ export default defineComponent({
             return this.$store.getters.fullURL('likeSong')
         },
         isAuth(){
-            return this.$store.state.user && this.$store.state.user.id
+            return this.$store.state.isAuth;
         }
     },
     methods: {
@@ -80,6 +85,7 @@ export default defineComponent({
                 console.log(error)
             })
         }
-    }
+    },
+
 })
 </script>

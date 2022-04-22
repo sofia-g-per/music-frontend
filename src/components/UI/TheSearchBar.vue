@@ -1,9 +1,14 @@
 <template>
     <div class="search-bar__wrapper">
-        <input type="text" class="search-bar" placeholder="Поиск по сайту..." @keydown.enter="handleSearch" v-model="searchQuery">
-        <slot>
-
-        </slot>
+        <input type="text" class="search-bar" placeholder="Поиск..." @keydown.enter="handleSearch" v-model="searchQuery">
+        <div v-if="withFilters">
+            <div class="genre-filter">
+                <div v-for="option in genres" :key="option.id" class="music-list-item">
+                    <label :for="option.id">{{option.name}}</label>
+                    <input type="checkbox" :id="option.id" v-model="genreIds" name="genreIds" :value="option.id"/>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -22,7 +27,8 @@ export default defineComponent({
         'onSearchResponse'
     ],
     props: [
-        'searchAPIURL'
+        'searchAPIURL',
+        'withFilters'
     ],
     methods:{
         handleSearch(){
