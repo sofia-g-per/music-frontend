@@ -16,6 +16,7 @@
 import { defineComponent } from 'vue'
 import ArtistNav from './nav/ArtistNav.vue'
 import ListenerNav from '@/components/UI/nav/ListenerNav.vue'
+import { isArgumentPlaceholder } from '@babel/types'
 export default defineComponent({
     name: "TheHeader",
     components: {
@@ -24,11 +25,10 @@ export default defineComponent({
     },
     computed:{
         isAuth(){
-            console.log(this.$store.dispatch('authorizedGuard'))
-            return this.$store.dispatch('authorizedGuard')
+            return this.$store.state.isAuth;
         },
         isArtist(){
-            return this.$store.dispatch('isArtistGuard')
+            return this.isAuth && this.$store.getters.user && this.$store.getters.user.artist;
         }
     }
 })

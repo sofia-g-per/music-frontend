@@ -25,7 +25,8 @@ export default createStore({
       coverImg: 'coverImg/',
       songs: 'songs/',
     },
-
+    
+    isAuth: true,
 
     currentPlaylist: new PlayingPlaylist,
     currentSongId: 0,
@@ -101,18 +102,19 @@ export default createStore({
       const now = new Date()
       const item = {
         value: user,
-        expiry: now.getTime() + 36000,
+        expiry: now.getTime() + 360000,
       }
       localStorage.setItem('user', JSON.stringify(item));
+      this.state.isAuth = true;
     },
     authorizedGuard(){
       if(!this.getters.user){
-        return this.$router.push({name: 'login'});
+        return {name: 'login'};
       }
     },
     isArtistGuard(){
       if(!this.getters.user || !this.getters.user.artist){
-        return this.$router.push({name: 'home'})
+        return {name: 'home'}
       }
     }
 
@@ -140,16 +142,15 @@ export default createStore({
         const now = new Date()
         if(now.getTime() > user.expiry){
           localStorage.removeItem('user');
-          this.$router.push({name: 'login'});
           return null
         }else{
-          return user;
+
+          return user.value;
         }
       }else{
         return false
       }
     }
   },
-  modules: {
-  }
+
 })
