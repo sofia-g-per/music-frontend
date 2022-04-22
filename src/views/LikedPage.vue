@@ -2,11 +2,14 @@
         <the-search-bar :searchAPIURL="searchAPIURL" @onSearchResponse="handleSearchResponse" :withFilters="false" />
         <h1 class="page-title">Ваши избранные песни</h1>
         <ul class="song-list" v-if="songs">
-            <music-list-item @click="playSong(song.song.id)"
-                v-for="song in songs" 
+            <music-list-item
+                v-for="(song, key) in songs" 
                 :key="song.id"
                 :songData="song.song"
                 :onSearchReponse="handleSearchResponse"
+                :playlist="songs"
+                playlistType="liked"
+                :songInPlaylistId="key"
             >
                 <xbtn  class="delete-btn"/>
             </music-list-item>
@@ -61,22 +64,21 @@ export default defineComponent({
         })
     },
     methods: {
-        playSong(songId:number ){
-            let playlistToPlay = new PlayingPlaylist;
-            playlistToPlay.type = "liked";
-            playlistToPlay.playlist = this.songs;
-            let songInPlaylistId = this.songs.findIndex(song => song.song.id === songId )
-            this.$store.dispatch('handleClickSong', {
-                songInPlaylistId,
-                playlistToPlay
-            })
+        playSong(songId:number, key:number ){
+            // let playlistToPlay = new PlayingPlaylist;
+            // playlistToPlay.type = "liked";
+            // playlistToPlay.playlist = this.songs;
+            // let songInPlaylistId = key;
+            // this.$store.dispatch('handleClickSong', {
+            //     songInPlaylistId,
+            //     playlistToPlay
+            // })
         },
         handleSearchResponse(response:[]){
             this.songs = response;
         },
         handleDelete(songId:number){
             const songData= {songId: songId};
-            console.log(songId);
             axios.post(this.deleteApiURL, songData, {withCredentials: true})
             .then((response)=>{
                 if(response.status === 201 && response.data){

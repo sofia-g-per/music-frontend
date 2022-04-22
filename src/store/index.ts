@@ -28,7 +28,8 @@ export default createStore({
       songs: 'songs/',
     },
     
-    isAuth: true,
+    isAuth: false,
+    isArtist: false,
 
     currentPlaylist: new PlayingPlaylist,
     currentSongId: 0,
@@ -54,6 +55,9 @@ export default createStore({
     },
     handleClickSong(state, payload){
       //если песня находятся в проигрываемом сейчас плейлисте
+      console.log('playing song', payload);
+      console.log(payload, payload.songInPlaylistId, payload.playlistToPlay)
+
       if(this.state.currentPlaylist && this.state.currentPlaylist.type 
       && this.state.currentPlaylist.type === payload.playlistToPlay.type
       && this.state.currentPlaylist.id === payload.playlistToPlay.id){
@@ -65,18 +69,20 @@ export default createStore({
 
 
       }else{
-
+        console.log('else')
         this.state.currentPlaylist = payload.playlistToPlay;
         this.state.currentSongId = payload.songInPlaylistId;
-
         this.dispatch('embedNewAudio',({filePath: this.getters.currentAudioPath}));
+        this.state.currentSongDefined = true;
         this.dispatch('playCurrentSong');
 
-        this.state.currentSongDefined = true;
 
       }
     },
     playCurrentSong(){
+      console.log('playCurrentSong',this.state.currentSongDefined);
+      console.log(this.state.isPlaying);
+      console.log(this.state.currentSongAudio);
       if(this.state.currentSongDefined){
         if(!this.state.isPlaying){
           this.state.currentSongAudio!.play();
@@ -108,9 +114,13 @@ export default createStore({
       }
       localStorage.setItem('user', JSON.stringify(item));
       this.state.isAuth = true;
+      if(user.artist){
+        this.state.isArtist = true;
+      }
     },
     logOut(){
       this.state.isAuth = false;
+      this.state.isArtist = false;
       localStorage.removeItem('user');
     },
     authorizedGuard(){
@@ -132,6 +142,7 @@ export default createStore({
     },
     currentAudioPath: (state, getters)=> {
       if(state.currentSongId){
+        console.log('getter audio', state.currentPlaylist.playlist, state.currentSongId)
         const currentSong = state.currentPlaylist.playlist[state.currentSongId] as any;
         return getters.filePath('songs', currentSong.song.filePath)
     }else{

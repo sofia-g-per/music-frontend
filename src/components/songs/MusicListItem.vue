@@ -1,8 +1,7 @@
 <template>
-    <li class="music-list-item">
+    <li class="music-list-item" @click="playSong">
         <div class="music-list-item__info">
             <h2 class="music-list-item__info__title heading-tretriary">{{songData.name}}</h2>
-            <!-- add is featured -->
             <div class="music-list-item__artist-wrapper">
                 <p v-for="artist in songData.artists" :key="artist.artistId" class="music-list-item__info__artist main-text">{{artist.artist.stagename}}</p>
             </div>
@@ -17,12 +16,28 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-
+import { PlayingPlaylist } from '@/interfaces/currentPlaylist';
 export default defineComponent({
     name: "MusicListItem",
     props: [
-        'songData'
-    ]
+        'songData',
+        'playlist',
+        'playlistType',
+        'songInPlaylistId'
+
+    ],
+    methods:{
+        playSong(){
+            let playlistToPlay = new PlayingPlaylist;
+            playlistToPlay.type = this.playlistType;
+            playlistToPlay.playlist = this.playlist;
+            console.log('clicked', this.songInPlaylistId)
+            this.$store.dispatch('handleClickSong', {
+                songInPlaylistId: this.songInPlaylistId,
+                playlistToPlay: playlistToPlay
+            })
+        }
+    }
 
 })
 </script>

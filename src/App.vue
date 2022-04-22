@@ -29,7 +29,9 @@ export default defineComponent({
   },
   computed:{
     currentSong(){
+      console.log(this.$store.state.currentSongDefined === true)
       if(this.$store.state.currentSongDefined){
+        console.log('playlist', this.$store.state.currentPlaylist)
         return this.$store.state.currentPlaylist.playlist[this.$store.state.currentSongId];
       }else{
         return null;
@@ -163,6 +165,7 @@ export default defineComponent({
     text-transform: uppercase;
     text-decoration: none;
     transition: .3s;
+    text-align: center;
   }
 
   a:hover{
