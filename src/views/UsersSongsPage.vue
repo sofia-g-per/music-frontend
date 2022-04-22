@@ -3,9 +3,9 @@
 
     <div class="song-list" v-if="songs && songs.length > 0">
         <music-list-item v-for="song in songs" :key="song.id" :songData="song">
-            <slot>
-                <button @click.stop="handleDelete(song.id)" class="delete-btn">x</button>
-            </slot>
+            <template>
+                <xbtn @click.stop="handleDelete(song.id)" class="delete-btn">x</xbtn>
+            </template>
         </music-list-item>
     </div>
     <div v-else>
@@ -16,11 +16,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import MusicListItem from '@/components/songs/MusicListItem.vue'
+import Xbtn from '@/components/UI/buttons/Xbtn.vue'
 import axios from 'axios'
 export default defineComponent({
     name:"UsersSongsPage",
     components:{
-        MusicListItem
+        MusicListItem,
+        Xbtn
     },
     data() {
         return {
@@ -50,11 +52,9 @@ export default defineComponent({
             }
             axios.post(this.deleteApiURL, data, {withCredentials: true})
             .then((response) => {
-                console.log(response)
                 if(response.status === 201){
                     let index = this.songs.findIndex((song)=>song.id = songId);
                     this.songs.splice(index, 1);
-                    console.log('delete executed')
                 }
             })
             }

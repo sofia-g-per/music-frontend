@@ -8,9 +8,7 @@
                 :songData="song.song"
                 :onSearchReponse="handleSearchResponse"
             >
-            <slot >
-                <button @click.stop="handleDelete(song.song.id)" class="delete-btn">x</button>
-            </slot>
+                <xbtn  class="delete-btn"/>
             </music-list-item>
         </ul>
         <p v-else>У вас ещё нет избранных песен</p>
@@ -21,13 +19,15 @@ import { defineComponent } from 'vue'
 import { PlayingPlaylist } from '@/interfaces/currentPlaylist';
 import MusicListItem from '@/components/songs/MusicListItem.vue';
 import TheSearchBar from '@/components/UI/TheSearchBar.vue';
+import Xbtn from '@/components/UI/buttons/Xbtn.vue';
 import axios from 'axios';
 
 export default defineComponent({
     name: "LikedPage",
     components: {
         MusicListItem,
-        TheSearchBar
+        TheSearchBar,
+        Xbtn
     },
     data(){
         return{
@@ -94,12 +94,3 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-    .delete-btn{
-        color: var(--font-color);
-        font-size: 4rem;
-        background: none;
-        outline: none;
-        border: none;
-    }
-</style>
