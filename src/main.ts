@@ -10,4 +10,16 @@ defineRule('required', required)
 defineRule('email', email)
 defineRule('mimes', mimes)
 
+defineRule('validateArtist', (value, [target]:any, ctx) => {
+    console.log(ctx.form[target], value )
+    if(ctx.form[target], value ){
+        if(value !== '' && value!== undefined && value !== null){
+            return true
+        }
+        return 'Заполните данное поле'
+    }
+    return true
+
+});
+
 createApp(App).use(store).use(router).mount('#app')

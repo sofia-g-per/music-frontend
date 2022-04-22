@@ -1,11 +1,10 @@
 <template>
-    <div class="form-field">
-        <label :for="fieldData.name" class="form-field__label">
+  <div class="form-field boolean-field">
+      <label class="form-field__label">
           {{fieldData.label}}
-        </label>
-        <Field :name="fieldData.name" type="checkbox" v-bind="$attrs" :value="fieldData.value"/>
-        <ErrorMessage class="form-field__error-label" :name="fieldData.name"/>
-    </div>
+      </label>
+      <Field :name="fieldData.name" type="checkbox" v-model="$attrs" value="artist" :unchecked-value="false" />
+  </div>
 </template>
 
 <script lang="ts">
@@ -27,7 +26,17 @@ export default defineComponent({
       errorMessage
     }
   }
-
-
 })
 </script>
+
+<style scoped>
+.boolean-field{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.boolean-field input{
+  margin-right: 1rem;
+}
+</style>

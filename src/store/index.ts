@@ -1,7 +1,6 @@
-import { CreatePlaylistDto } from './../dtos/createPlaylist.dto';
 import { PlayingPlaylist } from '../interfaces/currentPlaylist';
 import { createStore } from 'vuex'
-import {Howl, Howler} from 'howler';
+import {Howl} from 'howler';
 import { UserDto } from '@/dtos/userDto.dto'
 export default createStore({
   state: {
@@ -19,6 +18,7 @@ export default createStore({
       getCurrentArtistSongs: 'get-song-by-current-artist',
       createPlaylist: 'create-playlist',
       getUsersPlaylists: 'users-playlists',
+      deleteLiked: 'delete-like'
     },
     APIFilePaths:{
       avatars: 'avatars/',

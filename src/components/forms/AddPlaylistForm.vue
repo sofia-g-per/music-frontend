@@ -1,5 +1,5 @@
 <template>
-    <Form method="post" @submit="onSubmit" class="form">
+    <Form method="post" @submit="onSubmit" class="playlist-form">
         <text-field 
             :field-data="fieldsData.name" 
             v-model="fieldsValues.name"
@@ -8,8 +8,8 @@
         <text-field 
             :field-data="fieldsData.description" 
             v-model="fieldsValues.description"
-            rules="required"
         />
+        <p class="form-field__label">Песни: </p>
         <div class="song-select">
             <div v-for="song in songs" :key="song.id" class="music-list-item">
                 <div class="music-list-item__info">
@@ -24,7 +24,7 @@
             </div>
         </div>
 
-        <button class="main-btn" type="submit">Добавить песню</button>
+        <button class="main-btn" type="submit">Добавить</button>
     </Form>
 </template>
 
@@ -68,7 +68,6 @@ export default defineComponent({
                     songIndex: id,
                 }
             });
-            console.log(this.fieldsValues.songIds);
         axios.post(this.addPlaylistURL, this.fieldsValues, { 
             withCredentials: true}
             )
@@ -78,8 +77,13 @@ export default defineComponent({
                   this.$router.push('/my-playlists');
               }
             }
-          ).catch(function(error){
-              console.log(error);
+          )            
+          .catch((error)=>{
+              if(error.status === 400){
+                  this.errors = error.data;
+              }else{
+                  this.formError = 'Простите, произошла ошибка при загрузке данных'
+              }
           })
         }
     },
@@ -107,8 +111,18 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.playlist-form{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.form-field{
+    max-width: 20vw;
+}
 .song-select{
     max-height: 50vh;
+    min-height: 20vh;
+    min-width: 35vw;
     overflow-y: scroll;
 }
 

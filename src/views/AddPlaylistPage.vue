@@ -1,9 +1,7 @@
 <template>
-    <div class="add-playlist-page-wrapper">
         <add-playlist-form>
 
         </add-playlist-form>
-    </div>
 </template>
 
 <script lang="ts">

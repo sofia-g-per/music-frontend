@@ -20,15 +20,7 @@
             v-model="fieldsValues.audioFile" 
         >     
         </file-field>
-        <!-- <genre-select 
-            v-model="fieldsValues.genreIds">
-
-        </genre-select>
-        <artist-select 
-            v-model="fieldsValues.artistIds"> 
-
-        </artist-select> -->
-        <button  class="main-btn" type="submit">Добавить песню</button>
+        <button  class="main-btn" type="submit">Добавить</button>
     </Form>
 </template>
 
@@ -37,8 +29,6 @@ import { defineComponent } from 'vue'
 import { Form } from 'vee-validate'
 import TextField from '../UI/form/TextField.vue'
 import FileField from '../UI/form/FileField.vue';
-// import GenreSelect from '../UI/form/GenreSelect.vue';
-// import ArtistSelect from '../UI/form/ArtistSelect.vue';
 import axios from 'axios';
 import { CreateSongDto } from '@/dtos/createSong.dto';
 
@@ -48,14 +38,11 @@ export default defineComponent({
         TextField,
         Form,
         FileField,
-        // GenreSelect,
-        // ArtistSelect
     },
     data(){
         return{
             apiUrlExtension: 'add-song', 
             fieldsValues: new CreateSongDto,
-            // artistFieldsValues: new CreateArtistDto,
             fieldsData: {
                 name: {
                     name: 'name',
@@ -67,7 +54,7 @@ export default defineComponent({
                 },
                 lyrics: {
                     name: 'lyrics',
-                    label: 'текст'
+                    label: 'Текст'
                 },
                 audioFile: {
                     name: 'audioFile',
@@ -97,12 +84,16 @@ export default defineComponent({
           .then(
             (response) => {
               if(response.status === 201 && response.data){
-                  console.log('correct');
                   this.$router.push('/my-songs');
               }
             }
-          ).catch(function(error){
-              console.log(error);
+          )            
+          .catch((error)=>{
+              if(error.status === 400){
+                  this.errors = error.data;
+              }else{
+                  this.formError = 'Простите, произошла ошибка при загрузке данных'
+              }
           })
         }
     },

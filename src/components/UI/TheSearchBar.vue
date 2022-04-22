@@ -1,6 +1,6 @@
 <template>
     <div class="search-bar__wrapper">
-        <input type="text" class="search-bar" placeholder="Введите запрос..." @keydown.enter="handleSearch" v-model="searchQuery">
+        <input type="text" class="search-bar" placeholder="Поиск по сайту..." @keydown.enter="handleSearch" v-model="searchQuery">
     </div>
 </template>
 
@@ -58,7 +58,8 @@ export default defineComponent({
         padding: .8rem;
         border: 1px solid var(--font-color);
         border-radius: 1rem;
-        color: var(--font-color)
+        color: var(--font-color);
+        transition: .3s;
     }
 
     .search-bar::placeholder{
@@ -66,7 +67,7 @@ export default defineComponent({
     }
 
     .search-bar:focus{
-        border-bottom-color: var(--accent-color-1);
+        transform: scale(1.015);
     }
     .search-bar::after{
         content:'';

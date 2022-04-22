@@ -8,6 +8,9 @@
                 :songData="song.song"
                 :onSearchReponse="handleSearchResponse"
             >
+            <slot >
+                <button @click.stop="handleDelete(song.song.id)" class="delete-btn">x</button>
+            </slot>
             </music-list-item>
         </ul>
         <p v-else>У вас ещё нет избранных песен</p>
@@ -37,6 +40,9 @@ export default defineComponent({
         }, 
         searchAPIURL(){
             return `${this.$store.state.APIURL}${this.$store.state.APIExtensions.searchFavouriteSongs}`;
+        },
+        deleteApiURL(){
+            return `${this.$store.state.APIURL}${this.$store.state.APIExtensions.deleteLiked}`;
         }
     },
     mounted(){
@@ -67,8 +73,33 @@ export default defineComponent({
         },
         handleSearchResponse(response:[]){
             this.songs = response;
+        },
+        handleDelete(songId:number){
+            const songData= {songId: songId};
+            console.log(songId);
+            axios.post(this.deleteApiURL, songData, {withCredentials: true})
+            .then((response)=>{
+                if(response.status === 201 && response.data){
+                    let index = this.songs.findIndex((song)=>song.id = songId);
+                    this.songs.splice(index, 1);
+                }
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
+
         }
     }
     
 })
 </script>
+
+<style scoped>
+    .delete-btn{
+        color: var(--font-color);
+        font-size: 4rem;
+        background: none;
+        outline: none;
+        border: none;
+    }
+</style>

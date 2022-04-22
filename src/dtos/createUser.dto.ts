@@ -15,7 +15,7 @@ export class CreateUserDto {
 
     password: string;
 
-    roleId?: string;
+    roleId?: boolean;
 
     artist?: CreateArtistDto;
 }

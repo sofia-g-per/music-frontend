@@ -30,7 +30,6 @@ export default defineComponent({
   computed:{
     currentSong(){
       if(this.$store.state.currentSongDefined){
-        console.log(this.$store.state.currentPlaylist.playlist[this.$store.state.currentSongId])
         return this.$store.state.currentPlaylist.playlist[this.$store.state.currentSongId];
       }else{
         return null;
@@ -47,7 +46,7 @@ export default defineComponent({
   :root{
     --bg-color: black;
     --font-color: white;
-    --accent-color-1: rgb(147, 0, 201);
+    --accent-color-1: #700B97;
     --accent-color-2: rgb(255, 0, 81);
     --accent-color-2--dark: rgb(17, 0, 36); 
 
@@ -69,6 +68,9 @@ export default defineComponent({
     margin: 0;
         box-sizing: border-box;
   }
+  #app{
+    height: 70%;
+  }
 
   .icon-btn{
     background: none;
@@ -85,13 +87,19 @@ export default defineComponent({
     }
 
     .main-btn{
-      border: 2px solid white ;
+      border: 3px solid var(--accent-color-1) ;
       background: none;
-      padding: 1rem;
+      padding: 1rem 3rem;
       color: white;
       cursor: pointer;
       transition: .5s;
       margin: 2rem 0;
+      width: fit-content;
+      text-transform: uppercase;
+      font-weight: bold;
+
+      align-self: flex-end;
+      margin-right: 1rem;
     }
 
     .main-btn:hover{
@@ -100,11 +108,33 @@ export default defineComponent({
 
     }
 
+    .circle-btn{
+      border: none;
+      width: 5rem;
+      height: 5rem;
+      background: var(--accent-color-1);
+      border-radius: 50%;
+      align-self: flex-end;
+      margin-right: 14vw;
+      margin-top: 2rem;
+      position: relative;
+    }
+
+    .circle-btn::before{
+      content: '+';
+      display: block;
+      font-size: 4rem;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
   /* ------------------------------ */
   /* TEXT */
   /* ------------------------------ */
-  .section-heading{
-
+  .no-results{
+    font-size: 2rem;
   }
 
   .page-title{
@@ -113,9 +143,10 @@ export default defineComponent({
 
   .page-wrapper{
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
     flex-direction: column;
+    height: 100%;
   }
 
   .page-error{
@@ -135,7 +166,7 @@ export default defineComponent({
   }
 
   a:hover{
-      color: var(--accent-color-1);
+      opacity: .5;
   }
   
   /* ------------------------------ */
@@ -159,12 +190,12 @@ export default defineComponent({
   /* FORM */
   /* ------------------------------ */
   .form{
-    width: 60vw;
+    width: 25vw;
+    max-width: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 2rem;
-    max-width: 25rem;
 
   }
 
@@ -177,6 +208,7 @@ export default defineComponent({
 
   .form-field__error-label{
     color: var(--accent-color-2);
+    font-size: 1.4rem;
   }
 
   .form-field__input{
@@ -188,4 +220,15 @@ export default defineComponent({
   .form-field__input.form-field--error{
     border-color: var(--accent-color-2);
   }
+
+  .boolean-field{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  
+}
+
+.boolean-field input{
+  margin-right: 1rem;
+}
 </style>

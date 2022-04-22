@@ -78,9 +78,8 @@ export default defineComponent({
 <style scoped>
     .playing-song-footer{
         box-sizing: border-box;
-        border-top: 1px solid rgba(255, 255, 255, 0.349);
-        padding: 2rem 5rem !important;
-        background: linear-gradient(rgb(17, 0, 36), rgba(0, 0, 0, 1));
+        padding: 2rem 10rem !important;
+        background: linear-gradient(rgb(37, 0, 79), rgba(0, 0, 0, 1));
     }
     .music-list-item{
         padding: 1rem 0;
@@ -91,6 +90,13 @@ export default defineComponent({
     .music-list-item__info{
         width: 100%;
     }
+    .music-list-item__info__title{
+        font-size: 2rem;
+    }
+
+        .music-list-item__info__artist{
+        font-size: 1.4rem;
+    }
     .music-list-item__buttons{
         display: flex;
         justify-content: space-evenly;
@@ -99,7 +105,7 @@ export default defineComponent({
     .play-btn{
         color: var(--font-color);
         background: none;
-        width: 3rem;
+        width: 4.5rem;
         transition: .3s;
         opacity: .6;
     }

@@ -64,9 +64,6 @@ const routes: Array<RouteRecordRaw> = [
   }
 ]
 
-// beforeEnter: (to, from) => {
-//   return store.dispatch('authorizedGuard')
-// }
 
 const router = createRouter({
   history: createWebHashHistory(),

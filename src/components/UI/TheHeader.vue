@@ -4,7 +4,7 @@
             <listener-nav v-if="isAuth"></listener-nav>
             <artist-nav v-if="isArtist"></artist-nav>
         </div>
-        <div v-if="!isAuth" class="main-header__auth-links">
+        <div class="main-header__auth-links" v-if="!isAuth" >
             <router-link to="/">Главная</router-link>
             <router-link to="/login">Вход</router-link>
             <router-link to="/sign-up">Регистрация</router-link>
@@ -42,10 +42,13 @@ export default defineComponent({
         margin-bottom: 2rem;
     }
 
-  .site-nav{
+  .site-nav,
+  .main-header__auth-links{
       display: flex;
       justify-content: space-around;
   }
+
+
   .main-header__auth-links{
       display: flex;
       gap: 1rem;

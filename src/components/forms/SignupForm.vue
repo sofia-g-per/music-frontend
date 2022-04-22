@@ -1,5 +1,5 @@
 <template>
-    <Form method="post" @submit="onSubmit" class="form">
+    <Form method="post" :validation-schema="schema" @submit="onSubmit" class="form">
         <text-field 
             :field-data="fieldsData.name" 
             v-model="fieldsValues.name"
@@ -26,11 +26,13 @@
             v-model="fieldsValues.password"
             rules="required"
         />
-        <boolean-field
-            :field-data="fieldsData.roleId" 
-            v-model="fieldsValues.roleId"
-        />
-        <!-- показывается если выбрана роль артист -->
+        <div class="form-field boolean-field">
+            <label class="form-field__label">
+                {{fieldsData.roleId.label}}
+            </label>
+            <Field :name="fieldsData.roleId.name" type="checkbox" v-model="fieldsValues.roleId" value="artist" :unchecked-value="false" />
+        </div>
+        {{fieldsValues.roleId}}
         <div
             v-if="fieldsValues.roleId && fieldsValues.roleId === fieldsData.roleId.value"
             :fieldsValues="fieldsValues"
@@ -44,35 +46,50 @@
             <text-field 
                 :field-data="fieldsData.artist.description" 
                 v-model="artistFieldsValues.description"
-                rules="required"
             />
-
         </div>
+
+        <p class="form-field__error-label">{{formError}}</p>
         <button  class="main-btn" type="submit">Зарегистрироваться</button>
     </Form>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { Form } from 'vee-validate'
+import { Form, Field } from 'vee-validate'
 import TextField from '../UI/form/TextField.vue'
-import BooleanField from '../UI/form/BooleanField.vue'
 import axios from 'axios';
 import { CreateUserDto } from '@/dtos/createUser.dto';
 import { CreateArtistDto } from '@/dtos/createArtist.dto';
+import { defineRule } from 'vee-validate';
 
 export default defineComponent({
     name: 'LoginForm',
     components: {
         TextField,
-        BooleanField,
-        Form,
+        Field,
+        Form
+    },
+    setup(){
+
+        const schema = {
+            name: 'required',
+            surname: 'required',
+            username: 'required',
+            email: 'required|email',
+            password: 'required',
+            stagename: 'validateArtist'
+        };
+        return {
+            schema
+        }
     },
     data(){
         return{
             apiUrlExtension: 'sign-up', 
             fieldsValues: new CreateUserDto,
             artistFieldsValues: new CreateArtistDto,
+            isArtist: false,
             fieldsData: {
                 email: {
                     name: 'email',
@@ -110,7 +127,8 @@ export default defineComponent({
                     },
                 }
             },
-            options: []
+            options: [],
+            formError: ''
         }
     },
     methods: {
@@ -122,13 +140,21 @@ export default defineComponent({
                 this.fieldsValues.artist = this.artistFieldsValues;
             }
         axios.post(this.fullApiUrl, this.fieldsValues)
-          .then(
-            (response) => {
+          .then((response) => {
               if(response.status === 201 && response.data){
                   this.$router.push('/');
               }
-            }
-          )
+            })
+            .catch((error)=>{
+              if(error.response && error.response.status === 400){
+                  this.formError = error.response.message[0];
+              }else{
+                  this.formError = 'Простите, произошла ошибка при загрузке данных'
+              }
+          })
+        },
+        test(){
+            console.log(this.fieldsValues.roleId)
         }
     },
     computed: {
@@ -139,3 +165,10 @@ export default defineComponent({
 
 })
 </script>
+
+<style scoped>
+.form{
+    width: 40vw;
+    max-width: auto;
+}
+</style>

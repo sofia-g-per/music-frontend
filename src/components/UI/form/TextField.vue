@@ -4,21 +4,22 @@
           {{fieldData.label}}
         </label>
         <Field class="form-field__input" :name="fieldData.name" type="text" v-bind="$attrs" />
-        <ErrorMessage class="form-field__error-label" :name="fieldData.name"/>
+        <p class="form-field__error-label" :name="fieldData.name" v-show="errorMessage">
+          Заполните данное поле
+        </p>
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { Field, ErrorMessage, useField } from 'vee-validate'
+import { Field, useField } from 'vee-validate'
 
 export default defineComponent({
 
   name: "TextField",
 
   components: {
-    Field,
-    ErrorMessage
+    Field
   },  
   props: ['fieldData'], 
     setup(props) {
@@ -31,5 +32,12 @@ export default defineComponent({
 </script>
 
 <style>
+.form-field__label{
+  font-size: 1.8rem;
+}
 
+.form-field__input{
+padding: .5rem;
+border-radius: .5rem;
+}
 </style>
