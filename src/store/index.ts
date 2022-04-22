@@ -98,8 +98,12 @@ export default createStore({
     },
 
     saveUser(state, {user}){
-      localStorage.setItem('user', JSON.stringify(user));
-      console.log(this.getters.user)
+      const now = new Date()
+      const item = {
+        value: user,
+        expiry: now.getTime() + 36000,
+      }
+      localStorage.setItem('user', JSON.stringify(item));
     },
     authorizedGuard(){
       if(!this.getters.user){
@@ -108,7 +112,6 @@ export default createStore({
     },
     isArtistGuard(){
       if(!this.getters.user || !this.getters.user.artist){
-        //change
         return {name: 'home'}
       }
     }
@@ -130,8 +133,18 @@ export default createStore({
       return `${state.APIURL}${state.APIExtensions[pathName]}`;
     },
     user(){
-      if(localStorage.getItem('user')){
-        return JSON.parse(localStorage.getItem('user') as string);
+      const userString = localStorage.getItem('user')
+      if(userString){
+        const user = JSON.parse(userString);
+
+        const now = new Date()
+        if(now.getTime() > user.expiry){
+          localStorage.removeItem('user');
+          this.$router.push({name: 'login'});
+          return null
+        }else{
+          return user;
+        }
       }else{
         return false
       }
