@@ -144,7 +144,13 @@ export default createStore({
       if(state.currentSongId){
         console.log('getter audio', state.currentPlaylist.playlist, state.currentSongId)
         const currentSong = state.currentPlaylist.playlist[state.currentSongId] as any;
-        return getters.filePath('songs', currentSong.song.filePath)
+        if(currentSong.song){
+          return getters.filePath('songs', currentSong.song.filePath)
+
+        }else{
+          return getters.filePath('songs', currentSong.filePath)
+
+        }
     }else{
       return false;
     }

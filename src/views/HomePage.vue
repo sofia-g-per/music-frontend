@@ -3,7 +3,12 @@
     </the-search-bar>
     <div v-if="songs && songs.length > 0" class="song-list">
         <music-list-item
-            v-for="song in songs" :key="song.id" :songData="song"
+            v-for="(song, key) in songs" 
+            :key="song.id" 
+            :songData="song"
+            :playlist="songs"
+            playlistType="allSongs"
+            :songInPlaylistId="key"
         >
             <template v-if="isAuth">
                 <button class="icon-btn" @click.stop="likeSong(song.id)">

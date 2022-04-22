@@ -9,11 +9,8 @@
 <!-- проигрываемая песня -->
   <playing-song-footer 
     v-if="currentSong" 
-    :songData="currentSong.song"
+    :songData="currentSong"
   >
-    <!-- <template v-slot:music-item-buttons>
-
-    </template> -->
   </playing-song-footer>
 
 </template>
@@ -29,10 +26,13 @@ export default defineComponent({
   },
   computed:{
     currentSong(){
-      console.log(this.$store.state.currentSongDefined === true)
       if(this.$store.state.currentSongDefined){
-        console.log('playlist', this.$store.state.currentPlaylist)
-        return this.$store.state.currentPlaylist.playlist[this.$store.state.currentSongId];
+        const song =  this.$store.state.currentPlaylist.playlist[this.$store.state.currentSongId];
+        if(song.song){
+          return song.song;
+        }else{
+          return song
+        }
       }else{
         return null;
       }
