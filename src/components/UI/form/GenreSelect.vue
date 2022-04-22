@@ -1,64 +1,30 @@
 <template>
-            <multiselect 
-                v-model="value"
-                :options="options"
-                mode="tags"
-                :multiple="true"
-                placeholder="Выбор жанров"
-                label="name"
-                track-by="name"
-                custom-label="Введите название жанра"
-                :searchable="true"
-
-                @select="onValueChange"
-            >
-            </multiselect>
+    <div class="song-select">
+        <div v-for="option in options" :key="option.id" class="music-list-item">
+            <label :for="option.id">{{option.name}}</label>
+            <div class="music-list-item__buttons">
+                <Field type="checkbox" v-model="$attrs" :value="option.id"/>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Multiselect from '@vueform/multiselect'
-import axios from 'axios'
+import { Field } from 'vee-validate'
 export default defineComponent({
     name: "GenreSelect",
     components: {
-        Multiselect
+        Field
     },
+    props: ['options'],
     data(){
         return{
-            options:[],
-            value:[]
         }
     },
     methods: {
-        addTag (newTag) {
-        const tag = {
-            name: newTag,
-            code: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
-        }
-        this.taggingOptions.push(tag)
-        this.taggingSelected.push(tag)
-        },
-        onValueChange(){
-            console.log('artist chanegs', this.value);
-        }
+        
     },
-    watchers: {
-        onValueChange(){
-            console.log('artist chanegs', this.value);
-        }
-    },
-    mounted() {
-        axios.get(`${this.$store.state.APIURL}${this.$store.state.APIExtensions.getGenres}`)
-       .then((response) => {
-            if(response.status === 200 && response.data){
-                this.options = response.data;
-            }
-
-        })
-        // .catch((error) =>{        
-        // })
-    }
 
 })
 </script>

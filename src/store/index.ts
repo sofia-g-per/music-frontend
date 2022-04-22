@@ -2,6 +2,7 @@ import { PlayingPlaylist } from '../interfaces/currentPlaylist';
 import { createStore } from 'vuex'
 import {Howl} from 'howler';
 import { UserDto } from '@/dtos/userDto.dto'
+import axios from 'axios';
 export default createStore({
   state: {
     APIURL: "http://localhost:3000/api/",
@@ -97,7 +98,7 @@ export default createStore({
         this.dispatch('playCurrentSong');
       }
     },
-
+    
     saveUser(state, {user}){
       const now = new Date()
       const item = {
@@ -113,6 +114,7 @@ export default createStore({
       }
     },
     isArtistGuard(){
+      console.log(this.getters.user.artist)
       if(!this.getters.user || !this.getters.user.artist){
         return {name: 'home'}
       }

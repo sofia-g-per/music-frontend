@@ -28,6 +28,7 @@ export default defineComponent({
             return this.$store.state.isAuth;
         },
         isArtist(){
+            console.log(this.$store.getters.user, this.$store.getters.user.artist)
             return this.isAuth && this.$store.getters.user && this.$store.getters.user.artist;
         }
     }
