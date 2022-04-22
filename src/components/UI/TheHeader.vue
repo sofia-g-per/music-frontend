@@ -24,6 +24,7 @@ export default defineComponent({
     },
     computed:{
         isAuth(){
+            console.log(this.$store.dispatch('authorizedGuard'))
             return this.$store.dispatch('authorizedGuard')
         },
         isArtist(){

@@ -107,12 +107,12 @@ export default createStore({
     },
     authorizedGuard(){
       if(!this.getters.user){
-        return {name: 'login'};
+        return this.$router.push({name: 'login'});
       }
     },
     isArtistGuard(){
       if(!this.getters.user || !this.getters.user.artist){
-        return {name: 'home'}
+        return this.$router.push({name: 'home'})
       }
     }
 
