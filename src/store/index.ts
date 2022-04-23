@@ -10,6 +10,7 @@ export default createStore({
       login: 'log-in',
       globalSearch: 'global-search',
       searchFavouriteSongs: 'search-liked-songs',
+      globalFilter: 'global-filter',
 
       uploadSong: 'upload-song',
       createPlaylist: 'create-playlist',

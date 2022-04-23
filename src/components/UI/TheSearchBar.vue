@@ -1,14 +1,18 @@
 <template>
     <div class="search-bar__wrapper">
         <input type="text" class="search-bar" placeholder="Поиск..." @keydown.enter="handleSearch" v-model="searchQuery">
-        <!-- <div v-if="withFilters">
-            <div class="genre-filter">
-                <div v-for="option in genres" :key="option.id" class="music-list-item">
-                    <label :for="option.id">{{option.name}}</label>
-                    <input type="checkbox" :id="option.id" v-model="genreIds" name="genreIds" :value="option.id"/>
-                </div>
+        <div>
+            <div class="genre-filters" v-if=" withFilters && genreOptions">
+                    <label v-for="option in genreOptions" 
+                    :key="option.id" 
+                    class="genre-filter" 
+                    :for="option.id" 
+                    >
+                        <span>{{option.name}}</span>
+                        <input type="checkbox" :id="option.id" v-model="genreIds" @change="handleFilterChange"  name="genreIds" :value="option.id"/>
+                    </label>
             </div>
-        </div> -->
+        </div>
     </div>
 </template>
 
@@ -21,6 +25,8 @@ export default defineComponent({
     data() {
         return {
             searchQuery: '',
+            genreIds: [],
+            genreOptions: []
         }
     },
     emits: [
@@ -30,13 +36,32 @@ export default defineComponent({
         'searchAPIURL',
         'withFilters'
     ],
+    mounted(){
+        // жанры
+        axios.get(`${this.$store.state.APIURL}${this.$store.state.APIExtensions.getGenres}`)
+        .then((response) => {
+          if(response.status === 200 && response.data){
+              this.genreOptions =  response.data;
+          }
+       })
+        .catch((error)=>{
+              console.log(error)
+          })
+
+    },
+    computed: {
+        filterApiUrl(){
+            return this.$store.getters.fullURL('globalFilter')
+        }
+    },
     methods:{
         handleSearch(){
+            let params:any = {
+                searchQuery: this.searchQuery,
+            }
             axios.get(this.searchAPIURL, { 
                 withCredentials: true,
-                params: {
-                   searchQuery: this.searchQuery
-                },
+                params: params
             })
             .then((response) => {
                 if(response.status === 200 && response.data){
@@ -47,6 +72,30 @@ export default defineComponent({
             .catch((error) =>{
                 console.log(error);
             })
+        },
+        handleFilterChange(){
+            console.log('changed')
+            console.log(this.genreIds)
+            if(this.genreIds){
+                console.log('request')
+                let params = {genreIds: JSON.stringify(this.genreIds)};
+                axios.get(this.filterApiUrl, { 
+                    withCredentials: true,
+                    params: params
+                })
+                .then((response) => {
+                    console.log(response)
+                    if(response.status === 200 && response.data){
+                        this.$emit('onSearchResponse', response.data);  
+                        console.log(response.data)                  
+                    }
+
+                })
+                .catch((error) =>{
+                    console.log(error);
+                })
+            }
+
         }
     }
 })
@@ -57,9 +106,11 @@ export default defineComponent({
 
     .search-bar__wrapper{
         display: flex;
+        flex-direction: column;
         width: 100%;
-        justify-content: center;
+        align-items: center;
         position: relative;
+        gap: .5rem;
     }
     .search-bar{
         width: 50%;
@@ -86,4 +137,30 @@ export default defineComponent({
         position: absolute;
         right: 0;
     }
+
+    .genre-filters{
+        display: flex;
+        gap: 2rem;
+    }
+
+    .genre-filter{
+        background: var(--accent-color-2);
+        border-radius: 5rem;
+        padding: 1rem;
+        min-width: 7rem;
+        display: flex;
+        justify-content: center;
+        font-size: 1.3rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: .3s;
+    }
+    .genre-filter:hover{
+        transform: scale(0.9);
+    }
+    .genre-filter input{
+        display: none;
+    }
+
+
 </style>
