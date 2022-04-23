@@ -10,7 +10,7 @@
         </div>
         <div class="music-list-item__buttons" >
             <button class="play-btn icon-btn" @click="onClickPlay">
-                    <svg  fill="white" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    <svg v-if="!isPlaying" fill="white" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                         viewBox="0 0 490 490" style="enable-background:new 0 0 490 490;" xml:space="preserve">
                     <path d="M0.665,0v490l488.669-245L0.665,0z M15.977,24.806L455.183,245L15.977,465.208V24.806z"/>
                     <g>
@@ -44,6 +44,44 @@
                     <g>
                     </g>
                     </svg>
+                    <svg v-else version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 202.205 202.205" style="enable-background:new 0 0 202.205 202.205;" xml:space="preserve">
+                            <g>
+                                <g>
+                                    <path style="fill:white;" d="M23.483,202.205H85.83V0H23.483V202.205z M31.417,7.934h46.479v186.336H31.417V7.934z"/>
+                                    <path style="fill:white;" d="M116.372,0v202.205h62.351V0H116.372z M170.788,194.271h-46.486V7.934h46.482v186.336H170.788z"/>
+                                </g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                    </svg>
             </button>
         </div>
     </li>
@@ -65,6 +103,9 @@ export default defineComponent({
             );
 
             return audiopath;
+        },
+        isPlaying(){
+            return this.$store.state.isPlaying;
         }
     },
     methods: {

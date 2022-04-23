@@ -87,7 +87,6 @@ export default defineComponent({
                     console.log(response)
                     if(response.status === 200 && response.data){
                         this.$emit('onSearchResponse', response.data);  
-                        console.log(response.data)                  
                     }
 
                 })

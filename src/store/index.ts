@@ -64,15 +64,19 @@ export default createStore({
   },
   actions: {
     embedNewAudio(state, {filePath}){
+      console.log('embedding',filePath)
       this.state.currentSongAudio = new Howl({
         src: [filePath],
         onend: ()=> {this.dispatch('playNextSong')}
       })
     },
     handleClickSong(state, payload){
+      if(this.state.currentSongAudio){
+        this.state.currentSongAudio!.pause();
+      }
+      this.state.isPlaying = false;
       //если песня находятся в проигрываемом сейчас плейлисте
-      console.log('playing song', payload);
-      console.log(payload, payload.songInPlaylistId, payload.playlistToPlay)
+      console.log('handle click playing', payload, payload.songInPlaylistId, payload.playlistToPlay)
 
       if(this.state.currentPlaylist && this.state.currentPlaylist.type 
       && this.state.currentPlaylist.type === payload.playlistToPlay.type
@@ -96,9 +100,8 @@ export default createStore({
       }
     },
     playCurrentSong(){
-      console.log('playCurrentSong',this.state.currentSongDefined);
-      console.log(this.state.isPlaying);
-      console.log(this.state.currentSongAudio);
+      console.log('playCurrentSong',this.state.currentSongDefined, this.state.isPlaying, this.state.currentSongAudio);
+
       if(this.state.currentSongDefined){
         if(!this.state.isPlaying){
           this.state.currentSongAudio!.play();
