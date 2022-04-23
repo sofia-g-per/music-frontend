@@ -1,5 +1,5 @@
 <template>
-    <button class="delete-btn">x</button>
+    <button class="delete-btn btn--grey">x</button>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
@@ -17,4 +17,5 @@ export default defineComponent({
         outline: none;
         border: none;
     }
+
 </style>

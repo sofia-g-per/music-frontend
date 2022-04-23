@@ -131,6 +131,15 @@ export default defineComponent({
       left: 50%;
       transform: translate(-50%, -50%);
     }
+    
+    .btn--grey{
+        opacity: .7;
+        background: none;
+        outline: none;
+    }
+    .btn--grey:hover{
+        opacity: 1;
+    }
 
   /* ------------------------------ */
   /* TEXT */
@@ -175,10 +184,11 @@ export default defineComponent({
   /* ------------------------------ */
   /* CONTAINERS */
   /* ------------------------------ */
-  .container--2-clmn{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
+    .music-list-item__buttons{
+      display: flex;
+      justify-content: space-evenly;
+      gap: 1rem;
+    }
 
   .song-list{
     border-radius: 1rem;

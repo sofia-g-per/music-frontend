@@ -3,8 +3,11 @@
 
     <div class="song-list" v-if="songs && songs.length > 0">
         <music-list-item v-for="song in songs" :key="song.id" :songData="song">
-            <template>
-                <xbtn @click.stop="handleDelete(song.id)" class="delete-btn">x</xbtn>
+            <template v-slot>
+                <div class="music-list-item__buttons">
+                    <edit-btn @click.stop :link="'/edit-song/'+song.id"></edit-btn>
+                    <xbtn @click.stop="handleDelete(song.id)">x</xbtn>
+                </div>
             </template>
         </music-list-item>
     </div>
@@ -18,11 +21,13 @@ import { defineComponent } from 'vue'
 import MusicListItem from '@/components/songs/MusicListItem.vue'
 import Xbtn from '@/components/UI/buttons/Xbtn.vue'
 import axios from 'axios'
+import EditBtn from '@/components/UI/buttons/EditBtn.vue'
 export default defineComponent({
     name:"UsersSongsPage",
     components:{
         MusicListItem,
-        Xbtn
+        Xbtn,
+        EditBtn
     },
     data() {
         return {
@@ -57,7 +62,7 @@ export default defineComponent({
                     this.songs.splice(index, 1);
                 }
             })
-            }
+        },
     }
 })
 </script>

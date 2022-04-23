@@ -6,11 +6,9 @@
                 <p v-for="artist in songData.artists" :key="artist.artistId" class="music-list-item__info__artist main-text">{{artist.artist.stagename}}</p>
             </div>
         </div>
-        <div class="music-list-item__buttons">
             <slot>
 
             </slot>
-        </div>
     </li>
 </template>
 
@@ -59,10 +57,6 @@ export default defineComponent({
         width: 100%;
     }
 
-    .music-list-item__buttons{
-        display: flex;
-        justify-content: space-evenly;
-    }
     .music-list-item__artist-wrapper{
         padding: 1rem 1rem 0 1rem;
         display: flex;

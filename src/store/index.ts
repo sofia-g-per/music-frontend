@@ -2,23 +2,27 @@ import { PlayingPlaylist } from '../interfaces/currentPlaylist';
 import { createStore } from 'vuex'
 import {Howl} from 'howler';
 import { UserDto } from '@/dtos/userDto.dto'
-import axios from 'axios';
+
 export default createStore({
   state: {
     APIURL: "http://localhost:3000/api/",
     APIExtensions: {
       login: 'log-in',
-      getFavouriteSongs: 'liked-songs', 
       globalSearch: 'global-search',
       searchFavouriteSongs: 'search-liked-songs',
+
+      uploadSong: 'upload-song',
+      createPlaylist: 'create-playlist',
+      likeSong: 'like-song',
+
+      getSongs: 'get-all-songs',
+      getSong: 'get-song',
       getGenres: 'genres',
       getArtists: 'artists',
-      uploadSong: 'upload-song',
-      likeSong: 'like-song',
-      getSongs: 'get-all-songs',
+      getFavouriteSongs: 'liked-songs', 
       getCurrentArtistSongs: 'get-song-by-current-artist',
-      createPlaylist: 'create-playlist',
       getUsersPlaylists: 'users-playlists',
+
       deleteLiked: 'delete-like',
       deleteSong: 'delete-song'
     },
