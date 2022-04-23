@@ -13,7 +13,9 @@ export default createStore({
 
       uploadSong: 'upload-song',
       createPlaylist: 'create-playlist',
+
       likeSong: 'like-song',
+      editSong: 'edit-song',
 
       getSongs: 'get-all-songs',
       getSong: 'get-song',

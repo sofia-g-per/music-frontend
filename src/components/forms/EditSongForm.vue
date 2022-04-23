@@ -1,24 +1,21 @@
 <template>
-    <Form method="post" @submit="onSubmit" class="form">
+    <Form method="post" :validation-schema="schema" @submit="onSubmit" class="form">
         <text-field 
             :field-data="fieldsData.name" 
             v-model="fieldsValues.name"
-            rules="required"
         />
         <text-field 
             :field-data="fieldsData.description" 
             v-model="fieldsValues.description"
-            rules="required"
         />
         <text-field 
             :field-data="fieldsData.lyrics" 
             v-model="fieldsValues.lyrics"
-            rules="required"
         />
          <file-field 
             :field-data="fieldsData.audioFile" 
             v-model="fieldsValues.audioFile" 
-            rules="required|mimes:audio/mpeg"
+            rules="mimes:audio/mpeg"
             defaultError="Прикрепите файл в формате mp3"
         >     
         </file-field>
@@ -77,30 +74,32 @@ export default defineComponent({
             genreOptions: []
         }
     },
-    // setup(){
-    //     const schema = {
-    //         name: 'required',
-    //         audioFile: "required|mimes:audio/mpeg"
-    //     };
-    //     return {
-    //         schema
-    //     }
-    // },
+    setup(){
+        const schema = {
+            audioFile: "mimes:audio/mpeg"
+        };
+        return {
+            schema
+        }
+    },
     methods: {
         onSubmit(){
         var formData = new FormData();
         for ( const [key, value] of Object.entries(this.fieldsValues) ) {
-            if(key === 'audioFile'){
+            if(key === 'audioFile' && value){
                 formData.append(key, this.fieldsValues[key][0]);
                 
-            }else{
+            }else if(value && value!== this.initialData[key]){
                 formData.append(key, this.fieldsValues[key]);
             }
         }
-        formData.append('id', this.intialData.id)
+        formData.append('id', this.initialData.id)
+        console.log(this.genreIds, this.genreIds.length > 0 )
         if(this.genreIds && this.genreIds.length > 0){
-            formData.append('genreIds', this.genreIds);
+            formData.append('genreIds', JSON.stringify(this.genreIds));
         }
+
+        console.log(formData)
         
         axios.post(this.fullApiUrl, formData, { 
             withCredentials: true,  
@@ -131,7 +130,6 @@ export default defineComponent({
     },
     mounted(){
         const songId = this.$route.params.id;
-        console.log(songId)
         //загрузка редактируемой песни
         axios.get(`${this.$store.state.APIURL}${this.$store.state.APIExtensions.getSong}`,
             { 
@@ -143,7 +141,6 @@ export default defineComponent({
         .then((response) => {
           if(response.status === 200 && response.data){
             this.initialData =  response.data;
-            console.log(response.data)
             //запись стартовых значений для формы    
             for (const [key, value] of Object.entries(this.initialData)) {
                 if(key !== 'genres'){
@@ -161,6 +158,9 @@ export default defineComponent({
        })
         .catch((error)=>{
             console.log(error)
+            if(error.response.status === 403){
+                this.$router.push({name: 'login'})
+              }
         })
 
         //загрузка жанров
@@ -172,9 +172,7 @@ export default defineComponent({
        })
         .catch((error)=>{
               console.log(error)
-              if(error.response.status === 403){
-                this.$router.push({name: 'login'})
-              }
+
         })
     }
 
