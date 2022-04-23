@@ -2,12 +2,17 @@
     <router-link class="circle-btn align-right" to="/add-playlist"></router-link>
 
     <div v-if="playlists  && playlists.length > 0" class="item-grid">
-        <div class="playlist-wrapper" v-for="playlist in playlists" :key="playlist.id">
-            <h3 class="playlist-title">{{playlist.name}}</h3>
-            <div class="playlist-wrapper__songs">
-                <p class="playlist-wrapper__songs__song" v-for="song, id in playlist.songs" :key="song.id">{{id+1}} {{song.song.name}}</p>
-            </div>
-        </div>
+        <playlist-item 
+            v-for="playlist in playlists" 
+            :key="playlist.id" 
+            :itemData="playlist">
+            <template v-slot>
+                <div class="playlist__edit-buttons">
+                    <edit-btn :link="'/edit-playlist/'+playlist.id"></edit-btn>
+                    <xbtn></xbtn>
+                </div>
+            </template>
+        </playlist-item>
     </div>
     <div v-else>
         <p class="no-results">У вас пока нет добавленных плейлистов</p>
@@ -17,10 +22,16 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import PlaylistItem from '@/components/songs/PlaylistItem.vue'
+import Xbtn from '@/components/UI/buttons/Xbtn.vue'
+import EditBtn from '@/components/UI/buttons/EditBtn.vue'
 import axios from 'axios'
 export default defineComponent({
     name:"UsersSongsPage",
     components:{
+        PlaylistItem,
+        Xbtn,
+        EditBtn
     },
     data() {
         return {
@@ -52,26 +63,22 @@ export default defineComponent({
         gap: 5rem;
         min-width: 60vw;
     }
- .playlist-wrapper{
-    border: 2px solid white;
-    min-height: 8rem;
-    flex-direction: column;
-    display: flex;
-    /* justify-content: center; */
-    padding: 2rem 2rem 4rem 2rem;
- }
 
- .playlist-wrapper__songs__song{
-     padding-left: 2rem;
-     opacity: .7;
-     display: flex;
-     flex-direction: column;
-     gap: 1rem;
-     padding-top: 1rem;
-     font-size: 1.5rem;
- }
+    .playlist__edit-buttons{
+        position: absolute;
+        display: flex;
+        gap: 1rem;
+        top: -5%;
+        right: -10%;
+        transform: translate(-50%, -50%);
+    }
 
- .playlist-title{
-     font-size: 3rem;
- }
+    .playlist__edit-buttons>*{
+        background: var(--accent-color-1);
+        border-radius: 50%;
+        width: 5rem;
+        height: 5rem;
+        display: flex;
+        align-items: center;
+    }
 </style>

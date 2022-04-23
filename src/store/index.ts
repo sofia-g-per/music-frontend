@@ -16,9 +16,11 @@ export default createStore({
 
       likeSong: 'like-song',
       editSong: 'edit-song',
+      editPlaylist: 'edit-playlist',
 
       getSongs: 'get-all-songs',
       getSong: 'get-song',
+      getPlaylist: 'get-playlist',
       getGenres: 'genres',
       getArtists: 'artists',
       getFavouriteSongs: 'liked-songs', 

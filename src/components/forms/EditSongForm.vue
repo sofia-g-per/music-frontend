@@ -82,47 +82,6 @@ export default defineComponent({
             schema
         }
     },
-    methods: {
-        onSubmit(){
-        var formData = new FormData();
-        for ( const [key, value] of Object.entries(this.fieldsValues) ) {
-            if(key === 'audioFile' && value){
-                formData.append(key, this.fieldsValues[key][0]);
-                
-            }else if(value && value!== this.initialData[key]){
-                formData.append(key, this.fieldsValues[key]);
-            }
-        }
-        formData.append('id', this.initialData.id)
-        console.log(this.genreIds, this.genreIds.length > 0 )
-        if(this.genreIds && this.genreIds.length > 0){
-            formData.append('genreIds', JSON.stringify(this.genreIds));
-        }
-
-        console.log(formData)
-        
-        axios.post(this.fullApiUrl, formData, { 
-            withCredentials: true,  
-            headers: {
-                'Content-Type': 'multipart/form-data'
-                }
-            })
-          .then(
-            (response) => {
-              if(response.status === 201 && response.data){
-                  this.$router.push('/my-songs');
-              }
-            }
-          )            
-          .catch((error)=>{
-              if(error.response && error.reponse.status === 400){
-                  this.errors = error.data;
-              }else{
-                  this.formError = 'Простите, произошла ошибка при загрузке данных'
-              }
-          })
-        }
-    },
     computed: {
         fullApiUrl():string {
             return `${this.$store.state.APIURL}${this.$store.state.APIExtensions.editSong}`;
@@ -174,7 +133,44 @@ export default defineComponent({
               console.log(error)
 
         })
-    }
-
+    },
+    methods: {
+        onSubmit(){
+        var formData = new FormData();
+        for ( const [key, value] of Object.entries(this.fieldsValues) ) {
+            if(key === 'audioFile' && value){
+                formData.append(key, this.fieldsValues[key][0]);
+                
+            }else if(value && value!== this.initialData[key]){
+                formData.append(key, this.fieldsValues[key]);
+            }
+        }
+        formData.append('id', this.initialData.id)
+        if(this.genreIds && this.genreIds.length > 0){
+            formData.append('genreIds', JSON.stringify(this.genreIds));
+        }
+        
+        axios.post(this.fullApiUrl, formData, { 
+            withCredentials: true,  
+            headers: {
+                'Content-Type': 'multipart/form-data'
+                }
+            })
+          .then(
+            (response) => {
+              if(response.status === 201 && response.data){
+                  this.$router.push('/my-songs');
+              }
+            }
+          )            
+          .catch((error)=>{
+              if(error.response && error.reponse.status === 400){
+                  this.errors = error.data;
+              }else{
+                  this.formError = 'Простите, произошла ошибка при загрузке данных'
+              }
+          })
+        }
+    },
 })
 </script>

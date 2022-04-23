@@ -1,5 +1,5 @@
 <template>
-    <button class="delete-btn btn--grey">x</button>
+    <button class="delete-btn btn--grey"><span>x</span></button>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
@@ -16,6 +16,9 @@ export default defineComponent({
         background: none;
         outline: none;
         border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
 </style>
