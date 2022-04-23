@@ -54,16 +54,15 @@ export default defineComponent({
 
 <style scoped>
     .edit-btn{
+        background: none;
+        outline: none;
+        border: none;
         display: flex;
         align-content: center;
         justify-content: center;
     }
     .edit-btn svg{
         fill: var(--font-color);
-        width: 2.5rem;
-        background: none;
-        outline: none;
-        border: none;
-
+        width: 1.6rem;
     }
 </style>

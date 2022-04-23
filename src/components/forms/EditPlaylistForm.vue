@@ -92,8 +92,6 @@ export default defineComponent({
                 let initial = this.initialData.songs.find((item)=> item.songId === songId)
                 if(initial !== undefined){
                     item['id'] = initial.id;
-                }else{
-                    // item['playlistId'] = this.initialData.id
                 }
                 return item
             });

@@ -9,7 +9,7 @@
             <template v-slot>
                 <div class="playlist__edit-buttons">
                     <edit-btn :link="'/edit-playlist/'+playlist.id"></edit-btn>
-                    <xbtn></xbtn>
+                    <xbtn @click.stop="handleDelete(playlist.id)"></xbtn>
                 </div>
             </template>
         </playlist-item>
@@ -51,6 +51,25 @@ export default defineComponent({
     computed:{
         apiURL(){
             return this.$store.getters.fullURL('getUsersPlaylists');
+        },
+        deletePlaylistApiUrl(){
+            return this.$store.getters.fullURL('deletePlaylist');
+        }
+    },
+    methods:{
+        handleDelete(playlistId:number){
+        axios.get(this.deletePlaylistApiUrl, {
+            withCredentials: true,
+            params: {
+                playlistId: playlistId
+            }
+        })
+       .then((response) => {
+              if(response.status === 200){
+                    let index = this.playlists.findIndex((playlist)=>playlist.id = playlistId);
+                    this.playlists.splice(index, 1);
+                }
+            })
         }
     }
 })
@@ -65,19 +84,20 @@ export default defineComponent({
     }
 
     .playlist__edit-buttons{
-        position: absolute;
         display: flex;
         gap: 1rem;
-        top: -5%;
-        right: -10%;
-        transform: translate(-50%, -50%);
+        justify-content: flex-end;
+        align-content: center;
+        position: relative;
+        right: -1rem;
+        top: -1rem;
     }
 
     .playlist__edit-buttons>*{
-        background: var(--accent-color-1);
+        background: var(--accent-color-2);
         border-radius: 50%;
-        width: 5rem;
-        height: 5rem;
+        width: 3rem;
+        height: 3rem;
         display: flex;
         align-items: center;
     }

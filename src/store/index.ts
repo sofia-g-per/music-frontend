@@ -28,7 +28,8 @@ export default createStore({
       getUsersPlaylists: 'users-playlists',
 
       deleteLiked: 'delete-like',
-      deleteSong: 'delete-song'
+      deleteSong: 'delete-song',
+      deletePlaylist: 'delete-playlist'
     },
     APIFilePaths:{
       avatars: 'avatars/',

@@ -71,7 +71,7 @@ export default defineComponent({
         box-sizing: border-box;
   }
   #app{
-    height: 70%;
+    min-height: 70%;
   }
 
   .icon-btn{
@@ -132,12 +132,12 @@ export default defineComponent({
       transform: translate(-50%, -50%);
     }
     
-    .btn--grey{
+    .btn--grey>*{
         opacity: .7;
         background: none;
         outline: none;
     }
-    .btn--grey:hover{
+    .btn--grey:hover>*{
         opacity: 1;
     }
 
@@ -157,7 +157,7 @@ export default defineComponent({
     /* justify-content: center; */
     align-items: center;
     flex-direction: column;
-    height: 100%;
+    min-height: 100%;
   }
 
   .page-error{

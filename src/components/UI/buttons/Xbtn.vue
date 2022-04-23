@@ -11,8 +11,9 @@ export default defineComponent({
 
 <style scoped>
     .delete-btn{
+      cursor: pointer;
         color: var(--font-color);
-        font-size: 4rem;
+        font-size: 2rem;
         background: none;
         outline: none;
         border: none;
