@@ -13,23 +13,28 @@ export default createStore({
 
       uploadSong: 'upload-song',
       createPlaylist: 'create-playlist',
+      createAlbum: 'create-album',
 
       likeSong: 'like-song',
       editSong: 'edit-song',
       editPlaylist: 'edit-playlist',
+      editAlbum: 'edit-album',
 
       getSongs: 'get-all-songs',
       getSong: 'get-song',
       getPlaylist: 'get-playlist',
       getGenres: 'genres',
       getArtists: 'artists',
+
       getFavouriteSongs: 'liked-songs', 
       getCurrentArtistSongs: 'get-song-by-current-artist',
+      getCurrentArtistAlbums: 'albums-by-current-artist',
       getUsersPlaylists: 'users-playlists',
 
       deleteLiked: 'delete-like',
       deleteSong: 'delete-song',
-      deletePlaylist: 'delete-playlist'
+      deletePlaylist: 'delete-playlist',
+      deleteAlbum: 'delete-album'
     },
     APIFilePaths:{
       avatars: 'avatars/',

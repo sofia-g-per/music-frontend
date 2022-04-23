@@ -77,9 +77,14 @@ export default defineComponent({
 </script>
 <style scoped>
     .playing-song-footer{
+        border-top: white 1px solid;
         box-sizing: border-box;
         padding: 2rem 10rem !important;
         background: linear-gradient(rgb(37, 0, 79), rgba(0, 0, 0, 1));
+        display: flex;
+        position: absolute;
+        z-index: 10;
+        bottom: 0;
     }
     .music-list-item{
         padding: 1rem 0;
@@ -93,8 +98,7 @@ export default defineComponent({
     .music-list-item__info__title{
         font-size: 2rem;
     }
-
-        .music-list-item__info__artist{
+    .music-list-item__info__artist{
         font-size: 1.4rem;
     }
     .music-list-item__buttons{

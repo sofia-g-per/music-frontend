@@ -4,11 +4,14 @@ const HomePage = () => import('@/views/HomePage.vue')
 const LikedPage = () => import('@/views/LikedPage.vue')
 const SignupPage = () => import('@/views/SignupPage.vue')
 const AddSongPage = () => import('@/views/AddSongPage.vue')
+const AddAlbumPage = () => import('@/views/AddAlbumPage.vue')
 const UsersSongsPage = () => import('@/views/UsersSongsPage.vue')
 const UsersPlaylistsPage = () => import('@/views/UsersPlaylistsPage.vue')
+const UsersAlbumsPage = () => import('@/views/UsersAlbumsPage.vue')
 const AddPlaylistPage = () => import('@/views/AddPlaylistPage.vue')
 const EditSongPage = () => import('@/views/EditSongPage.vue')
 const EditPlaylistPage = () => import('@/views/EditPlaylistPage.vue')
+const EditAlbumPage = () => import('@/views/EditAlbumPage.vue')
 import store from '@/store'
 
 const routes: Array<RouteRecordRaw> = [
@@ -53,7 +56,7 @@ const routes: Array<RouteRecordRaw> = [
     name: 'add-playlist',
     component: AddPlaylistPage,
     beforeEnter: (to, from) => {
-      return store.dispatch('isArtistGuard')
+      return store.dispatch('authorizedGuard')
     }
   },
   {
@@ -61,7 +64,7 @@ const routes: Array<RouteRecordRaw> = [
     name: 'my-playlists',
     component: UsersPlaylistsPage,
     beforeEnter: (to, from) => {
-      return store.dispatch('isArtistGuard')
+      return store.dispatch('authorizedGuard')
     }
   },
   {
@@ -77,9 +80,33 @@ const routes: Array<RouteRecordRaw> = [
     name: 'edit-playlist',
     component: EditPlaylistPage,
     beforeEnter: (to, from) => {
+      return store.dispatch('authorizedGuard')
+    }
+  },
+  {
+    path: '/edit-album/:id',
+    name: 'edit-album',
+    component: EditAlbumPage,
+    beforeEnter: (to, from) => {
       return store.dispatch('isArtistGuard')
     }
-  }
+  },
+  {
+    path: '/add-album',
+    name: 'add-album',
+    component: AddAlbumPage,
+    beforeEnter: (to, from) => {
+      return store.dispatch('isArtistGuard')
+    }
+  },
+  {
+    path: '/my-albums',
+    name: 'my-albums',
+    component: UsersAlbumsPage,
+    beforeEnter: (to, from) => {
+      return store.dispatch('isArtistGuard')
+    }
+  },
 ]
 
 

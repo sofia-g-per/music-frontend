@@ -1,21 +1,21 @@
 <template>
-    <router-link class="circle-btn align-right" to="/add-playlist"></router-link>
+    <router-link class="circle-btn align-right" to="/add-album"></router-link>
 
-    <div v-if="playlists  && playlists.length > 0" class="item-grid">
+    <div v-if="albums  && albums.length > 0" class="item-grid">
         <playlist-item 
-            v-for="playlist in playlists" 
-            :key="playlist.id" 
-            :itemData="playlist">
+            v-for="album in albums" 
+            :key="album.id" 
+            :itemData="album">
             <template v-slot>
                 <div class="playlist__edit-buttons">
-                    <edit-btn :link="'/edit-playlist/'+playlist.id"></edit-btn>
-                    <xbtn @click.stop="handleDelete(playlist.id)"></xbtn>
+                    <edit-btn :link="'/edit-playlist/'+album.id"></edit-btn>
+                    <xbtn @click.stop="handleDelete(album.id)"></xbtn>
                 </div>
             </template>
         </playlist-item>
     </div>
     <div v-else>
-        <p class="no-results">У вас пока нет добавленных плейлистов</p>
+        <p class="no-results">У вас пока нет добавленных альбомов</p>
     </div>
 
 </template>
@@ -27,7 +27,7 @@ import Xbtn from '@/components/UI/buttons/Xbtn.vue'
 import EditBtn from '@/components/UI/buttons/EditBtn.vue'
 import axios from 'axios'
 export default defineComponent({
-    name:"UsersSongsPage",
+    name:"UsersAlbumsPage",
     components:{
         PlaylistItem,
         Xbtn,
@@ -35,41 +35,42 @@ export default defineComponent({
     },
     data() {
         return {
-            playlists: [],
+            albums: [],
         }
     },
     mounted(){
         axios.get(this.apiURL, {withCredentials: true})
        .then((response) => {
               if(response.status === 200 && response.data){
-                  this.playlists = response.data;
-                  console.log(this.playlists);
+                  this.albums = response.data;
+                  console.log(this.albums);
               }
+
         })
     },
     computed:{
         apiURL(){
-            return this.$store.getters.fullURL('getUsersPlaylists');
+            return this.$store.getters.fullURL('getCurrentArtistAlbums');
         },
-        deletePlaylistApiUrl(){
-            return this.$store.getters.fullURL('deletePlaylist');
+        deleteAlbumApiUrl(){
+            return this.$store.getters.fullURL('deleteAlbum');
         }
     },
     methods:{
-        handleDelete(playlistId:number){
-        axios.get(this.deletePlaylistApiUrl, {
+        handleDelete(albumId:number){
+        axios.get(this.deleteAlbumApiUrl, {
             withCredentials: true,
             params: {
-                playlistId: playlistId
+                albumId: albumId
             }
         })
        .then((response) => {
               if(response.status === 200){
-                    let index = this.playlists.findIndex((playlist)=>
+                    let index = this.albums.findIndex((album)=>
                     {
-                    return playlist.id === playlistId
+                    return album.id === albumId
               });
-                    this.playlists.splice(index, 1);
+                    this.albums.splice(index, 1);
                 }
             })
         }
