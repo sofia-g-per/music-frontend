@@ -58,7 +58,7 @@ export default defineComponent({
             axios.post(this.deleteApiURL, data, {withCredentials: true})
             .then((response) => {
                 if(response.status === 201){
-                    let index = this.songs.findIndex((song)=>song.id = songId);
+                    let index = this.songs.findIndex((song)=>song.id === songId);
                     this.songs.splice(index, 1);
                 }
             })

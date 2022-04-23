@@ -66,7 +66,10 @@ export default defineComponent({
         })
        .then((response) => {
               if(response.status === 200){
-                    let index = this.playlists.findIndex((playlist)=>playlist.id = playlistId);
+                    let index = this.playlists.findIndex((playlist)=>
+                    {
+                    return playlist.id === playlistId
+              });
                     this.playlists.splice(index, 1);
                 }
             })
