@@ -96,7 +96,6 @@ export default defineComponent({
                 return item
             });
             this.fieldsValues.songIds = JSON.stringify(this.fieldsValues.songIds);
-            console.log('submitted songs',this.fieldsValues)
         axios.post(this.addPlaylistURL, this.fieldsValues, { 
             withCredentials: true}
             )
@@ -125,7 +124,6 @@ export default defineComponent({
         }
     },
     mounted(){
-
         const playlistId = this.$route.params.id;
         //загрузка редактируемого плейлиста
         axios.get(`${this.$store.state.APIURL}${this.$store.state.APIExtensions.getPlaylist}`,

@@ -8,7 +8,7 @@
             :itemData="album">
             <template v-slot>
                 <div class="playlist__edit-buttons">
-                    <edit-btn :link="'/edit-playlist/'+album.id"></edit-btn>
+                    <edit-btn :link="'/edit-album/'+album.id"></edit-btn>
                     <xbtn @click.stop="handleDelete(album.id)"></xbtn>
                 </div>
             </template>

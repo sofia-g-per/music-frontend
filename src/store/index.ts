@@ -25,6 +25,7 @@ export default createStore({
       getPlaylist: 'get-playlist',
       getGenres: 'genres',
       getArtists: 'artists',
+      getAlbum: 'get-album',
 
       getFavouriteSongs: 'liked-songs', 
       getCurrentArtistSongs: 'get-song-by-current-artist',

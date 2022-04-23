@@ -3,7 +3,6 @@
         <text-field 
             :field-data="fieldsData.name" 
             v-model="fieldsValues.name"
-            rules="required"
         />
         <text-field 
             :field-data="fieldsData.description" 
@@ -40,7 +39,7 @@ import { defineComponent } from 'vue'
 import { Form, Field, useForm, ErrorMessage } from 'vee-validate'
 import TextField from '../UI/form/TextField.vue'
 import axios from 'axios';
-import { CreateAlbumDto } from '@/dtos/CreateAlbum.dto';
+import {CreateAlbumDto} from '@/dtos/createAlbum.dto'
 
 export default defineComponent({
     name: 'AddAlbumForm',
@@ -51,14 +50,13 @@ export default defineComponent({
     },
     setup(){
         const schema = {
-            name: 'required',
             songIds: (value) => {
                 if (value && value.length) {
                     return true;
                 }
                 
                 return 'Выберите хотя бы одну песню';
-                }
+            }
       }
 
         const { errors } = useForm({
@@ -95,13 +93,53 @@ export default defineComponent({
         getSongsURL() {
             return this.$store.getters.fullURL('getCurrentArtistSongs');
         },
-        addPlaylistURL(){
-            return this.$store.getters.fullURL('createPlaylist')
+        editAlbumURL(){
+            return this.$store.getters.fullURL('editAlbum')
         }
     },
     mounted(){
-        // песни
-        axios.get(this.getSongsURL)
+        // загрузка редактируемого альбома
+        const albumId = this.$route.params.id;
+        axios.get(`${this.$store.state.APIURL}${this.$store.state.APIExtensions.getAlbum}`,
+            { 
+                params: {
+                albumId: albumId
+            }
+        })
+        .then((response) => {
+          if(response.status === 200 && response.data){
+            this.initialData =  response.data;
+            console.log('response data', response.data)
+            //запись стартовых значений для формы    
+            for (const [key, value] of Object.entries(this.initialData)) {
+                if(key === 'songs'){
+                    this.songIds = [];
+                    for(const song of this.initialData.songs){
+                        this.songIds.push(song.songId);
+                    }
+                }else if(key === 'genres'){
+                    this.genreIds = [];
+                    for(const genre of this.initialData.genres){
+                        this.genreIds.push(genre.id);
+                    }
+                }else{
+                    this.fieldsValues[key] = value; 
+                    
+                }
+                console.log(key, value, this.fieldsValues)
+            }
+
+          }
+       })
+        .catch((error)=>{
+            console.log(error)
+            if(error.response.status === 403){
+                this.$router.push({name: 'login'})
+              }
+        })
+
+        // загрузка всех песен данного пользователя
+        axios.get(this.getSongsURL, {withCredentials:true})
        .then((response) => {
               if(response.status === 200 && response.data){
                   this.songs = response.data;
@@ -116,7 +154,7 @@ export default defineComponent({
               }
           })
 
-        // жанры
+        // загрузка жанров
         axios.get(`${this.$store.state.APIURL}${this.$store.state.APIExtensions.getGenres}`)
         .then((response) => {
           if(response.status === 200 && response.data){
@@ -131,12 +169,19 @@ export default defineComponent({
     methods: {
         onSubmit(){
             this.fieldsValues.songIds = this.songIds.map((songId, id) => {
-                return {
+                let item:any = {
                     songId: songId,
                     songIndex: id,
                 }
+                let initial = this.initialData.songs.find((item)=> item.songId === songId)
+                if(initial !== undefined){
+                    item['id'] = initial.id;
+                }
+                return item
             });
-        axios.post(this.addAlbumURL, this.fieldsValues, { 
+            this.fieldsValues.songIds = JSON.stringify(this.fieldsValues.songIds);
+            this.fieldsValues.genreIds = JSON.stringify(this.genreIds);
+        axios.post(this.editAlbumURL, this.fieldsValues, { 
             withCredentials: true
         })
           .then(
