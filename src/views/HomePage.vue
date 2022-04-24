@@ -1,5 +1,8 @@
 <template>
-    <the-search-bar :searchAPIURL="searchUrl" @onSearchResponse="handleSearchResponse" :withFilters="true">
+    <the-search-bar :searchAPIURL="searchUrl" 
+    @onSearchResponse="handleSearchResponse"
+    @onEmptyFilters="getAllSongs" 
+    :withFilters="true">
     </the-search-bar>
     <div v-if="songs && songs.length > 0" class="song-list">
         <music-list-item
@@ -41,23 +44,7 @@ export default defineComponent({
         }
     },
     mounted(){
-        axios.get(this.getSongsURL)
-       .then((response) => {
-              if(response.status === 200 && response.data){
-                  this.songs = response.data;
-              }
-
-        })
-
-        axios.get(`${this.$store.state.APIURL}${this.$store.state.APIExtensions.getGenres}`)
-        .then((response) => {
-          if(response.status === 200 && response.data){
-              this.genres =  response.data;
-          }
-       })
-        .catch((error)=>{
-              console.log(error)
-        })
+        this.getAllSongs();
     },
     computed: {
         getSongsURL(){
@@ -89,8 +76,27 @@ export default defineComponent({
             .catch((error) =>{
                 console.log(error)
             })
-        }
-    },
+        },
+        getAllSongs(){
+            axios.get(this.getSongsURL)
+                .then((response) => {
+                        if(response.status === 200 && response.data){
+                            this.songs = response.data;
+                        }
+
+                    })
+
+                    axios.get(`${this.$store.state.APIURL}${this.$store.state.APIExtensions.getGenres}`)
+                    .then((response) => {
+                    if(response.status === 200 && response.data){
+                        this.genres =  response.data;
+                    }
+                })
+                    .catch((error)=>{
+                        console.log(error)
+                    })
+                    }
+    }
 
 })
 </script>

@@ -7,7 +7,7 @@
                     <p v-for="artist in songData.artists" :key="artist.artistId" class="music-list-item__info__artist main-text">{{artist.artist.stagename}}</p>
             </div>
             </div>
-            <div class="music-list-item__audio">
+            <div class="music-list-item__progress">
             </div>
             <div class="music-list-item__buttons">
                 <button class="play-next-btn icon-btn" @click.stop="onPlayPrevious">
@@ -177,7 +177,7 @@ export default defineComponent({
     }
 
     .footer--open{
-        height: calc(100% - 7rem);
+        height: calc(100% - 6.2rem);
     }
     .playing-song-footer{
         border-top: white 1px solid;
@@ -236,7 +236,8 @@ export default defineComponent({
     .music-list-item__info__artist{
         opacity: .8;
     }
-/* footer song list */
+
+    /* footer song list */
     .footer__list-wrapper{
         height: 0;
         background: var(--bg-color)

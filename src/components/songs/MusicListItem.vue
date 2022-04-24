@@ -57,6 +57,10 @@ export default defineComponent({
         width: 100%;
     }
 
+    .music-list-item__info__title{
+        font-size: 1.8rem;
+    }
+
     .music-list-item__artist-wrapper{
         padding: 1rem 1rem 0 1rem;
         display: flex;
@@ -67,5 +71,7 @@ export default defineComponent({
 
     .music-list-item__info__artist{
         opacity: .8;
+        font-size: 1.4rem;
+
     }
 </style>

@@ -32,7 +32,6 @@
             </label>
             <Field :name="fieldsData.roleId.name" type="checkbox" v-model="fieldsValues.roleId" value="artist" :unchecked-value="false" />
         </div>
-        {{fieldsValues.roleId}}
         <div
             v-if="fieldsValues.roleId && fieldsValues.roleId === fieldsData.roleId.value"
             :fieldsValues="fieldsValues"

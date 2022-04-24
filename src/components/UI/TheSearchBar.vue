@@ -30,7 +30,8 @@ export default defineComponent({
         }
     },
     emits: [
-        'onSearchResponse'
+        'onSearchResponse',
+        'onEmptyFilters'
     ],
     props: [
         'searchAPIURL',
@@ -80,7 +81,8 @@ export default defineComponent({
         },
         handleFilterChange(e){
             this.toggleFilterClass(e);
-            if(this.genreIds && this.genreIds.length> 0){
+            if(this.genreIds && this.genreIds.length){
+
                 let params = {genreIds: JSON.stringify(this.genreIds)};
                 axios.get(this.filterApiUrl, { 
                     withCredentials: true,
@@ -95,9 +97,11 @@ export default defineComponent({
                 .catch((error) =>{
                     console.log(error);
                 })
+            }else{
+                this.$emit('onEmptyFilters')
             }
-
         }
+
     }
 })
 </script>
