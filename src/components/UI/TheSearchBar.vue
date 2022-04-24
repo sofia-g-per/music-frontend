@@ -73,7 +73,12 @@ export default defineComponent({
                 console.log(error);
             })
         },
-        handleFilterChange(){
+        toggleFilterClass(e){
+            if(e.target){
+                e.target.closest('.genre-filter').classList.toggle('genre-filter--active')
+            }
+        },
+        handleFilterChange(e){
             console.log('changed')
             console.log(this.genreIds)
             if(this.genreIds){
@@ -86,6 +91,7 @@ export default defineComponent({
                 .then((response) => {
                     console.log(response)
                     if(response.status === 200 && response.data){
+                        this.toggleFilterClass(e);
                         this.$emit('onSearchResponse', response.data);  
                     }
 
@@ -143,9 +149,10 @@ export default defineComponent({
     }
 
     .genre-filter{
-        background: var(--accent-color-2);
+        /* border: solid 3px var(--accent-color-2); */
+        background: rgb(93, 80, 82);
         border-radius: 5rem;
-        padding: 1rem;
+        padding: .7rem;
         min-width: 7rem;
         display: flex;
         justify-content: center;
@@ -156,6 +163,10 @@ export default defineComponent({
     }
     .genre-filter:hover{
         transform: scale(0.9);
+    }
+
+    .genre-filter--active{
+        background: var(--accent-color-2);
     }
     .genre-filter input{
         display: none;
