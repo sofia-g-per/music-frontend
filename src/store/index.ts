@@ -69,7 +69,7 @@ export default createStore({
   },
   actions: {
     embedNewAudio(state, {filePath}){
-      console.log('embedding',filePath)
+      this.state.isPlaying = false;
       this.state.currentSongAudio = new Howl({
         src: [filePath],
         onend: ()=> {this.dispatch('playNextSong')}
@@ -187,7 +187,7 @@ export default createStore({
       return `http://localhost:3000/${state.APIFilePaths[fileCategory]}${fileName}`;
     },
     currentAudioPath: (state, getters)=> {
-      if(state.currentSongId){
+      if(state.currentSongId !== undefined){
         console.log('getter audio', state.currentPlaylist.playlist, state.currentSongId)
         const currentSong = state.currentPlaylist.playlist[state.currentSongId] as any;
         if(currentSong.song){
