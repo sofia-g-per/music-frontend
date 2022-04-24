@@ -1,8 +1,15 @@
 <template>
-    <draggable class="song-list" v-model="myList">
-        <music-list-item>
+    <draggable 
+    class="song-list" 
+    v-model="myList"
+    @start="drag=true" 
+    @end="drag=false">
+      <template #item="{element, index}">
+        <music-list-item :playlist="myList" playlist-type="query" :songData="element" :songInPlaylistId="index">
 
         </music-list-item>
+    </template>
+
     </draggable>
 </template>
 
@@ -20,11 +27,11 @@ export default defineComponent({
         myList: {
             get() {
                 // get
-                return this.$store.state.myList
+                return this.$store.state.currentPlaylist.playlist;
             },
             set(value) {
                 // emit change
-                this.$store.commit('updateList', value)
+                this.$store.dispatch('updateCurrentPlaylist', {newPlaylistOrder: value})
             }
         }
     }

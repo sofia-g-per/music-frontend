@@ -65,6 +65,7 @@ export default createStore({
     user: new UserDto,
   },
   mutations: {
+
   },
   actions: {
     embedNewAudio(state, {filePath}){
@@ -128,6 +129,13 @@ export default createStore({
         this.dispatch('playCurrentSong');
       }
     },
+    updateCurrentPlaylist(state, {newPlaylistOrder}){
+      const currentSongDBId = this.state.currentPlaylist.playlist[this.state.currentSongId].id 
+      const newSongId = newPlaylistOrder.findIndex((song)=> song.id === currentSongDBId);
+      this.state.currentSongId = newSongId;
+      this.state.currentPlaylist.playlist = newPlaylistOrder;
+    },
+
     
     saveUser(state, {user}){
       const now = new Date()

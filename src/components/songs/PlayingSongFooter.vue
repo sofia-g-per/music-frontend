@@ -1,7 +1,6 @@
 <template>
-<div>
-    <footer :class="{'footer': true, 'footer--open':isOpenList}"  @click="toggleSongList">
-        <div class="music-list-item playing-song-footer">
+    <footer :class="{'footer': true, 'footer--open':isOpenList}" >
+        <div class="music-list-item playing-song-footer" @click="toggleSongList">
             <div class="music-list-item__info">
                 <h2 class="music-list-item__info__title heading-tretriary">{{songData.name}}</h2>
             <div class="music-list-item__artist-wrapper">
@@ -88,18 +87,22 @@
             </div>
         </div>
         <div :class="{'footer__list-wrapper': true, 'footer__list-wrapper--active':isOpenList}">
-
+            <rearrangable-song-list>
+                
+            </rearrangable-song-list>
         </div>
     </footer>
 
-</div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-
+import RearrangableSongList from '../RearrangableSongList.vue';
 export default defineComponent({
     name: "MusicListItem",
+    components:{
+        RearrangableSongList
+    },
     props: [
         'songData'
     ],
@@ -138,12 +141,17 @@ export default defineComponent({
 </script>
 <style scoped>
 
-    .footer-list-wrapper{
+    .footer{
         position: absolute;
         z-index: 10;
+        width: 100%;
         bottom: 0;
         display: flex;
         flex-direction: column;
+    }
+
+    .footer--open{
+        height: calc(100% - 7rem);
     }
     .playing-song-footer{
         border-top: white 1px solid;
@@ -197,9 +205,9 @@ export default defineComponent({
         opacity: .8;
     }
 /* footer song list */
-    .footer-list-wrapper{
+    .footer__list-wrapper{
         height: 0;
-        transition: .3s;
+        background: var(--bg-color)
     }
     .footer__list-wrapper--active{
         height: 100%;

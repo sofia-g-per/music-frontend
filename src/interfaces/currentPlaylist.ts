@@ -1,5 +1,5 @@
 export class PlayingPlaylist {
     type: string;
     id: number;
-    playlist: []
+    playlist: Array<any> 
 }
