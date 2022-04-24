@@ -12,6 +12,7 @@ const AddPlaylistPage = () => import('@/views/AddPlaylistPage.vue')
 const EditSongPage = () => import('@/views/EditSongPage.vue')
 const EditPlaylistPage = () => import('@/views/EditPlaylistPage.vue')
 const EditAlbumPage = () => import('@/views/EditAlbumPage.vue')
+const EditUserPage = () => import('@/views/EditUserPage.vue')
 import store from '@/store'
 
 const routes: Array<RouteRecordRaw> = [
@@ -105,6 +106,14 @@ const routes: Array<RouteRecordRaw> = [
     component: UsersAlbumsPage,
     beforeEnter: (to, from) => {
       return store.dispatch('isArtistGuard')
+    }
+  },
+  {
+    path: '/edit-profile',
+    name: 'edit-profile',
+    component: EditUserPage,
+    beforeEnter: (to, from) => {
+      return store.dispatch('authorizedGuard')
     }
   },
 ]

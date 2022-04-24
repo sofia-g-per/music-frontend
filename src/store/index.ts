@@ -20,6 +20,7 @@ export default createStore({
       editSong: 'edit-song',
       editPlaylist: 'edit-playlist',
       editAlbum: 'edit-album',
+      editUser: 'edit-user',
 
       getSongs: 'get-all-songs',
       getSong: 'get-song',
@@ -27,6 +28,7 @@ export default createStore({
       getGenres: 'genres',
       getArtists: 'artists',
       getAlbum: 'get-album',
+      getUser: 'get-user',
 
       getFavouriteSongs: 'liked-songs', 
       getCurrentArtistSongs: 'get-song-by-current-artist',
@@ -36,7 +38,9 @@ export default createStore({
       deleteLiked: 'delete-like',
       deleteSong: 'delete-song',
       deletePlaylist: 'delete-playlist',
-      deleteAlbum: 'delete-album'
+      deleteAlbum: 'delete-album',
+      deleteUser: 'delete-user',
+
     },
     APIFilePaths:{
       avatars: 'avatars/',
@@ -135,6 +139,9 @@ export default createStore({
       this.state.isAuth = true;
       if(user.artist){
         this.state.isArtist = true;
+      }else{
+        this.state.isArtist = false;
+
       }
     },
     logOut(){

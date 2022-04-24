@@ -68,7 +68,7 @@ export default defineComponent({
             }
           )
           .catch((error)=>{
-              if(error.reponse.status === 400){
+              if(error.response.status === 400){
                   this.formError = 'Проверьте правильность заполненных данных';
               }else{
                   this.formError = 'Простите, произошла ошибка при загрузке данных';
