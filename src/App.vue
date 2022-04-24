@@ -1,7 +1,7 @@
 <template>
   <the-header></the-header>
 
-  <div class="page-wrapper">
+  <div :class="{'page-wrapper':true, 'page-wrapper--collapsed':isSongListOpen}">
     <router-view></router-view>
 
   </div>
@@ -10,6 +10,7 @@
   <playing-song-footer 
     v-if="currentSong" 
     :songData="currentSong"
+    @onToggleSongList="handleToggleSongList"
   >
   </playing-song-footer>
 
@@ -24,6 +25,11 @@ export default defineComponent({
     TheHeader,
     PlayingSongFooter
   },
+  data() {
+    return {
+      isSongListOpen:false,
+    }
+  },
   computed:{
     currentSong(){
       if(this.$store.state.currentSongDefined){
@@ -37,6 +43,12 @@ export default defineComponent({
         return null;
       }
     },
+  },
+  methods: {
+    handleToggleSongList(isOpen:boolean){
+      console.log(isOpen, 'emit recieved')
+      this.isSongListOpen = isOpen;
+    }
   }
 })
 </script>
@@ -73,7 +85,6 @@ export default defineComponent({
   #app{
     min-height: 70%;
   }
-
   .icon-btn{
     background: none;
     outline: none;
@@ -158,6 +169,15 @@ export default defineComponent({
     align-items: center;
     flex-direction: column;
     min-height: 100%;
+    transition: .3s;
+    padding-top: 2rem;
+  }
+
+  .page-wrapper--collapsed{
+    height: 0%;
+    min-height: 0%;
+    display: none;
+    overflow: hidden;
   }
 
   .page-error{

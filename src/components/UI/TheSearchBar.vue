@@ -79,19 +79,15 @@ export default defineComponent({
             }
         },
         handleFilterChange(e){
-            console.log('changed')
-            console.log(this.genreIds)
-            if(this.genreIds){
-                console.log('request')
+            this.toggleFilterClass(e);
+            if(this.genreIds && this.genreIds.length> 0){
                 let params = {genreIds: JSON.stringify(this.genreIds)};
                 axios.get(this.filterApiUrl, { 
                     withCredentials: true,
                     params: params
                 })
                 .then((response) => {
-                    console.log(response)
                     if(response.status === 200 && response.data){
-                        this.toggleFilterClass(e);
                         this.$emit('onSearchResponse', response.data);  
                     }
 
