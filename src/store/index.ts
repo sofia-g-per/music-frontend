@@ -129,6 +129,18 @@ export default createStore({
         this.dispatch('playCurrentSong');
       }
     },
+    playPreviousSong(){
+      if(this.state.currentSongDefined){
+        this.state.currentSongId as number;
+        if(this.state.currentSongId !== 0){
+          this.state.currentSongId -= 1;
+        }else{
+          this.state.currentSongId = this.state.currentPlaylist.playlist.length - 1;
+        }
+        this.dispatch('embedNewAudio',({filePath: this.getters.currentAudioPath}));
+        this.dispatch('playCurrentSong');
+      }
+    },
     updateCurrentPlaylist(state, {newPlaylistOrder}){
       const currentSongDBId = this.state.currentPlaylist.playlist[this.state.currentSongId].id 
       const newSongId = newPlaylistOrder.findIndex((song)=> song.id === currentSongDBId);
