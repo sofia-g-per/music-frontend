@@ -12,10 +12,7 @@
         <song-select 
             :getSongsURL="getSongsURL"
             @onSongIdsChange="handleSongIdsChange"
-        >
-
-        </song-select>
-        <p>parent {{songIds}}</p>
+        />
 
         <button class="main-btn" type="submit">Добавить</button>
     </Form>
@@ -105,9 +102,7 @@ export default defineComponent({
           })
         },
         handleSongIdsChange(songIds){
-            console.log('handled', songIds)
             this.songIds = songIds;
-            console.log(this.songIds)
         }
     },
     computed: {

@@ -1,9 +1,10 @@
 <template>
     <draggable 
-    class="song-list" 
-    v-model="myList"
-    @start="drag=true" 
-    @end="drag=false">
+        class="song-list" 
+        v-model="myList"
+        @start="drag=true" 
+        @end="drag=false"
+        >
       <template #item="{element, index}">
         <music-list-item :playlist="myList" playlist-type="query" :songData="element" :songInPlaylistId="index">
 
