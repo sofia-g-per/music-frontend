@@ -187,7 +187,13 @@ export default createStore({
       }
     },
     updateUser(state, {newUserData}){
-      localStorage.setItem('user', JSON.stringify(newUserData));
+      console.log('updating local', newUserData)
+      const userString = localStorage.getItem('user')
+      if(userString){
+        const user = JSON.parse(userString);
+        user.value = newUserData;
+        localStorage.setItem('user', JSON.stringify(user))
+      }
     }
 
   },

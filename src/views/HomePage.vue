@@ -160,11 +160,11 @@ export default defineComponent({
                         console.log('unlike response', response)
                         if(response.status === 201){
                                 let newUserData = this.$store.getters.user;
-                                newUserData.favoriteSongs = newUserData.favoriteSongs.filter(like=> like.songId !== songId);
-                                console.log('unliked updating',newUserData, songId);
-                                this.$store.dispatch('updateUser', newUserData);
-                                console.log('');
-                                this.likedSongs = newUserData.favoriteSongs;
+                                console.log('got userData', newUserData)
+                                let newFav = newUserData.favoriteSongs.filter(like=> like.songId !== songId)
+                                newUserData.favoriteSongs = newFav;
+                                this.$store.dispatch('updateUser', {newUserData: newUserData});
+                                this.likedSongs = newFav;
                                 console.log('updated unliked', this.likedSongs, newUserData, newUserData.favoriteSongs)
 
                             }
@@ -180,14 +180,14 @@ export default defineComponent({
                             console.log('likeresponse', response)
                             if(response.status === 201){
                                 let newUserData = this.$store.getters.user;
-                                console.log('userData', newUserData);
-                                let newFav = newUserData.favoriteSongs.push(response.data)
-                                console.log( newFav)
-                                newUserData.favoriteSongs = newFav;
+                                 console.log('got userData', newUserData)
+
+                                console.log('pre-push', response, response.data, this.likedSongs)
+                                newUserData.favoriteSongs.push(response.data)
                                 console.log('liked updating', newUserData, songId);
-                                this.$store.dispatch('updateUser', newUserData);
+                                this.$store.dispatch('updateUser', {newUserData: newUserData});
                                 this.likedSongs = newUserData.favoriteSongs;
-                                console.log('updated liked', this.likedSongs)
+                                console.log('updated liked', this.likedSongs, newUserData)
                             }
                         })
                         .catch((error) =>{
