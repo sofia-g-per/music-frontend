@@ -6,11 +6,15 @@
             rules="required|email"
         />
 
-        <text-field 
-            :field-data="fieldsData.password" 
-            v-model="fieldsValues.password"
-            rules="required"
-        />
+        <div class="form-field">
+            <label for="password" class="form-field__label">
+                Пароль
+            </label>
+            <Field type="password" class="form-field__input" name="password"  v-model="fieldsValues.password" />
+            <p class="form-field__error-label" name="password" v-show="false">
+                Заполните данное поле
+            </p>
+        </div>
         <p class="form-field__error-label">{{formError}}</p>
         <button  class="main-btn" type="submit">Войти</button>
     </Form>
@@ -19,7 +23,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { LoginDto } from '@/dtos/login.dto'
-import { Form} from 'vee-validate'
+import { Form, Field} from 'vee-validate'
 import TextField from '../UI/form/TextField.vue'
 import axios from 'axios';
 
@@ -28,7 +32,8 @@ export default defineComponent({
     name: 'LoginForm',
     components: {
         TextField,
-        Form
+        Form,
+        Field
     },
     data(){
         return{
@@ -84,3 +89,14 @@ export default defineComponent({
     }
 })
 </script>
+
+<style scoped>
+    .form-field__label{
+    font-size: 1.8rem;
+    }
+
+    .form-field__input{
+    padding: .5rem;
+    border-radius: .5rem;
+    }
+</style>

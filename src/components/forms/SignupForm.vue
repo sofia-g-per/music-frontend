@@ -18,14 +18,18 @@
         <text-field 
             :field-data="fieldsData.email" 
             v-model="fieldsValues.email"
-            rules="required|email"
-        />
-
-        <text-field 
-            :field-data="fieldsData.password" 
-            v-model="fieldsValues.password"
             rules="required"
         />
+
+        <div class="form-field">
+            <label for="password" class="form-field__label">
+                Пароль
+            </label>
+            <Field type="password" class="form-field__input" name="password"  v-model="fieldsValues.password" />
+            <p class="form-field__error-label" name="password" v-show="false">
+                Заполните данное поле
+            </p>
+        </div>
         <div class="form-field boolean-field">
             <label class="form-field__label">
                 {{fieldsData.roleId.label}}
@@ -74,9 +78,9 @@ export default defineComponent({
             name: 'required',
             surname: 'required',
             username: 'required',
-            email: 'required|email',
+            email: 'required',
             password: 'required',
-            stagename: 'validateArtist'
+            // stagename: 'validateArtist'
         };
         return {
             schema
@@ -132,20 +136,17 @@ export default defineComponent({
     methods: {
         onSubmit(){
             if(this.fieldsValues.roleId){
-                this.artistFieldsValues.genreIds = this.artistFieldsValues.genreIds.map(genre => {
-                    return genre.id
-                });
                 this.fieldsValues.artist = this.artistFieldsValues;
             }
         axios.post(this.fullApiUrl, this.fieldsValues)
           .then((response) => {
               if(response.status === 201 && response.data){
-                  this.$router.push('/');
+                  this.$router.push('/login');
               }
             })
             .catch((error)=>{
-              if(error.response && error.response.status === 400){
-                  this.formError = error.response.message[0];
+              if(error.response.message){
+                  this.formError = error.response.message;
               }else{
                   this.formError = 'Простите, произошла ошибка при загрузке данных'
               }

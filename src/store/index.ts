@@ -105,7 +105,6 @@ export default createStore({
       }
     },
     playCurrentSong(){
-      console.log('playCurrentSong',this.state.currentSongDefined, this.state.isPlaying, this.state.currentSongAudio);
 
       if(this.state.currentSongDefined){
         if(!this.state.isPlaying){
@@ -119,6 +118,10 @@ export default createStore({
     },
     playNextSong(){
       if(this.state.currentSongDefined){
+        if(this.state.isPlaying){
+          this.state.currentSongAudio!.pause();
+          this.state.isPlaying = false;
+        }
         this.state.currentSongId as number;
         if(this.state.currentSongId < this.state.currentPlaylist.playlist.length - 1){
           this.state.currentSongId += 1;
@@ -131,6 +134,10 @@ export default createStore({
     },
     playPreviousSong(){
       if(this.state.currentSongDefined){
+        if(this.state.isPlaying){
+          this.state.currentSongAudio!.pause();
+          this.state.isPlaying = false;
+        }
         this.state.currentSongId as number;
         if(this.state.currentSongId !== 0){
           this.state.currentSongId -= 1;
@@ -148,7 +155,6 @@ export default createStore({
       this.state.currentPlaylist.playlist = newPlaylistOrder;
     },
 
-    
     saveUser(state, {user}){
       const now = new Date()
       const item = {
@@ -179,6 +185,9 @@ export default createStore({
       if(!this.getters.user || !this.getters.user.artist){
         return {name: 'home'}
       }
+    },
+    updateUser(state, {newUserData}){
+      localStorage.setItem('user', JSON.stringify(newUserData));
     }
 
   },
@@ -206,6 +215,7 @@ export default createStore({
     },
     user(){
       const userString = localStorage.getItem('user')
+      console.log('userstring',userString)
       if(userString){
         const user = JSON.parse(userString);
 

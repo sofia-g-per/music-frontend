@@ -29,7 +29,6 @@ export default defineComponent({
             let playlistToPlay = new PlayingPlaylist;
             playlistToPlay.type = this.playlistType;
             playlistToPlay.playlist = this.playlist;
-            console.log('clicked', this.songInPlaylistId)
             this.$store.dispatch('handleClickSong', {
                 songInPlaylistId: this.songInPlaylistId,
                 playlistToPlay: playlistToPlay

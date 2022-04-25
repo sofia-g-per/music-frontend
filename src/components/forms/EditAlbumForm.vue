@@ -23,6 +23,7 @@
             </div>
         </div>
         
+        <p class="form-field__label"> Жанры: </p>
         <div class="song-select">
             <div v-for="option in genreOptions" :key="option.id" class="music-list-item">
                 <label :for="option.id">{{option.name}}</label>

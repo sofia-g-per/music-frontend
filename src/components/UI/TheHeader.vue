@@ -62,7 +62,7 @@
 
         </div>
         <div class="main-header__auth-links" v-if="!isAuth" >
-            <router-link to="/">Главная</router-link>
+            <router-link to="/"><img  class="logo" src="@/assets/images/logo.png" alt=""></router-link>
             <router-link to="/login">Вход</router-link>
             <router-link to="/sign-up">Регистрация</router-link>
         </div>
@@ -97,6 +97,9 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.logo{
+    height: 3rem;
+}
     .main-header{
         min-height: 3vh;
         padding: 2rem;

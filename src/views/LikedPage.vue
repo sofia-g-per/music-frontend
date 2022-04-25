@@ -11,18 +11,60 @@
                 playlistType="liked"
                 :songInPlaylistId="key"
             >
-                <xbtn  class="delete-btn"/>
+            <button class="icon-btn" @click.stop="handleDelete(song.id)">
+                <svg class="like-btn like-btn--active" 
+                    version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        viewBox="0 0 45.743 45.743" style="enable-background:new 0 0 45.743 45.743;"
+                    xml:space="preserve">
+                <g>
+                    <path d="M34.199,3.83c-3.944,0-7.428,1.98-9.51,4.997c0,0-0.703,1.052-1.818,1.052c-1.114,0-1.817-1.052-1.817-1.052
+                        c-2.083-3.017-5.565-4.997-9.51-4.997C5.168,3.83,0,8.998,0,15.376c0,1.506,0.296,2.939,0.82,4.258
+                        c3.234,10.042,17.698,21.848,22.051,22.279c4.354-0.431,18.816-12.237,22.052-22.279c0.524-1.318,0.82-2.752,0.82-4.258
+                        C45.743,8.998,40.575,3.83,34.199,3.83z"/>
+                </g>
+                <g>
+                </g>
+                <g>
+                </g>
+                <g>
+                </g>
+                <g>
+                </g>
+                <g>
+                </g>
+                <g>
+                </g>
+                <g>
+                </g>
+                <g>
+                </g>
+                <g>
+                </g>
+                <g>
+                </g>
+                <g>
+                </g>
+                <g>
+                </g>
+                <g>
+                </g>
+                <g>
+                </g>
+                <g>
+                </g>
+                </svg>
+            </button>
+                <!-- <xbtn   class="delete-btn"/> -->
             </music-list-item>
         </ul>
-        <p v-else>У вас ещё нет избранных песен</p>
+        <!-- У вас ещё нет избранных песен -->
+        <p v-else></p>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { PlayingPlaylist } from '@/interfaces/currentPlaylist';
 import MusicListItem from '@/components/songs/MusicListItem.vue';
 import TheSearchBar from '@/components/UI/TheSearchBar.vue';
-import Xbtn from '@/components/UI/buttons/Xbtn.vue';
 import axios from 'axios';
 
 export default defineComponent({
@@ -30,7 +72,6 @@ export default defineComponent({
     components: {
         MusicListItem,
         TheSearchBar,
-        Xbtn
     },
     data(){
         return{
@@ -53,6 +94,8 @@ export default defineComponent({
        .then((response) => {
               if(response.status === 200 && response.data){
                   this.songs = response.data;
+              console.log(response)
+
               }
 
         })
@@ -61,19 +104,10 @@ export default defineComponent({
             if(error.response && error.response.status === 403) {
                   this.$router.push({name: 'login'})
               }
+              console.log(error)
         })
     },
     methods: {
-        playSong(songId:number, key:number ){
-            // let playlistToPlay = new PlayingPlaylist;
-            // playlistToPlay.type = "liked";
-            // playlistToPlay.playlist = this.songs;
-            // let songInPlaylistId = key;
-            // this.$store.dispatch('handleClickSong', {
-            //     songInPlaylistId,
-            //     playlistToPlay
-            // })
-        },
         handleSearchResponse(response:[]){
             this.songs = response;
         },

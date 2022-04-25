@@ -23,7 +23,7 @@
                 </div>
             </div>
         </div>
-        <p class="form-field__error-label" v-show="errors.songIds">{{errors.songIds}}</p>
+        <!-- <p class="form-field__error-label" v-show="errors.songIds">{{errors.songIds}}</p> -->
         <button class="main-btn" type="submit">Добавить</button>
     </Form>
 </template>
@@ -149,10 +149,10 @@ export default defineComponent({
     max-width: 20vw;
 }
 .song-select{
-    max-height: 50vh;
+    /* max-height: 50vh; */
     min-height: 20vh;
     min-width: 35vw;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
 }
 
 .music-list-item{

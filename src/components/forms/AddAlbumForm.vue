@@ -24,13 +24,14 @@
             </div>
         </div>
         
+        <p class="form-field__label"> Жанры: </p>
         <div class="song-select">
             <div v-for="option in genreOptions" :key="option.id" class="music-list-item">
                 <label :for="option.id">{{option.name}}</label>
                 <Field type="checkbox" :id="option.id" v-model="genreIds" name="genreIds" :value="option.id"/>
             </div>
         </div>
-        <p class="form-field__error-label" v-show="errors.songIds">{{errors.songIds}}</p>
+        <!-- <p class="form-field__error-label" v-show="errors.songIds">{{errors.songIds}}</p> -->
         <button class="main-btn" type="submit">Добавить</button>
     </Form>
 </template>
@@ -177,10 +178,11 @@ export default defineComponent({
     max-width: 20vw;
 }
 .song-select{
-    max-height: 50vh;
-    min-height: 20vh;
+    /* max-height: 50vh; */
+    /* min-height: 20vh;   */
+    padding-bottom: 2rem;
     min-width: 35vw;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
 }
 
 .music-list-item{

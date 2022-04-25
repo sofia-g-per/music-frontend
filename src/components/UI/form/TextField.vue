@@ -3,7 +3,7 @@
         <label :for="fieldData.name" class="form-field__label">
           {{fieldData.label}}
         </label>
-        <Field class="form-field__input" :name="fieldData.name" type="text" v-bind="$attrs" />
+        <Field  class="form-field__input" :name="fieldData.name" aria-autocomplete="off" autcomplete="off" v-bind="$attrs" />
         <p class="form-field__error-label" :name="fieldData.name" v-show="errorMessage">
           Заполните данное поле
         </p>

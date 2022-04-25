@@ -22,10 +22,13 @@
             defaultError="Прикрепите файл в формате mp3"
         >     
         </file-field>
+        <p class="form-field__label"> Жанры: </p>
         <div class="song-select">
             <div v-for="option in genreOptions" :key="option.id" class="music-list-item">
-                <label :for="option.id">{{option.name}}</label>
-                <Field type="checkbox" :id="option.id" v-model="genreIds" name="genreIds" :value="option.id"/>
+                <div class="genre-select__item">
+                    <label  label :for="option.id">{{option.name}}</label>
+                    <Field type="checkbox" :id="option.id" v-model="genreIds" name="genreIds" :value="option.id"/>
+                </div>
             </div>
         </div>
         <p class="form-field__error-label">{{formError}}</p>
@@ -141,3 +144,16 @@ export default defineComponent({
 
 })
 </script>
+
+<style scoped>
+.genre-select{
+    min-height: 20vh;
+    min-width: 35vw;
+}
+
+.genre-select__item{
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+}
+</style>

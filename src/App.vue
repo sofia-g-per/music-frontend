@@ -191,6 +191,8 @@ export default defineComponent({
   a{
     color: var(--font-color);
     font-size: 1.8rem;
+    display: flex;
+    align-items: center;
     text-transform: uppercase;
     text-decoration: none;
     transition: .3s;
@@ -261,7 +263,26 @@ export default defineComponent({
   
 }
 
+.form-field__label{
+  font-size: 1.8rem;
+}
+
 .boolean-field input{
   margin-right: 1rem;
+}
+
+.like-btn{
+  width: 2rem;
+}
+
+.like-btn{
+  fill: var(--font-color);
+  opacity: .6;
+  transition: .3s;
+}
+
+.like-btn--active{
+  opacity: 1;
+  fill: var(--accent-color-2);
 }
 </style>
