@@ -60,6 +60,8 @@ export default defineComponent({
   :root{
     --bg-color: black;
     --font-color: white;
+    --accent-color-1--light: #c956ff;
+    /* --accent-color-1: #9810ce; */
     --accent-color-1: #700B97;
     --accent-color-2: rgb(255, 0, 81);
     --accent-color-2--dark: rgb(17, 0, 36); 
@@ -283,7 +285,7 @@ export default defineComponent({
 
 .like-btn--active{
   opacity: 1;
-  fill: var(--accent-color-1);
+  fill: var(--accent-color-1--light);
 }
 
 .logo{

@@ -122,7 +122,7 @@ export default defineComponent({
   .profile-icon
   {
      width: 2.8rem;
-     fill: white;
+     fill: var(--accent-color-1--light);
   }
 
   .profile-links{
