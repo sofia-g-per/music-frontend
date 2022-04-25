@@ -4,8 +4,8 @@
           {{fieldData.label}}
         </label>
         <Field  class="form-field__input" :name="fieldData.name" aria-autocomplete="off" autcomplete="off" v-bind="$attrs" />
-        <p class="form-field__error-label" :name="fieldData.name" v-show="errorMessage">
-          Заполните данное поле
+        <p class="form-field__error-label" :name="fieldData.name">
+          {{errorMessage? 'Заполните данное поле': ''}}
         </p>
     </div>
 </template>

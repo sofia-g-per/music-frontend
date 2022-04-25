@@ -9,21 +9,14 @@
             :field-data="fieldsData.description" 
             v-model="fieldsValues.description"
         />
-        <p class="form-field__label">Песни: </p>
-        <div class="song-select">
-            <div v-for="song in songs" :key="song.id" class="music-list-item">
-                <div class="music-list-item__info">
-                    <h2 class="music-list-item__info__title heading-tretriary">{{song.name}}</h2>
-                    <div class="music-list-item__artist-wrapper">
-                        <p v-for="artist in song.artists" :key="artist.artistId" class="music-list-item__info__artist main-text">{{artist.artist.stagename}}</p>
-                    </div>
-                </div>
-                <div class="music-list-item__buttons">
-                    <Field type="checkbox" v-model="songIds" name="songIds" :value="song.id"/>
-                </div>
-            </div>
-        </div>
-        <!-- <p class="form-field__error-label" v-show="errors.songIds">{{errors.songIds}}</p> -->
+        <song-select 
+            :getSongsURL="getSongsURL"
+            @onSongIdsChange="handleSongIdsChange"
+        >
+
+        </song-select>
+        <p>parent {{songIds}}</p>
+
         <button class="main-btn" type="submit">Добавить</button>
     </Form>
 </template>
@@ -32,6 +25,7 @@
 import { defineComponent } from 'vue'
 import { Form, Field, useForm, ErrorMessage } from 'vee-validate'
 import TextField from '../UI/form/TextField.vue'
+import SongSelect from '../UI/form/SongSelect.vue';
 import axios from 'axios';
 import { CreatePlaylistDto } from '@/dtos/createPlaylist.dto';
 
@@ -40,7 +34,8 @@ export default defineComponent({
     components: {
         TextField,
         Form,
-        Field
+        // Field,
+        SongSelect
     },
     setup(){
         const schema = {
@@ -77,7 +72,7 @@ export default defineComponent({
                     label: 'Описание'
                 },
             },
-            songs: [],
+            // songs: [],
             songIds: [],
             formError: ''
         }
@@ -108,6 +103,11 @@ export default defineComponent({
                   this.formError = 'Простите, произошла ошибка при загрузке данных'
               }
           })
+        },
+        handleSongIdsChange(songIds){
+            console.log('handled', songIds)
+            this.songIds = songIds;
+            console.log(this.songIds)
         }
     },
     computed: {
@@ -118,23 +118,7 @@ export default defineComponent({
             return this.$store.getters.fullURL('createPlaylist')
         }
     },
-    mounted(){
-        axios.get(this.getSongsURL)
-       .then((response) => {
-              if(response.status === 200 && response.data){
-                  this.songs = response.data;
-              }
 
-        })
-        .catch((error)=>{
-              if(error.response && error.reponse.status === 400){
-                  this.errors = error.data;
-              }else{
-                  this.formError = 'Простите, произошла ошибка при загрузке данных'
-              }
-          })
-
-    },
 
 })
 </script>
