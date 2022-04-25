@@ -11,7 +11,7 @@
                 playlistType="liked"
                 :songInPlaylistId="key"
             >
-            <button class="icon-btn" @click.stop="handleDelete(song.id)">
+            <button class="icon-btn" @click.stop="handleDelete(song.songId)">
                 <svg class="like-btn like-btn--active" 
                     version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                         viewBox="0 0 45.743 45.743" style="enable-background:new 0 0 45.743 45.743;"
@@ -94,8 +94,6 @@ export default defineComponent({
        .then((response) => {
               if(response.status === 200 && response.data){
                   this.songs = response.data;
-              console.log(response)
-
               }
 
         })
@@ -116,6 +114,11 @@ export default defineComponent({
             axios.post(this.deleteApiURL, songData, {withCredentials: true})
             .then((response)=>{
                 if(response.status === 201 && response.data){
+                    let newUserData = this.$store.getters.user;
+                    let newFav = newUserData.favoriteSongs.filter(like=> like.songId !== songId)
+                    newUserData.favoriteSongs = newFav;
+                    this.$store.dispatch('updateUser', {newUserData: newUserData});
+                    
                     let index = this.songs.findIndex((song)=>song.id = songId);
                     this.songs.splice(index, 1);
                 }

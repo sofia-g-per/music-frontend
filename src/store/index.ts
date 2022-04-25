@@ -81,7 +81,6 @@ export default createStore({
       }
       this.state.isPlaying = false;
       //если песня находятся в проигрываемом сейчас плейлисте
-      console.log('handle click playing', payload, payload.songInPlaylistId, payload.playlistToPlay)
 
       if(this.state.currentPlaylist && this.state.currentPlaylist.type 
       && this.state.currentPlaylist.type === payload.playlistToPlay.type
@@ -94,7 +93,6 @@ export default createStore({
 
 
       }else{
-        console.log('else')
         this.state.currentPlaylist = payload.playlistToPlay;
         this.state.currentSongId = payload.songInPlaylistId;
         this.dispatch('embedNewAudio',({filePath: this.getters.currentAudioPath}));
@@ -181,17 +179,16 @@ export default createStore({
       }
     },
     isArtistGuard(){
-      console.log(this.getters.user.artist)
       if(!this.getters.user || !this.getters.user.artist){
         return {name: 'home'}
       }
     },
     updateUser(state, {newUserData}){
-      console.log('updating local', newUserData)
       const userString = localStorage.getItem('user')
       if(userString){
         const user = JSON.parse(userString);
         user.value = newUserData;
+
         localStorage.setItem('user', JSON.stringify(user))
       }
     }
@@ -203,7 +200,6 @@ export default createStore({
     },
     currentAudioPath: (state, getters)=> {
       if(state.currentSongId !== undefined){
-        console.log('getter audio', state.currentPlaylist.playlist, state.currentSongId)
         const currentSong = state.currentPlaylist.playlist[state.currentSongId] as any;
         if(currentSong.song){
           return getters.filePath('songs', currentSong.song.filePath)
@@ -221,7 +217,6 @@ export default createStore({
     },
     user(){
       const userString = localStorage.getItem('user')
-      console.log('userstring',userString)
       if(userString){
         const user = JSON.parse(userString);
 

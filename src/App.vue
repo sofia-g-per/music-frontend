@@ -283,6 +283,6 @@ export default defineComponent({
 
 .like-btn--active{
   opacity: 1;
-  fill: var(--accent-color-2);
+  fill: var(--accent-color-1);
 }
 </style>

@@ -157,15 +157,12 @@ export default defineComponent({
                     const songData= {songId: songId};
                     axios.post(this.unlikeSongUrl, songData, {withCredentials: true})
                     .then((response)=>{
-                        console.log('unlike response', response)
                         if(response.status === 201){
                                 let newUserData = this.$store.getters.user;
-                                console.log('got userData', newUserData)
                                 let newFav = newUserData.favoriteSongs.filter(like=> like.songId !== songId)
                                 newUserData.favoriteSongs = newFav;
                                 this.$store.dispatch('updateUser', {newUserData: newUserData});
                                 this.likedSongs = newFav;
-                                console.log('updated unliked', this.likedSongs, newUserData, newUserData.favoriteSongs)
 
                             }
                         })
@@ -177,17 +174,12 @@ export default defineComponent({
                     const like = {songId: songId}
                         axios.post(this.likeSongUrl, like, {withCredentials: true})
                         .then((response) => {
-                            console.log('likeresponse', response)
                             if(response.status === 201){
                                 let newUserData = this.$store.getters.user;
-                                 console.log('got userData', newUserData)
 
-                                console.log('pre-push', response, response.data, this.likedSongs)
                                 newUserData.favoriteSongs.push(response.data)
-                                console.log('liked updating', newUserData, songId);
                                 this.$store.dispatch('updateUser', {newUserData: newUserData});
                                 this.likedSongs = newUserData.favoriteSongs;
-                                console.log('updated liked', this.likedSongs, newUserData)
                             }
                         })
                         .catch((error) =>{
