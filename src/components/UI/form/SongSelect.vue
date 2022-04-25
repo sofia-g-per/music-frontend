@@ -23,12 +23,13 @@
                     class="song-select" 
                     v-model="selectedSongs"
                     @start="drag=true" 
-                    @end="drag=false"
+                    @end="onDragEnd"
+                    item-key="id"
                 >
-                <template #item="{element}">
+                <template #item="{element, index}">
                     <div :key="element" class="music-list-item">
                         <div class="music-list-item__info">
-                            <h2 class="music-list-item__info__title heading-tretriary">{{element.name}}</h2>
+                            <h2 class="music-list-item__info__title heading-tretriary">{{index + 1}} {{element.name}}</h2>
                             <div class="music-list-item__artist-wrapper">
                                 <p v-for="artist in element.artists" :key="artist.artistId" class="music-list-item__info__artist main-text">{{artist.artist.stagename}}</p>
                             </div>
@@ -104,6 +105,17 @@ export default defineComponent({
             }else{
                 this.selectedSongs.splice(index - 1, 1);
             }
+        },
+        onDragEnd(){
+            this.drag=false;
+            this.songIds = this.selectedSongs.map((song)=>{
+                if(song.song){
+                    return song.song.id
+                }
+                else{
+                    return song.id
+                }
+            })
         }
     }
 })
