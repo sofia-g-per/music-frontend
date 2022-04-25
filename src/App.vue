@@ -285,4 +285,8 @@ export default defineComponent({
   opacity: 1;
   fill: var(--accent-color-1);
 }
+
+.logo{
+    height: 3rem;
+}
 </style>

@@ -97,9 +97,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.logo{
-    height: 3rem;
-}
+
     .main-header{
         min-height: 3vh;
         padding: 2rem;
