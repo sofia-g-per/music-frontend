@@ -11,6 +11,8 @@
         />
         <song-select 
             :getSongsURL="getSongsURL"
+            :initialSongIds="songIds"
+            :initialSelectedSongs="[]"
             @onSongIdsChange="handleSongIdsChange"
         />
 
@@ -122,10 +124,11 @@ export default defineComponent({
 .playlist-form{
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 1rem;
 }
 .form-field{
-    max-width: 20vw;
+    max-width: 30vw;
 }
 .song-select{
     /* max-height: 50vh; */

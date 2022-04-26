@@ -240,6 +240,7 @@ export default defineComponent({
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    min-width: 20vw;
     padding: 1rem;
   }
 

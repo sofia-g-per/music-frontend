@@ -9,20 +9,12 @@
             :field-data="fieldsData.description" 
             v-model="fieldsValues.description"
         />
-        <p class="form-field__label">Песни: </p>
-        <div class="song-select">
-            <div v-for="song in songs" :key="song.id" class="music-list-item">
-                <div class="music-list-item__info">
-                    <h2 class="music-list-item__info__title heading-tretriary">{{song.name}}</h2>
-                    <div class="music-list-item__artist-wrapper">
-                        <p v-for="artist in song.artists" :key="artist.artistId" class="music-list-item__info__artist main-text">{{artist.artist.stagename}}</p>
-                    </div>
-                </div>
-                <div class="music-list-item__buttons">
-                    <Field type="checkbox" v-model="songIds" name="songIds" :value="song.id"/>
-                </div>
-            </div>
-        </div>
+        <song-select 
+            :getSongsURL="getSongsURL"
+            :initialSongIds="songIds"
+            :initialSelectedSongs="[]"
+            @onSongIdsChange="handleSongIdsChange"
+        />
         
         <p class="form-field__label"> Жанры: </p>
         <div class="song-select">
@@ -40,6 +32,7 @@
 import { defineComponent } from 'vue'
 import { Form, Field, useForm, ErrorMessage } from 'vee-validate'
 import TextField from '../UI/form/TextField.vue'
+import SongSelect from '../UI/form/SongSelect.vue';
 import axios from 'axios';
 import {CreateAlbumDto} from '@/dtos/createAlbum.dto'
 
@@ -48,6 +41,7 @@ export default defineComponent({
     components: {
         TextField,
         Form,
+        SongSelect,
         Field
     },
     setup(){
@@ -101,26 +95,6 @@ export default defineComponent({
         }
     },
     mounted(){
-        // песни
-        axios.get(this.getSongsURL, {withCredentials: true})
-       .then((response) => {
-              if(response.status === 200 && response.data){
-                  if(response.data.length > 0){
-                    this.songs = response.data;
-                  }else{
-                      this.$router.push({name: 'add-song'})
-                  }
-              }
-
-        })
-        .catch((error)=>{
-              if(error.response && error.response.status === 400){
-                  this.errors = error.data;
-              }else{
-                  this.formError = 'Простите, произошла ошибка при загрузке данных'
-              }
-          })
-
         // жанры
         axios.get(`${this.$store.state.APIURL}${this.$store.state.APIExtensions.getGenres}`)
         .then((response) => {
@@ -161,6 +135,9 @@ export default defineComponent({
                   this.formError = 'Простите, произошла ошибка при загрузке данных'
               }
           })
+        },
+        handleSongIdsChange(songIds){
+            this.songIds = songIds;
         }
     },
     

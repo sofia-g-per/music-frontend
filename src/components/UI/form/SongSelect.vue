@@ -4,7 +4,7 @@
             <p class="form-field__label">Выберите песни: </p>
             <div class="song-select">
                 <!-- вынести в отдельный элемент  -->
-                <div v-for="(song, index) in songs" :key="song.id" class="music-list-item">
+                <div v-for="(song) in songs" :key="song.id" class="music-list-item">
                     <div class="music-list-item__info">
                         <h2 class="music-list-item__info__title heading-tretriary">{{song.name}}</h2>
                         <div class="music-list-item__artist-wrapper">
@@ -12,7 +12,7 @@
                         </div>
                     </div>
                     <div class="music-list-item__buttons">
-                        <Field type="checkbox" v-model="songIds" @change="onToggleCheckbox($event, song, index)" name="songIds" :value="song.id"/>
+                        <Field type="checkbox" v-model="songIds" @change="onToggleCheckbox($event, song)" name="songIds" :value="song.id"/>
                     </div>
                 </div>
             </div>
@@ -39,7 +39,6 @@
                         </div> -->
                     </div>
                 </template>
-
                 </draggable>
             </div>
         </div>
@@ -52,7 +51,7 @@ import { Field } from 'vee-validate';
 import draggable from 'vuedraggable';
 import axios from 'axios';
 export default defineComponent({
-    props: ['getSongsURL'],
+    props: ['getSongsURL', 'initialSongIds', 'initialSelectedSongs'],
     emits: ['onSongIdsChange'],
     components:{
         Field,
@@ -96,14 +95,22 @@ export default defineComponent({
 
             console.log('emitted', songIds)
             this.$emit('onSongIdsChange', songIds)
+        },
+        initialSongIds(){
+            this.songIds = this.initialSongIds;
+            // selected
+        },
+        initialSelectedSongs(){
+            this.selectedSongs = this.initialSelectedSongs;
         }
     },
     methods:{
-        onToggleCheckbox(e, song, index){
+        onToggleCheckbox(e, song){
             if(e.target && e.target.checked){
                 this.selectedSongs.push(song);
             }else{
-                this.selectedSongs.splice(index - 1, 1);
+                const index = this.selectedSongs.findIndex((item)=> item.id === song.id)
+                this.selectedSongs.splice(index, 1);
             }
         },
         onDragEnd(){
@@ -116,7 +123,7 @@ export default defineComponent({
                     return song.id
                 }
             })
-        }
+        },
     }
 })
 </script>
@@ -126,16 +133,24 @@ export default defineComponent({
 .song-select-wrapper{
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+    gap: 4rem;
+    width: 50vw;
 }
 .song-select{
     /* max-height: 50vh; */
     min-height: 20vh;
-    min-width: 35vw;
+    /* min-width: 35vw; */
+    max-width: 100%;
     /* overflow-y: scroll; */
 }
 
+.select-wrapper{
+    max-width: 25vw;
+
+}
 .music-list-item{
+    max-width: 25vw;
+    cursor: pointer;
     display: flex;
     justify-content: space-between;
     padding: 1rem;

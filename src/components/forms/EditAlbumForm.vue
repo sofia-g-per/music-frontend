@@ -8,20 +8,12 @@
             :field-data="fieldsData.description" 
             v-model="fieldsValues.description"
         />
-        <p class="form-field__label">Песни: </p>
-        <div class="song-select">
-            <div v-for="song in songs" :key="song.id" class="music-list-item">
-                <div class="music-list-item__info">
-                    <h2 class="music-list-item__info__title heading-tretriary">{{song.name}}</h2>
-                    <div class="music-list-item__artist-wrapper">
-                        <p v-for="artist in song.artists" :key="artist.artistId" class="music-list-item__info__artist main-text">{{artist.artist.stagename}}</p>
-                    </div>
-                </div>
-                <div class="music-list-item__buttons">
-                    <Field type="checkbox" v-model="songIds" name="songIds" :value="song.id"/>
-                </div>
-            </div>
-        </div>
+        <song-select 
+            :getSongsURL="getSongsURL"
+            :initialSongIds="songIds"
+            :initialSelectedSongs="initialSelectedSongs"
+            @onSongIdsChange="handleSongIdsChange"
+        />
         
         <p class="form-field__label"> Жанры: </p>
         <div class="song-select">
@@ -87,7 +79,8 @@ export default defineComponent({
             songIds: [],
             genreOptions: [],
             genreIds: [],
-            formError: ''
+            formError: '',
+            initialSelectedSongs: []
         }
     },
     computed: {
@@ -115,8 +108,10 @@ export default defineComponent({
             for (const [key, value] of Object.entries(this.initialData)) {
                 if(key === 'songs'){
                     this.songIds = [];
+                    this.initialSelectedSongs = [];
                     for(const song of this.initialData.songs){
                         this.songIds.push(song.songId);
+                        this.initialSelectedSongs.push(song.song);
                     }
                 }else if(key === 'genres'){
                     this.genreIds = [];
@@ -138,22 +133,6 @@ export default defineComponent({
                 this.$router.push({name: 'login'})
               }
         })
-
-        // загрузка всех песен данного пользователя
-        axios.get(this.getSongsURL, {withCredentials:true})
-       .then((response) => {
-              if(response.status === 200 && response.data){
-                  this.songs = response.data;
-              }
-
-        })
-        .catch((error)=>{
-              if(error.response && error.reponse.status === 400){
-                  this.errors = error.data;
-              }else{
-                  this.formError = 'Простите, произошла ошибка при загрузке данных'
-              }
-          })
 
         // загрузка жанров
         axios.get(`${this.$store.state.APIURL}${this.$store.state.APIExtensions.getGenres}`)
@@ -199,6 +178,9 @@ export default defineComponent({
                   this.formError = 'Простите, произошла ошибка при загрузке данных'
               }
           })
+        },
+        handleSongIdsChange(songIds){
+            this.songIds = songIds;
         }
     },
     
@@ -210,10 +192,11 @@ export default defineComponent({
 .playlist-form{
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 1rem;
 }
 .form-field{
-    max-width: 20vw;
+    max-width: 30vw;
 }
 .song-select{
     max-height: 50vh;

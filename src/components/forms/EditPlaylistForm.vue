@@ -8,21 +8,12 @@
             :field-data="fieldsData.description" 
             v-model="fieldsValues.description"
         />
-        <p class="form-field__label">Песни: </p>
-        <div class="song-select">
-            <div v-for="song in songs" :key="song.id" class="music-list-item">
-                <div class="music-list-item__info">
-                    <h2 class="music-list-item__info__title heading-tretriary">{{song.name}}</h2>
-                    <div class="music-list-item__artist-wrapper">
-                        <p v-for="artist in song.artists" :key="artist.artistId" class="music-list-item__info__artist main-text">{{artist.artist.stagename}}</p>
-                    </div>
-                </div>
-                <div class="music-list-item__buttons">
-                    <Field type="checkbox" v-model="songIds" name="songIds" :value="song.id"/>
-                </div>
-            </div>
-        </div>
-        <!-- <p class="form-field__error-label" v-show="errors.songIds">{{errors.songIds}}</p> -->
+        <song-select 
+            :getSongsURL="getSongsURL"
+            :initialSongIds="songIds"
+            :initialSelectedSongs="initialSelectedSongs"
+            @onSongIdsChange="handleSongIdsChange"
+        />
         <button class="main-btn" type="submit">Добавить</button>
     </Form>
 </template>
@@ -30,6 +21,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { Form, Field, useForm, ErrorMessage } from 'vee-validate'
+import SongSelect from '../UI/form/SongSelect.vue';
 import TextField from '../UI/form/TextField.vue'
 import axios from 'axios';
 import { CreatePlaylistDto } from '@/dtos/createPlaylist.dto';
@@ -39,7 +31,8 @@ export default defineComponent({
     components: {
         TextField,
         Form,
-        Field
+        SongSelect
+        // Field
     },
     setup(){
         const schema = {
@@ -77,6 +70,7 @@ export default defineComponent({
             songs: [],
             initialData: {},
             songIds: [],
+            initialSelectedSongs: [],
             formError: ''
         }
     },
@@ -112,6 +106,9 @@ export default defineComponent({
                   this.formError = 'Простите, произошла ошибка при загрузке данных'
               }
           })
+        },
+        handleSongIdsChange(songIds){
+            this.songIds = songIds;
         }
     },
     computed: {
@@ -139,13 +136,14 @@ export default defineComponent({
                 if(key !== 'songs'){
                     this.fieldsValues[key] = value; 
                 }else{
+                    this.initialSelectedSongs = [];
                     this.songIds = [];
                     for(const song of this.initialData.songs){
                         this.songIds.push(song.songId);
+                        this.initialSelectedSongs.push(song.song);
                     }
                 }
             }
-
           }
        })
         .catch((error)=>{
@@ -154,24 +152,6 @@ export default defineComponent({
                 this.$router.push({name: 'login'})
               }
         })
-
-        //загрузка всех песен
-        axios.get(this.getSongsURL)
-       .then((response) => {
-              if(response.status === 200 && response.data){
-                  this.songs = response.data;
-                  console.log('all songs', this.songs)
-              }
-
-        })
-        .catch((error)=>{
-              if(error.response && error.reponse.status === 400){
-                  this.errors = error.data;
-              }else{
-                  this.formError = 'Простите, произошла ошибка при загрузке данных'
-              }
-          })
-
     },
 
 })
@@ -181,25 +161,9 @@ export default defineComponent({
 .playlist-form{
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 1rem;
 }
-.form-field{
-    max-width: 20vw;
-}
-.song-select{
-    /* max-height: 50vh; */
-    min-height: 20vh;
-    min-width: 35vw;
-    /* overflow-y: scroll; */
-}
 
-.music-list-item{
-    display: flex;
-    justify-content: space-between;
-    padding: 1rem;
-}
 
-.music-list-item__artist-wrapper{
-    padding-left: 1rem;
-}
 </style>

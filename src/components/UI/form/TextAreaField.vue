@@ -37,7 +37,7 @@ export default defineComponent({
 }
 
 .form-field__input{
-  padding: .5rem;
-  border-radius: .5rem;
+padding: .5rem;
+border-radius: .5rem;
 }
 </style>

@@ -68,8 +68,8 @@ export default defineComponent({
               if(response.status === 200){
                     let index = this.albums.findIndex((album)=>
                     {
-                    return album.id === albumId
-              });
+                        return album.id === albumId
+                    });
                     this.albums.splice(index, 1);
                 }
             })
