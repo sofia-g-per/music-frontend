@@ -9,6 +9,7 @@
             v-model="fieldsValues.description"
         />
         <song-select 
+            v-if="initialSelectedSongs"
             :getSongsURL="getSongsURL"
             :initialSongIds="songIds"
             :initialSelectedSongs="initialSelectedSongs"
@@ -142,6 +143,7 @@ export default defineComponent({
                         this.songIds.push(song.songId);
                         this.initialSelectedSongs.push(song.song);
                     }
+                    console.log(this.initialSelectedSongs, this.initialData.songs)
                 }
             }
           }

@@ -8,12 +8,11 @@
 
 <!-- проигрываемая песня -->
   <playing-song-footer 
-    v-if="currentSong" 
+    v-if="currentSong && !routeExcludesFooter" 
     :songData="currentSong"
     @onToggleSongList="handleToggleSongList"
   >
   </playing-song-footer>
-
 </template>
 
 <script lang="ts">
@@ -28,6 +27,18 @@ export default defineComponent({
   data() {
     return {
       isSongListOpen:false,
+      routeExcludesFooter: false,
+      //массива наименований маршрутов на которых не показывается элемент проигрывания песни
+      routesToExcudeOn: [
+        'edit-profile',
+        'edit-album',
+        'edit-playlist',
+        'edit-song',
+        'add-song',
+        'add-album',
+        'signup',
+        'login',
+      ]
     }
   },
   computed:{
@@ -46,10 +57,21 @@ export default defineComponent({
   },
   methods: {
     handleToggleSongList(isOpen:boolean){
-      console.log(isOpen, 'emit recieved')
       this.isSongListOpen = isOpen;
     }
-  }
+  },
+  watch:{
+      $route(to, from){
+          if (this.routesToExcudeOn.includes(to.name)){
+            this.$store.dispatch('pauseCurrentSong');
+            this.routeExcludesFooter = true;
+          }else{
+            this.routeExcludesFooter = false;
+
+          }
+
+      }
+}
 })
 </script>
 

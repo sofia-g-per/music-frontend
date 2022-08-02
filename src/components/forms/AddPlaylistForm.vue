@@ -104,8 +104,9 @@ export default defineComponent({
           })
         },
         handleSongIdsChange(songIds){
+            console.log('chenged', songIds)
             this.songIds = songIds;
-        }
+        },
     },
     computed: {
         getSongsURL() {

@@ -88,6 +88,7 @@ export default defineComponent({
     },
     computed: {
         getSongsURL() {
+            
             return this.$store.getters.fullURL('getCurrentArtistSongs');
         },
         addAlbumURL(){
@@ -138,7 +139,8 @@ export default defineComponent({
         },
         handleSongIdsChange(songIds){
             this.songIds = songIds;
-        }
+        },
+        
     },
     
 

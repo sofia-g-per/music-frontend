@@ -3,7 +3,6 @@
         <text-field 
             :field-data="fieldsData.email" 
             v-model="fieldsValues.email"
-            rules="required|email"
         />
 
         <div class="form-field">
@@ -54,7 +53,7 @@ export default defineComponent({
     },
     setup(){
             const schema = {
-                email: 'required|email',
+                email: 'required',
                 password: 'required'
             };
         return {

@@ -67,7 +67,7 @@ export default defineComponent({
         }
     },
     mounted(){
-        axios.get(this.getSongsURL)
+        axios.get(this.getSongsURL, {withCredentials:true})
        .then((response) => {
               if(response.status === 200 && response.data){
                   this.songs = response.data;
@@ -85,6 +85,7 @@ export default defineComponent({
     },
     watch:{
         selectedSongs(){
+            console.log('emited', this.songIds)
             let songIds = this.selectedSongs.map((song)=> {
                 if(song.song){
                     return song.song.id
@@ -92,26 +93,28 @@ export default defineComponent({
                     return song.id
                 }
             })
-
-            console.log('emitted', songIds)
+            console.log('emmited')
             this.$emit('onSongIdsChange', songIds)
         },
-        initialSongIds(){
-            this.songIds = this.initialSongIds;
-            // selected
-        },
-        initialSelectedSongs(){
-            this.selectedSongs = this.initialSelectedSongs;
-        }
+        // initialSongIds(){
+        //     this.songIds = this.initialSongIds;
+        //     // selected
+        // },
+        // initialSelectedSongs(){
+        //     this.selectedSongs = this.initialSelectedSongs;
+        // }
     },
     methods:{
         onToggleCheckbox(e, song){
+            console.log('toggled')
             if(e.target && e.target.checked){
                 this.selectedSongs.push(song);
             }else{
                 const index = this.selectedSongs.findIndex((item)=> item.id === song.id)
                 this.selectedSongs.splice(index, 1);
             }
+            this.$emit('onSongIdsChange', this.songIds)
+
         },
         onDragEnd(){
             this.drag=false;

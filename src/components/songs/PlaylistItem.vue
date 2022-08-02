@@ -2,18 +2,34 @@
     <div class="playlist-wrapper">
         <slot></slot>
         <h3 class="playlist-title">{{itemData.name}}</h3>
-        <div class="playlist-wrapper__songs">
+        <music-list-item
+        class="playlist__song"
+         v-for="(song, key) in itemData.songs" 
+                :key="song.id"
+                :songData="song.song"
+                :playlist="itemData"
+                playlistType="liked"
+                :songInPlaylistId="key"
+        >
+
+        </music-list-item>
+
+
+        <!-- <div class="playlist-wrapper__songs">
             <p class="playlist-wrapper__songs__song" v-for="(song, id) in itemData.songs" :key="song.id">{{id+1}} {{song.song.name}}</p>
-        </div>
+        </div> -->
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-
+import MusicListItem from './MusicListItem.vue'
 export default defineComponent({
     name: "PlaylistItem",
-    props: ['itemData']
+    props: ['itemData'],
+    components:{
+        MusicListItem
+    }
 })
 </script>
 
@@ -41,5 +57,9 @@ export default defineComponent({
 
  .playlist-title{
      font-size: 3rem;
+ }
+
+ .playlist__song{
+     margin-left: 4rem;
  }
 </style>

@@ -4,7 +4,9 @@
             <div class="music-list-item__info">
                 <h2 class="music-list-item__info__title heading-tretriary">{{songData.name}}</h2>
             <div class="music-list-item__artist-wrapper">
-                    <p v-for="artist in songData.artists" :key="artist.artistId" class="music-list-item__info__artist main-text">{{artist.artist.stagename}}</p>
+                <p v-for="artist in songData.artists" :key="artist.artistId" class="music-list-item__info__artist main-text">
+                    {{artist.artist.stagename}}
+                </p>
             </div>
             </div>
             <div class="music-list-item__progress">
@@ -132,7 +134,7 @@ export default defineComponent({
     emits: ['onToggleSongList'],
     data() {
         return {
-            isOpenList: false
+            isOpenList: false,
         }
     },
     computed: {
@@ -162,7 +164,8 @@ export default defineComponent({
         onPlayPrevious(){
             this.$store.dispatch('playPreviousSong');
         }
-    }
+    },
+
 
 })
 </script>
@@ -208,7 +211,6 @@ export default defineComponent({
         justify-content: flex-start;
     
     }
-
     .play-btn{
         color: var(--font-color);
         background: none;
@@ -240,10 +242,10 @@ export default defineComponent({
     /* footer song list */
     .footer__list-wrapper{
         height: 0;
-        background: var(--bg-color)
+        background: var(--bg-color);
+        overflow-y:hidden;
     }
     .footer__list-wrapper--active{
         height: 100%;
     }
-
 </style>

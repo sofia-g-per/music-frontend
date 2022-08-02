@@ -26,7 +26,7 @@
                 Пароль
             </label>
             <Field type="password" class="form-field__input" name="password"  v-model="fieldsValues.password" />
-            <p class="form-field__error-label" name="password" v-show="false">
+            <p class="form-field__error-label" name="password" v-show="true">
                 Заполните данное поле
             </p>
         </div>

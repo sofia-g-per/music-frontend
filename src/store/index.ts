@@ -102,6 +102,10 @@ export default createStore({
 
       }
     },
+    pauseCurrentSong(){
+      this.state.currentSongAudio!.pause();
+      this.state.isPlaying = false;
+    },
     playCurrentSong(){
 
       if(this.state.currentSongDefined){

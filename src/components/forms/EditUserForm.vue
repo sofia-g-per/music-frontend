@@ -122,6 +122,7 @@ export default defineComponent({
     },
     mounted() {
         const userId =  this.$store.getters.user.id;
+        // получение информации о пользователе
         axios.get(this.getUserUrl, {
             params:{
                 userId: userId
@@ -145,7 +146,6 @@ export default defineComponent({
         .catch((error)=>{
             console.log(error)
         })
-
     },
     methods: {
         onSubmit(){
@@ -154,9 +154,7 @@ export default defineComponent({
             }
             axios.post(this.fullApiUrl, this.fieldsValues, {withCredentials:true})
             .then((response) => {
-                console.log(response)
                 if(response.status === 200 || response.status === 201  && response.data){
-                    console.log(response.data)
                     this.$store.dispatch('saveUser', {user: response.data});
                     this.$router.push('/');
                 }else{

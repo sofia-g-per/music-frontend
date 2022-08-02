@@ -35,6 +35,10 @@ export default defineComponent({
                 this.$store.dispatch('updateCurrentPlaylist', {newPlaylistOrder: value})
             }
         }
-    }
+    },
 })
 </script>
+
+
+<style scoped>
+</style>

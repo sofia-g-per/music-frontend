@@ -28,7 +28,14 @@ export default defineComponent({
         playSong(){
             let playlistToPlay = new PlayingPlaylist;
             playlistToPlay.type = this.playlistType;
-            playlistToPlay.playlist = this.playlist;
+            if(this.playlist[0].song){
+                playlistToPlay.playlist = this.playlist.map(song=>{
+                    return song = song.song
+                })
+            }else{
+                playlistToPlay.playlist = this.playlist;
+
+            }
             this.$store.dispatch('handleClickSong', {
                 songInPlaylistId: this.songInPlaylistId,
                 playlistToPlay: playlistToPlay
