@@ -6,11 +6,6 @@
             rules="required"
         />
         <text-field 
-            :field-data="fieldsData.surname" 
-            v-model="fieldsValues.surname"
-            rules="required"
-        />
-        <text-field 
             :field-data="fieldsData.username" 
             v-model="fieldsValues.username"
             rules="required"
@@ -36,6 +31,12 @@
             </label>
             <Field :name="fieldsData.roleId.name" type="checkbox" v-model="fieldsValues.roleId" value="artist" :unchecked-value="false" />
         </div>
+        <file-field 
+            :field-data="fieldsData.avatar" 
+            v-model="fieldsValues.avatar" 
+            rules="required|mimes:audio/mpeg"
+            defaultError="Прикрепите файл в формате mp3"
+        > </file-field>
         <div
             v-if="fieldsValues.roleId && fieldsValues.roleId === fieldsData.roleId.value"
             :fieldsValues="fieldsValues"
@@ -53,7 +54,7 @@
         </div>
 
         <p class="form-field__error-label">{{formError}}</p>
-        <button  class="main-btn" type="submit">Зарегистрироваться</button>
+        <button  class="main-btn main-btn--fill" type="submit">Сохранить</button>
     </Form>
 </template>
 
@@ -61,6 +62,7 @@
 import { defineComponent } from 'vue'
 import { Form, Field } from 'vee-validate'
 import TextField from '../UI/form/TextField.vue'
+import FileField from '../UI/form/FileField.vue';
 import axios from 'axios';
 import { CreateUserDto } from '@/dtos/createUser.dto';
 import { CreateArtistDto } from '@/dtos/createArtist.dto';
@@ -71,15 +73,16 @@ export default defineComponent({
     components: {
         TextField,
         Field,
-        Form
+        Form,
+        FileField
     },
     setup(){
         const schema = {
             name: 'required',
-            surname: 'required',
             username: 'required',
             email: 'required',
             password: 'required',
+            // avatar:
             // stagename: 'validateArtist'
         };
         return {
@@ -105,10 +108,6 @@ export default defineComponent({
                     name: 'name',
                     label: 'Имя'
                 },
-                surname: {
-                    name: 'surname',
-                    label: 'Фамилия'
-                },
                 username: {
                     name: 'username',
                     label: 'Имя пользователя'
@@ -117,6 +116,10 @@ export default defineComponent({
                     name: 'roleId',
                     value: 'artist',
                     label: 'Вы хотите зарегистрироваться как артист?'
+                },
+                avatar:{
+                    name: 'avatar',
+                    label: 'Загрузить аватар'
                 },
                 artist: {
                     stagename: {

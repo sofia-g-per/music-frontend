@@ -13,9 +13,12 @@
             <p class="form-field__error-label" name="password" v-show="false">
                 Заполните данное поле
             </p>
+
         </div>
         <p class="form-field__error-label">{{formError}}</p>
-        <button  class="main-btn" type="submit">Войти</button>
+
+        <button  class="main-btn main-btn--fill" type="submit">Войти</button>
+
     </Form>
 </template>
 
@@ -72,6 +75,7 @@ export default defineComponent({
             }
           )
           .catch((error)=>{
+            console.log("error", error);
               if(error.response.status === 400){
                   this.formError = 'Проверьте правильность заполненных данных';
               }else{
@@ -90,12 +94,5 @@ export default defineComponent({
 </script>
 
 <style scoped>
-    .form-field__label{
-    font-size: 1.8rem;
-    }
 
-    .form-field__input{
-    padding: .5rem;
-    border-radius: .5rem;
-    }
 </style>

@@ -111,36 +111,37 @@ export default defineComponent({
 
     .search-bar__wrapper{
         display: flex;
-        flex-direction: column;
-        width: 100%;
-        align-items: center;
+        width: fit-content;
+        min-width: 70rem;
         position: relative;
         gap: .5rem;
     }
     .search-bar{
-        width: 50%;
         background: var(--bg-color);
+        width: 100%;
         padding: .8rem;
-        border: 1px solid var(--font-color);
-        border-radius: 1rem;
+        border: none;
         color: var(--font-color);
         transition: .3s;
+        border-bottom: 2px solid;
+        border-image: var(--basic-gradient) 1;
     }
 
     .search-bar::placeholder{
         color: var(--font-color);
+        opacity: 0.5;
     }
 
     .search-bar:focus{
-        transform: scale(1.015);
+        outline: none;
+        /* transform: scale(1.015); */
     }
-    .search-bar::after{
+    .search-bar__wrapper::before{
         content:'';
         display: block;
-        background-image: url('../../assets/images/search-icon.png');
+        /* background: url('../../assets/images/search_icon.svg') no-repeat; */
+        background-size: 100% auto;
         width: 2rem;
-        position: absolute;
-        right: 0;
     }
 
     .genre-filters{

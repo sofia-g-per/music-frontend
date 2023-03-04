@@ -1,10 +1,11 @@
 <template>
     <div class="form-field">
-        <label :for="fieldData.name" class="form-field__label">
-          {{fieldData.label}}
+        <label :for="fieldData.name" class="main-btn main-btn--outline main-btn--with-icon">
+          <p class="main-btn--with-icon__text">{{fieldData.label}}</p>
+          <!-- <img :src="'@/assets/images/search_icon.svg'" aria-hidden> -->
         </label>
-        <Field :name="fieldData.name" type="file" v-bind="$attrs" v-slot="{handleChange, handleBlur}">
-            <input type="file" @change="handleChange" @blur="handleBlur" />
+        <Field :name="fieldData.name" type="file" v-bind="$attrs" v-slot="{handleChange, handleBlur}" aria-hidden>
+            <input type="file" class="file-input" @change="handleChange" @blur="handleBlur" />
         </Field>
         <p class="form-field__error-label" v-show="errorMessage">
           {{defaultError}}
@@ -41,3 +42,9 @@ export default defineComponent({
 
 })
 </script>
+
+<style scoped>
+.file-input{
+    visibility: hidden;
+}
+</style>

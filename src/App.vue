@@ -84,9 +84,12 @@ export default defineComponent({
     --font-color: white;
     --accent-color-1--light: #c956ff;
     /* --accent-color-1: #9810ce; */
-    --accent-color-1: #700B97;
-    --accent-color-2: rgb(255, 0, 81);
-    --accent-color-2--dark: rgb(17, 0, 36); 
+    --accent-color-1: #C001F1;
+    --accent-color-2: #FF008A;
+    --accent-color-2--vibrant: #FF004C;
+    --accent-color-2--dark: rgb(17, 0, 36);
+    
+    --basic-gradient: linear-gradient(to right, rgba(187, 0, 255, 1),rgba(255, 0, 77, 1));
 
     --main-font-family: sans-serif;
     font-size: 62.5%;
@@ -123,26 +126,42 @@ export default defineComponent({
       padding: 0 1rem;
     }
 
-    .main-btn{
-      border: 3px solid var(--accent-color-1) ;
-      background: none;
-      padding: 1rem 3rem;
-      color: white;
-      cursor: pointer;
-      transition: .5s;
-      margin: 2rem 0;
-      width: fit-content;
+    .main-btn {
+      border: none;
+      border-radius: 1rem;
       text-transform: uppercase;
-      font-weight: bold;
-
-      align-self: flex-end;
-      margin-right: 1rem;
     }
 
-    .main-btn:hover{
+    .main-btn--fill{
+      background: var(--basic-gradient);
+      color: white;
+      /* cursor: pointer; */
+      transition: .5s;
+      padding: 1rem 6rem;
+      width: fit-content;
+      align-self: flex-end;
+    }
+
+    .main-btn--fill:hover{
       background: rgb(38, 0, 78);
       color: white !important;
 
+    }
+
+    .main-btn--outline{
+      background: var(--background-color);
+      padding: 1rem 3rem;
+      border: 4px solid;
+      border-image: var(--basic-gradient) 1;
+      background: var(--basic-gradient);
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      width: fit-content;
+    }
+
+    .main-btn--with-icon__text{
+      display: flex;
+      justify-content: space-between;
     }
 
     .circle-btn{
@@ -251,8 +270,8 @@ export default defineComponent({
   .form{
     width: 25vw;
     max-width: auto;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     justify-content: center;
     gap: 2rem;
 
@@ -262,22 +281,39 @@ export default defineComponent({
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    min-width: 20vw;
+    /* min-width: 20vw; */
     padding: 1rem;
+    
   }
 
+
+  .form-field__input{
+    background: var(--bg-color);
+    border: 2px solid;
+    border-image: var(--basic-gradient) 1;
+    color: var(--font-color);
+  }
+
+  /* .form-field__input::before{
+    background: ;
+  } */
+
+  
+  .form-field__label{
+    font-size: 1.8rem;
+    color: var(--accent-color-1);
+  }
+  
   .form-field__error-label{
     color: var(--accent-color-2);
     font-size: 1.4rem;
   }
 
-  .form-field__input{
-    background: var(--bg-color);
-    border: 2px solid var(--font-color);
-    color: var(--font-color);
+  .form-field--error .form-field__input{
+    border-color: var(--accent-color-2);
   }
 
-  .form-field__input.form-field--error{
+  .form-field--error .form-field__label{
     border-color: var(--accent-color-2);
   }
 
@@ -288,9 +324,6 @@ export default defineComponent({
   
 }
 
-.form-field__label{
-  font-size: 1.8rem;
-}
 
 .boolean-field input{
   margin-right: 1rem;

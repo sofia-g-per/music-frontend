@@ -26,7 +26,7 @@
             </div>
         </div>
         <p class="form-field__error-label">{{formError}}</p>
-        <button  class="main-btn" type="submit">Добавить</button>
+        <button  class="main-btn main-btn--fill" type="submit">Добавить</button>
     </Form>
 </template>
 

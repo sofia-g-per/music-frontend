@@ -116,9 +116,6 @@ export default defineComponent({
             this.songs = response;
         },
         getLiked(){
-            let user = this.$store.getters.user;
-            console.log('liked song user', this.$store.getters.user);
-
             if(this.$store.getters.user){
                 return this.$store.getters.user.favoriteSongs;
             }

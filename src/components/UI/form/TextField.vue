@@ -31,13 +31,5 @@ export default defineComponent({
 })
 </script>
 
-<style>
-.form-field__label{
-  font-size: 1.8rem;
-}
-
-.form-field__input{
-  padding: .5rem;
-  border-radius: .5rem;
-}
+<style scoped>
 </style>

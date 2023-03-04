@@ -44,7 +44,7 @@
         </div>
 
         <p class="form-field__error-label">{{formError}}</p>
-        <button  class="main-btn" type="submit">Сохранить</button>
+        <button  class="main-btn main-btn--fill" type="submit">Сохранить</button>
     </Form>
 </template>
 
