@@ -85,7 +85,6 @@ export default defineComponent({
     },
     watch:{
         selectedSongs(){
-            console.log('emited', this.songIds)
             let songIds = this.selectedSongs.map((song)=> {
                 if(song.song){
                     return song.song.id
@@ -93,7 +92,6 @@ export default defineComponent({
                     return song.id
                 }
             })
-            console.log('emmited')
             this.$emit('onSongIdsChange', songIds)
         },
         // initialSongIds(){

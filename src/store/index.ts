@@ -183,6 +183,7 @@ export default createStore({
       }
     },
     isArtistGuard(){
+      console.log(this.getters.user);
       if(!this.getters.user || !this.getters.user.artist){
         return {name: 'home'}
       }

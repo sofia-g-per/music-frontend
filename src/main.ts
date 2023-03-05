@@ -21,5 +21,4 @@ defineRule('validateArtist', (value, [target]:any, ctx) => {
     return true
 
 });
-
 createApp(App).use(store).use(router).mount('#app')

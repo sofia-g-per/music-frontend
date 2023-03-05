@@ -7,15 +7,13 @@ export class CreateUserDto {
 
     name: string;
     
-    surname: string;
-
-    avatar?: string;
+    avatar?: File;
 
     email: string;
 
     password: string;
 
-    roleId?: boolean;
+    roleName?: string;
 
     artist?: CreateArtistDto;
 }

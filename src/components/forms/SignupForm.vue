@@ -25,20 +25,20 @@
                 Заполните данное поле
             </p>
         </div>
-        <div class="form-field boolean-field">
-            <label class="form-field__label">
-                {{fieldsData.roleId.label}}
-            </label>
-            <Field :name="fieldsData.roleId.name" type="checkbox" v-model="fieldsValues.roleId" value="artist" :unchecked-value="false" />
-        </div>
         <file-field 
             :field-data="fieldsData.avatar" 
             v-model="fieldsValues.avatar" 
-            rules="required|mimes:audio/mpeg"
-            defaultError="Прикрепите файл в формате mp3"
+            rules="mimes:image/jpg, image/png, image/jpeg"
+            defaultError="Файл должен быть в формате jpg, png или jpeg"
         > </file-field>
+        <div class="form-field boolean-field">
+            <label class="form-field__label">
+                {{fieldsData.roleName.label}}
+            </label>
+            <Field :name="fieldsData.roleName.name" type="checkbox" v-model="fieldsValues.roleName" value="artist" :unchecked-value="false" />
+        </div>
         <div
-            v-if="fieldsValues.roleId && fieldsValues.roleId === fieldsData.roleId.value"
+            v-if="fieldsValues.roleName && fieldsValues.roleName === fieldsData.roleName.value"
             :fieldsValues="fieldsValues"
             :fieldsData="fieldsData"
         >
@@ -112,8 +112,8 @@ export default defineComponent({
                     name: 'username',
                     label: 'Имя пользователя'
                 },
-                roleId: {
-                    name: 'roleId',
+                roleName: {
+                    name: 'roleName',
                     value: 'artist',
                     label: 'Вы хотите зарегистрироваться как артист?'
                 },
@@ -138,25 +138,31 @@ export default defineComponent({
     },
     methods: {
         onSubmit(){
-            if(this.fieldsValues.roleId){
+            if(this.fieldsValues.roleName){
                 this.fieldsValues.artist = this.artistFieldsValues;
             }
-        axios.post(this.fullApiUrl, this.fieldsValues)
+        axios.post(this.fullApiUrl, this.fieldsValuesy
+        )
           .then((response) => {
+            console.log(response);
               if(response.status === 201 && response.data){
                   this.$router.push('/login');
+              }else{
+                // if(response.message){
+                //   this.formError = response.message[0];
+            //   }else{
+                  this.formError = 'Простите, произошла ошибка при загрузке данных'
+            //   }
               }
             })
             .catch((error)=>{
+                console.log(error);
               if(error.response.message){
-                  this.formError = error.response.message;
+                  this.formError = error.response.message[0];
               }else{
                   this.formError = 'Простите, произошла ошибка при загрузке данных'
               }
           })
-        },
-        test(){
-            console.log(this.fieldsValues.roleId)
         }
     },
     computed: {

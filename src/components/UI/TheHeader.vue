@@ -65,8 +65,8 @@
         </div>
         <div class="main-header__auth-links" v-if="!isAuth" >
             <router-link to="/"><img  class="logo" src="@/assets/images/logo.png" alt=""></router-link>
-            <router-link to="/login">Вход</router-link>
-            <router-link to="/sign-up">Регистрация</router-link>
+            <router-link class="gradient-text" to="/login">Вход</router-link>
+            <router-link class="gradient-text" to="/sign-up">Регистрация</router-link>
         </div>
     </header>
 </template>
@@ -103,7 +103,6 @@ export default defineComponent({
     .main-header{
         min-height: 3vh;
         padding: 2rem;
-        border-bottom: 2px solid var(--font-color);
     }
 
   .site-nav,

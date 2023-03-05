@@ -153,10 +153,13 @@ export default defineComponent({
       padding: 1rem 3rem;
       border: 4px solid;
       border-image: var(--basic-gradient) 1;
+      width: fit-content;
+    }
+
+    .gradient-text{
       background: var(--basic-gradient);
       background-clip: text;
       -webkit-text-fill-color: transparent;
-      width: fit-content;
     }
 
     .main-btn--with-icon__text{
@@ -292,6 +295,24 @@ export default defineComponent({
     border: 2px solid;
     border-image: var(--basic-gradient) 1;
     color: var(--font-color);
+  }
+
+  .form-field__input:focus{
+    outline: none;
+    border-color: var(--accent-color-1);
+    border-image: none;
+  }
+
+  .form-field__input:autofill{
+   background-color:var(--bg-color);
+  }
+
+  .form-field__input::-webkit-autofill {
+   background-color:var(--bg-color);
+  }
+
+  .form-field__input::-webkit-autofill:focus {
+   background-color:var(--bg-color);
   }
 
   /* .form-field__input::before{

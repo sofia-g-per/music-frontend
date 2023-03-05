@@ -8,7 +8,7 @@ export class CreateSongDto {
 
     description: string;
 
-    lyrics: string;
+    lyrics: [];
 
     artistIds: AddExistingArtistDto[];
 
@@ -17,4 +17,10 @@ export class CreateSongDto {
     genreIds: number[];
 
     audioFile: [];
+
+    releaseDate: Date;
+
+    coverImg: []
+
+
 }
