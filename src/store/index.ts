@@ -2,7 +2,7 @@ import { PlayingPlaylist } from '../interfaces/currentPlaylist';
 import { createStore } from 'vuex'
 import {Howl} from 'howler';
 import { UserDto } from '@/dtos/userDto.dto'
-
+import axios from 'axios';
 export default createStore({
   state: {
     APIURL: "http://localhost:3000/api/",
@@ -41,6 +41,8 @@ export default createStore({
       deleteAlbum: 'delete-album',
       deleteUser: 'delete-user',
 
+      listened: 'listened'
+
     },
     APIFilePaths:{
       avatars: 'avatars/',
@@ -75,6 +77,16 @@ export default createStore({
         onend: ()=> {this.dispatch('playNextSong')}
       })
     },
+    addSongToListenedHistory(){
+      if(this.state.user && this.state.currentSongDefined){
+        axios.post(`${this.state.APIURL}${this.state.APIExtensions.listened}`, {songId: this.state.currentPlaylist.playlist[this.state.currentSongId].id}, { 
+          withCredentials: true,  
+          })
+        .catch((e)=>{
+            console.log("add song to history error", e)
+        })
+      }
+    },
     handleClickSong(state, payload){
       if(this.state.currentSongAudio){
         this.state.currentSongAudio!.pause();
@@ -98,9 +110,8 @@ export default createStore({
         this.dispatch('embedNewAudio',({filePath: this.getters.currentAudioPath}));
         this.state.currentSongDefined = true;
         this.dispatch('playCurrentSong');
-
-
       }
+      this.dispatch('addSongToListenedHistory')
     },
     pauseCurrentSong(){
       this.state.currentSongAudio!.pause();
