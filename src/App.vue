@@ -73,7 +73,7 @@ export default defineComponent({
       }
   },
   mounted() {
-    this.state.getters.user();
+    console.log(this.$store.getters.user);
   }
 })
 </script>

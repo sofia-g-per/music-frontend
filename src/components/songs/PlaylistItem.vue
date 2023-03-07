@@ -6,7 +6,7 @@
         class="playlist__song"
          v-for="(song, key) in itemData.songs" 
                 :key="song.id"
-                :songData="song.song"
+                :songData="song.song? song.song : song"
                 :playlist="itemData"
                 playlistType="liked"
                 :songInPlaylistId="key"
@@ -29,6 +29,9 @@ export default defineComponent({
     props: ['itemData'],
     components:{
         MusicListItem
+    },
+    mounted() {
+        console.log('playlist', this.itemData);
     }
 })
 </script>

@@ -26,10 +26,11 @@ export default defineComponent({
     ],
     methods:{
         playSong(){
+            console.log('playsg', this.playlist)
             let playlistToPlay = new PlayingPlaylist;
             playlistToPlay.type = this.playlistType;
-            if(this.playlist[0].song){
-                playlistToPlay.playlist = this.playlist.map(song=>{
+            if(this.playlist.songs[0].song){
+                playlistToPlay.playlist = this.playlist.songs.map(song=>{
                     return song = song.song
                 })
             }else{
@@ -40,6 +41,9 @@ export default defineComponent({
                 songInPlaylistId: this.songInPlaylistId,
                 playlistToPlay: playlistToPlay
             })
+        },
+        mounted(){
+            console.log('song', this.songData)
         }
     }
 

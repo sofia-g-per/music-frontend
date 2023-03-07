@@ -41,7 +41,8 @@ export default createStore({
       deleteAlbum: 'delete-album',
       deleteUser: 'delete-user',
 
-      listened: 'listened'
+      listened: 'listened',
+      getGeneratedPlaylist: 'generated/playlist'
 
     },
     APIFilePaths:{
@@ -79,7 +80,7 @@ export default createStore({
     },
     addSongToListenedHistory(){
       if(this.state.user && this.state.currentSongDefined){
-        axios.post(`${this.state.APIURL}${this.state.APIExtensions.listened}`, {songId: this.state.currentPlaylist.playlist[this.state.currentSongId].id}, { 
+        axios.post(`${this.state.APIURL}${this.state.APIExtensions.listened}`, {songId: this.state.currentPlaylist.playlist.songs[this.state.currentSongId].id}, { 
           withCredentials: true,  
           })
         .catch((e)=>{
@@ -136,7 +137,7 @@ export default createStore({
           this.state.isPlaying = false;
         }
         this.state.currentSongId as number;
-        if(this.state.currentSongId < this.state.currentPlaylist.playlist.length - 1){
+        if(this.state.currentSongId < this.state.currentPlaylist.playlist.songs.length - 1){
           this.state.currentSongId += 1;
         }else{
           this.state.currentSongId = 0;
@@ -155,14 +156,14 @@ export default createStore({
         if(this.state.currentSongId !== 0){
           this.state.currentSongId -= 1;
         }else{
-          this.state.currentSongId = this.state.currentPlaylist.playlist.length - 1;
+          this.state.currentSongId = this.state.currentPlaylist.playlist.songs.length - 1;
         }
         this.dispatch('embedNewAudio',({filePath: this.getters.currentAudioPath}));
         this.dispatch('playCurrentSong');
       }
     },
     updateCurrentPlaylist(state, {newPlaylistOrder}){
-      const currentSongDBId = this.state.currentPlaylist.playlist[this.state.currentSongId].id 
+      const currentSongDBId = this.state.currentPlaylist.playlist.songs[this.state.currentSongId].id 
       const newSongId = newPlaylistOrder.findIndex((song)=> song.id === currentSongDBId);
       this.state.currentSongId = newSongId;
       this.state.currentPlaylist.playlist = newPlaylistOrder;
@@ -216,7 +217,7 @@ export default createStore({
     },
     currentAudioPath: (state, getters)=> {
       if(state.currentSongId !== undefined){
-        const currentSong = state.currentPlaylist.playlist[state.currentSongId] as any;
+        const currentSong = state.currentPlaylist.playlist.songs[state.currentSongId] as any;
         if(currentSong.song){
           return getters.filePath('songs', currentSong.song.filePath)
 

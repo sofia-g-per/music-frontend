@@ -4,6 +4,13 @@
     @onEmptyFilters="getAllSongs" 
     :withFilters="true">
     </the-search-bar>
+    <div v-if="generatedPlaylists && generatedPlaylists.length > 0" class="item-grid">
+        <playlist-item 
+            v-for="playlist in generatedPlaylists" 
+            :key="playlist.name" 
+            :itemData="playlist">
+        </playlist-item>
+    </div>
     <div v-if="songs && songs.length > 0" class="song-list">
         <music-list-item
             v-for="(song, key) in songs" 
@@ -70,19 +77,23 @@
 import { defineComponent } from 'vue'
 import TheSearchBar from '@/components/UI/TheSearchBar.vue'
 import MusicListItem from '@/components/songs/MusicListItem.vue'
+import PlaylistItem from '@/components/songs/PlaylistItem.vue'
 import axios from 'axios'
 export default defineComponent({
     name: 'HomePage',
     components:{
         TheSearchBar,
-        MusicListItem
+        MusicListItem,
+        PlaylistItem
     },
     data() {
         return {
             songs: [],
             genres: [],
             genreIds: [],
-            likedSongs: []
+            likedSongs: [],
+            playlists: [],
+            generatedPlaylists: [],
         }
     },
     mounted(){
@@ -90,10 +101,14 @@ export default defineComponent({
         if(this.$store.state.isAuth){
             this.likedSongs = this.getLiked();
         }
+        this.getGeneratedPlaylist();
     },
     computed: {
         getSongsURL(){
             return this.$store.getters.fullURL('getSongs')
+        },
+        getGenreatedPlaylistURL(){
+            return this.$store.getters.fullURL('getGeneratedPlaylist')
         },
         searchUrl(){
             return this.$store.getters.fullURL('globalSearch')
@@ -207,6 +222,21 @@ export default defineComponent({
                     .catch((error)=>{
                         console.log(error)
                     })
+        },
+        getGeneratedPlaylist(){
+            if(this.isAuth){
+                axios.get(this.getGenreatedPlaylistURL,{withCredentials:true})
+                .then((res) => {
+                    console.log(res);
+                    if(res.status === 200 && res.data){
+                        this.generatedPlaylists.push(res.data);
+                    }
+                })
+                .catch((e)=>{
+                    console.log(e)
+                })
+
+            }
         }
     }
 
