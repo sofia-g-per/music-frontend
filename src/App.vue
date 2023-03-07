@@ -44,7 +44,7 @@ export default defineComponent({
   computed:{
     currentSong(){
       if(this.$store.state.currentSongDefined){
-        const song =  this.$store.state.currentPlaylist.playlist[this.$store.state.currentSongId];
+        const song =  this.$store.state.currentPlaylist.playlist.songs[this.$store.state.currentSongId];
         if(song.song){
           return song.song;
         }else{
@@ -71,7 +71,10 @@ export default defineComponent({
           }
 
       }
-}
+  },
+  mounted() {
+    this.state.getters.user();
+  }
 })
 </script>
 
