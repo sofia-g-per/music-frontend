@@ -1,5 +1,5 @@
 <template>
-    <div class="form-field">
+    <div :class="{'form-field': true, 'form-field--error': errorMessage}">
         <label :for="fieldData.name" class="form-field__label">
           {{fieldData.label}}
         </label>
@@ -19,7 +19,7 @@ export default defineComponent({
   name: "TextField",
 
   components: {
-    Field
+    Field,
   },  
   props: ['fieldData', 'errors'], 
     setup(props) {

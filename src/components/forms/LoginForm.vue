@@ -5,16 +5,18 @@
             v-model="fieldsValues.email"
         />
 
-        <div class="form-field">
+        <Field name="password" v-slot="{errorMessage, field}" v-model="fieldsValues.password">
+            <div :class="{'form-field': true, 'form-field--error': errorMessage}">
             <label for="password" class="form-field__label">
                 Пароль
             </label>
-            <Field type="password" class="form-field__input" name="password"  v-model="fieldsValues.password" />
-            <p class="form-field__error-label" name="password" v-show="false">
+            <input type="password" class="form-field__input" v-bind="field"/>
+            <p class="form-field__error-label" name="password" v-show="errorMessage">
                 Заполните данное поле
             </p>
-
         </div>
+
+        </Field>
         <p class="form-field__error-label">{{formError}}</p>
 
         <button  class="main-btn main-btn--fill" type="submit">Войти</button>

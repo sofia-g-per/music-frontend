@@ -1,11 +1,11 @@
 <template>
-    <div  :class="{'form-field': true, 'form-field--error': errorMessage}">
+    <div :class="{'form-field': true, 'form-field--error': errorMessage}">
         <label :for="fieldData.name" class="form-field__label">
           {{fieldData.label}}
         </label>
-        <Field  class="form-field__input" :name="fieldData.name"  autcomplete="off" v-bind="$attrs" type="date" />
+        <Field  class="form-field__input" :name="fieldData.name"  autcomplete="off" v-bind="$attrs" />
         <p class="form-field__error-label" v-show="errorMessage" :name="fieldData.name">
-          {{$attrs["defaultError"]}}
+          {{'Заполните данное поле'}}
         </p>
     </div>
 </template>
@@ -16,7 +16,7 @@ import { Field, useField } from 'vee-validate'
 
 export default defineComponent({
 
-  name: "DateSelect",
+  name: "TextField",
 
   components: {
     Field

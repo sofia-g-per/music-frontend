@@ -333,12 +333,15 @@ export default defineComponent({
     font-size: 1.4rem;
   }
 
-  .form-field--error .form-field__input{
+  .form-field--error .form-field__input,
+   /* для ошибок в fileField */
+   .form-field--error .main-btn--with-icon__text{
     border-color: var(--accent-color-2);
+    border-image: none;
   }
 
   .form-field--error .form-field__label{
-    border-color: var(--accent-color-2);
+    color: var(--accent-color-2);
   }
 
   .boolean-field{

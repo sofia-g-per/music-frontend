@@ -1,5 +1,5 @@
 <template>
-    <div class="form-field">
+    <div :class="{'form-field': true, 'form-field--error': errorMessage}">
         <label :for="fieldData.name" class="main-btn main-btn--outline main-btn--with-icon">
           <p class="main-btn--with-icon__text gradient-text">{{fieldData.label}}</p>
           <!-- <img :src="'@/assets/images/search_icon.svg'" aria-hidden> -->
