@@ -3,7 +3,9 @@
         <div class="music-list-item__info">
             <h2 class="music-list-item__info__title heading-tretriary">{{songData.name}}</h2>
             <div class="music-list-item__artist-wrapper">
-                <p v-for="artist in songData.artists" :key="artist.artistId" class="music-list-item__info__artist main-text">{{artist.artist.stagename}}</p>
+                <p v-for="artist in songData.artists" :key="artist.artistId" class="music-list-item__info__artist main-text">
+                    {{artist.isFeatured? "feat. "+ artist.artist.stagename: artist.artist.stagename}}
+                </p>
             </div>
         </div>
             <slot>
@@ -26,7 +28,6 @@ export default defineComponent({
     ],
     methods:{
         playSong(){
-            console.log('playsg', this.playlist)
             let playlistToPlay = new PlayingPlaylist;
             playlistToPlay.type = this.playlistType;
             if(this.playlist.songs[0].song){
@@ -42,9 +43,6 @@ export default defineComponent({
                 playlistToPlay: playlistToPlay
             })
         },
-        mounted(){
-            console.log('song', this.songData)
-        }
     }
 
 })
