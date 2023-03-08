@@ -66,7 +66,6 @@ import FileField from '../UI/form/FileField.vue';
 import axios from 'axios';
 import { CreateUserDto } from '@/dtos/createUser.dto';
 import { CreateArtistDto } from '@/dtos/createArtist.dto';
-import { defineRule } from 'vee-validate';
 
 export default defineComponent({
     name: 'SignUpForm',

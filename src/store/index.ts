@@ -190,12 +190,12 @@ export default createStore({
       localStorage.removeItem('user');
     },
     authorizedGuard(){
+      console.log('user from guard', this.getters.user)
       if(!this.getters.user){
         return {name: 'login'};
       }
     },
     isArtistGuard(){
-      console.log(this.getters.user);
       if(!this.getters.user || !this.getters.user.artist){
         return {name: 'home'}
       }
@@ -234,6 +234,7 @@ export default createStore({
     },
     user(){
       const userString = localStorage.getItem('user')
+      console.log('user from local storage', userString)
       if(userString){
         const user = JSON.parse(userString);
 

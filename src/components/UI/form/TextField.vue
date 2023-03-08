@@ -3,9 +3,9 @@
         <label :for="fieldData.name" class="form-field__label">
           {{fieldData.label}}
         </label>
-        <Field  class="form-field__input" :name="fieldData.name" aria-autocomplete="off" autcomplete="off" v-bind="$attrs" />
-        <p class="form-field__error-label" :name="fieldData.name">
-          {{errorMessage? 'Заполните данное поле': ''}}
+        <Field  class="form-field__input" :name="fieldData.name"  autcomplete="off" v-bind="$attrs" />
+        <p class="form-field__error-label" v-show="errorMessage" :name="fieldData.name">
+          {{'Заполните данное поле'}}
         </p>
     </div>
 </template>
@@ -21,14 +21,13 @@ export default defineComponent({
   components: {
     Field
   },  
-  props: ['fieldData'], 
+  props: ['fieldData', 'errors'], 
     setup(props) {
     const { errorMessage } = useField(props.fieldData.name as string);
     return {
       errorMessage
     }
-  },
-})
+  }})
 </script>
 
 <style scoped>

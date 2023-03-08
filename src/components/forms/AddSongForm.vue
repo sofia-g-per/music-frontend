@@ -3,37 +3,33 @@
         <text-field 
             :field-data="fieldsData.name" 
             v-model="fieldsValues.name"
-            rules="required"
         />
         <text-field 
             :field-data="fieldsData.description" 
             v-model="fieldsValues.description"
-            rules="required"
         />
         <date-select 
             :field-data="fieldsData.releaseDate"
             defaultError="Заполните, начиная с 01/01/1900 и до нынешней даты"
             v-model="fieldsValues.releaseDate"
-            :rules="dateOptions"
+
         />
+            <!-- :rules="dateOptions" -->
          <file-field 
             :field-data="fieldsData.audioFile" 
             v-model="fieldsValues.audioFile" 
-            rules="required|mimes:audio/mpeg"
             defaultError="Прикрепите файл в формате mp3"
         >     
         </file-field>
         <file-field 
             :field-data="fieldsData.coverImg" 
             v-model="fieldsValues.coverImg" 
-            rules="required|mimes:image/jpeg,image/jpg,image/png"
             defaultError="Файл должен быть в формате jpeg, jpg или png"
         >     
         </file-field>
         <file-field 
             :field-data="fieldsData.lyrics" 
             v-model="fieldsValues.lyrics" 
-            rules="required|mimes:text/plain|ext:srt"
             defaultError="Файл должен быть в формате srt"
         >     
         </file-field>
@@ -103,29 +99,53 @@ export default defineComponent({
             genreIds: [],
             formError: '',
             genreOptions: [],
-            currentDate: new Date(),
-            dateOptions: {
-                "required": true, 
-                "date_format":'dd/MM/yyyy', 
-                "date_between": `01/01/1900,${new Date().toLocaleDateString('ru').replace('.', '/')}`
-            }
-        
         }
     },
     setup(){
         const schema = {
             name: 'required',
-            audioFile: "required|mimes:audio/mpeg"
+            audioFile: "required|mimes:audio/mpeg",
+            releaseDate: {
+                "required": true,
+                "isReleaseDateValid": true
+            },
+            coverImg: "required|mimes:image/jpeg,image/jpg,image/png",
+            // fix add ext:srt
+            lyrics:"mimes:text/plain"
+
         };
         return {
             schema
         }
     },
+    mounted(){
+        axios.get(`${this.$store.state.APIURL}${this.$store.state.APIExtensions.getGenres}`)
+        .then((response) => {
+          if(response.status === 200 && response.data){
+              this.genreOptions =  toRaw(response.data);
+          }
+       })
+        .catch((error)=>{
+              console.log(error)
+          })
+          console.log(new Date().toISOString().substring(0,new Date().toISOString().indexOf("T")));
+    },
     methods: {
+        isDateValid(stringDate){
+            const date = new Date(stringDate);
+            if( date > new Date('1900-01-01') &&
+            date <= new Date()){
+                console.log('valid')
+                return true
+            } else{
+                return 'Дата должна быть'
+            }
+        },
         onSubmit(){
         var formData = new FormData();
         for ( const [key, value] of Object.entries(this.fieldsValues) ) {
             if(key === 'audioFile' || key === 'coverImg' || key === 'lyrics'){
+                console.log(key, this.fieldsValues[key][0]);
                 formData.append(key, this.fieldsValues[key][0]);
                 
             }else if(key === 'releaseDate'){
@@ -163,19 +183,8 @@ export default defineComponent({
     computed: {
         fullApiUrl():string {
             return `${this.$store.state.APIURL}${this.$store.state.APIExtensions.uploadSong}`;
-        }
+        },
     },
-    mounted(){
-        axios.get(`${this.$store.state.APIURL}${this.$store.state.APIExtensions.getGenres}`)
-        .then((response) => {
-          if(response.status === 200 && response.data){
-              this.genreOptions =  toRaw(response.data);
-          }
-       })
-        .catch((error)=>{
-              console.log(error)
-          })
-    }
 
 })
 </script>

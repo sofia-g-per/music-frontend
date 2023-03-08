@@ -86,7 +86,7 @@ export default defineComponent({
             return this.$store.state.isAuth;
         },
         isArtist(){
-            return this.isAuth && this.$store.state.isArtist && this.$store.getters.user && this.$store.getters.user.artist;
+            return this.isAuth && this.$store.state.isArtist;
         }
     },
     methods:{
@@ -94,6 +94,10 @@ export default defineComponent({
             this.$store.dispatch('logOut');
             this.$router.push({name:'login'});
         }
+    },
+    mounted(){
+        // console.log(this.$store.state.isAuth);
+        // this.isAuth && this.$store.state.isArtist
     }
 })
 </script>
