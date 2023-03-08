@@ -1,5 +1,5 @@
 <template>
-    <Form method="post" :validation-schema="schema" @submit="onSubmit" class="form">
+    <Form method="post" :validation-schema="schema" @submit="onSubmit" class="form" v-slot="{meta}">
         <text-field 
             :field-data="fieldsData.email" 
             v-model="fieldsValues.email"
@@ -19,7 +19,7 @@
         </Field>
         <p class="form-field__error-label">{{formError}}</p>
 
-        <button  class="main-btn main-btn--fill" type="submit">Войти</button>
+        <button :disabled="!meta.valid" class="main-btn main-btn--fill" type="submit">Войти</button>
 
     </Form>
 </template>

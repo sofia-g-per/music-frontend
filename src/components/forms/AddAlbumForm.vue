@@ -1,5 +1,5 @@
 <template>
-    <Form method="post" :validation-schema="schema" @submit="onSubmit" class="playlist-form">
+    <Form method="post" :validation-schema="schema" @submit="onSubmit" class="playlist-form" v-slot="{meta}">
         <text-field 
             :field-data="fieldsData.name" 
             v-model="fieldsValues.name"
@@ -24,7 +24,7 @@
             </div>
         </div>
         <!-- <p class="form-field__error-label" v-show="errors.songIds">{{errors.songIds}}</p> -->
-        <button class="main-btn main-btn--fill" type="submit">Добавить</button>
+        <button :disabled="!meta.valid" class="main-btn main-btn--fill" type="submit">Добавить</button>
     </Form>
 </template>
 

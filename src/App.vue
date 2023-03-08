@@ -151,6 +151,10 @@ export default defineComponent({
 
     }
 
+    .main-btn--fill:disabled{
+      opacity: 0.5;
+    }
+
     .main-btn--outline{
       background: var(--background-color);
       padding: 1rem 3rem;
