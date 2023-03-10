@@ -24,7 +24,7 @@ export default createStore({
 
       getSongs: 'get-all-songs',
       getSong: 'get-song',
-      getPlaylist: 'get-playlist',
+      getPlaylist: 'playlist',
       getGenres: 'genres',
       getArtists: 'artists',
       getAlbum: 'get-album',
@@ -190,7 +190,6 @@ export default createStore({
       localStorage.removeItem('user');
     },
     authorizedGuard(){
-      console.log('user from guard', this.getters.user)
       if(!this.getters.user){
         return {name: 'login'};
       }

@@ -12,9 +12,7 @@
             :field-data="fieldsData.releaseDate"
             defaultError="Заполните, начиная с 01/01/1900 и до нынешней даты"
             v-model="fieldsValues.releaseDate"
-
         />
-            <!-- :rules="dateOptions" -->
          <file-field 
             :field-data="fieldsData.audioFile" 
             v-model="fieldsValues.audioFile" 
@@ -52,7 +50,6 @@ import { defineComponent, toRaw } from 'vue'
 import { Form, Field } from 'vee-validate'
 import TextField from '../UI/form/TextField.vue'
 import FileField from '../UI/form/FileField.vue';
-import GenreSelect from '../UI/form/GenreSelect.vue';
 import axios from 'axios';
 import { CreateSongDto } from '@/dtos/createSong.dto';
 import DateSelect from '../UI/form/DateSelect.vue';
@@ -69,6 +66,7 @@ export default defineComponent({
         return{
             apiUrlExtension: 'add-song', 
             fieldsValues: new CreateSongDto,
+            // объект с названиями полей формы
             fieldsData: {
                 name: {
                     name: 'name',
@@ -95,8 +93,10 @@ export default defineComponent({
                     label: 'Обложка'
                 }
             },
+            //хранит Id выбранных пользователем жанров
             genreIds: [],
             formError: '',
+            // хранит доступные для выбора жанра
             genreOptions: [],
         }
     },
@@ -108,8 +108,7 @@ export default defineComponent({
                 "required": true,
                 "isReleaseDateValid": true
             },
-            coverImg: "required|mimes:image/jpeg,image/jpg,image/png",
-            // fix add ext:srt
+            coverImg: "mimes:image/jpeg,image/jpg,image/png",
             lyrics:"mimes:text/plain"
 
         };
@@ -118,6 +117,7 @@ export default defineComponent({
         }
     },
     mounted(){
+        // получение вариантов жанров с сервера
         axios.get(`${this.$store.state.APIURL}${this.$store.state.APIExtensions.getGenres}`)
         .then((response) => {
           if(response.status === 200 && response.data){
@@ -127,24 +127,13 @@ export default defineComponent({
         .catch((error)=>{
               console.log(error)
           })
-          console.log(new Date().toISOString().substring(0,new Date().toISOString().indexOf("T")));
     },
     methods: {
-        isDateValid(stringDate){
-            const date = new Date(stringDate);
-            if( date > new Date('1900-01-01') &&
-            date <= new Date()){
-                console.log('valid')
-                return true
-            } else{
-                return 'Дата должна быть'
-            }
-        },
+        // проверка и отправка формы
         onSubmit(){
         var formData = new FormData();
         for ( const [key, value] of Object.entries(this.fieldsValues) ) {
             if(key === 'audioFile' || key === 'coverImg' || key === 'lyrics'){
-                console.log(key, this.fieldsValues[key][0]);
                 formData.append(key, this.fieldsValues[key][0]);
                 
             }else if(key === 'releaseDate'){
@@ -180,6 +169,7 @@ export default defineComponent({
         }
     },
     computed: {
+        // адрес для загрузки песни
         fullApiUrl():string {
             return `${this.$store.state.APIURL}${this.$store.state.APIExtensions.uploadSong}`;
         },

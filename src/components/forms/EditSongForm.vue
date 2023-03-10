@@ -8,16 +8,28 @@
             :field-data="fieldsData.description" 
             v-model="fieldsValues.description"
         />
-        <text-field 
-            :field-data="fieldsData.lyrics" 
-            v-model="fieldsValues.lyrics"
-        />
          <file-field 
             :field-data="fieldsData.audioFile" 
             v-model="fieldsValues.audioFile" 
             rules="mimes:audio/mpeg"
             defaultError="Прикрепите файл в формате mp3"
+        >   
+        <date-select 
+            :field-data="fieldsData.releaseDate"
+            defaultError="Заполните, начиная с 01/01/1900 и до нынешней даты"
+            v-model="fieldsValues.releaseDate"
+        />
+        <file-field 
+            :field-data="fieldsData.coverImg" 
+            v-model="fieldsValues.coverImg" 
+            defaultError="Файл должен быть в формате jpeg, jpg или png"
         >     
+        </file-field>
+        <file-field 
+            :field-data="fieldsData.lyrics" 
+            v-model="fieldsValues.lyrics" 
+            defaultError="Файл должен быть в формате srt"
+        >       
         </file-field>
         <div class="song-select">
             <div v-for="option in genreOptions" :key="option.id" class="music-list-item">
@@ -67,6 +79,14 @@ export default defineComponent({
                 audioFile: {
                     name: 'audioFile',
                     label: 'Аудиофайл песни'
+                },
+                releaseDate: {
+                    name: 'releaseDate',
+                    label: 'Дата выпуска'
+                },
+                coverImg: {
+                    name: 'coverImg',
+                    label: 'Обложка'
                 }
             },
             genreIds: [],
@@ -76,7 +96,12 @@ export default defineComponent({
     },
     setup(){
         const schema = {
-            audioFile: "mimes:audio/mpeg"
+            audioFile: "mimes:audio/mpeg",
+            releaseDate: {
+                "isReleaseDateValid": true
+            },
+            coverImg: "mimes:image/jpeg,image/jpg,image/png",
+            lyrics:"mimes:text/plain"
         };
         return {
             schema

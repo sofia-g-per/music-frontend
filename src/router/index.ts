@@ -13,6 +13,7 @@ const EditSongPage = () => import('@/views/EditSongPage.vue')
 const EditPlaylistPage = () => import('@/views/EditPlaylistPage.vue')
 const EditAlbumPage = () => import('@/views/EditAlbumPage.vue')
 const EditUserPage = () => import('@/views/EditUserPage.vue')
+const PlaylistPage = () => import('@/views/PlaylistPage.vue')
 import store from '@/store'
 
 const routes: Array<RouteRecordRaw> = [
@@ -115,6 +116,21 @@ const routes: Array<RouteRecordRaw> = [
     beforeEnter: (to, from) => {
       return store.dispatch('authorizedGuard')
     }
+  },
+  {
+    path: '/playlist/:id',
+    name: 'get-playlist',
+    component: PlaylistPage,
+  },
+  {
+    path: '/album/:id',
+    name: 'get-album',
+    component: PlaylistPage,
+  },
+  {
+    path: '/generated/playlist',
+    name: 'get-generated-playlist',
+    component: PlaylistPage,
   },
 ]
 

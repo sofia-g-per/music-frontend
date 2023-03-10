@@ -1,6 +1,8 @@
 <template>
+    <div class="search-and-filters">
     <div class="search-bar__wrapper">
         <input type="text" class="search-bar" placeholder="Поиск..." @keydown.enter="handleSearch" v-model="searchQuery">
+    </div>
         <div>
             <div class="genre-filters" v-if=" withFilters && genreOptions">
                     <label v-for="option in genreOptions" 
@@ -109,6 +111,12 @@ export default defineComponent({
 
 <style scoped>
 
+    .search-and-filters{
+        display: flex;
+        flex-direction: column;
+        gap: 1.8rem;
+    }
+
     .search-bar__wrapper{
         display: flex;
         width: fit-content;
@@ -151,7 +159,7 @@ export default defineComponent({
 
     .genre-filter{
         /* border: solid 3px var(--accent-color-2); */
-        background: rgb(93, 80, 82);
+        background: var(--accent-color-1);
         border-radius: 5rem;
         padding: .7rem;
         min-width: 7rem;

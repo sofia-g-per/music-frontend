@@ -9,6 +9,11 @@
             :field-data="fieldsData.description" 
             v-model="fieldsValues.description"
         />
+        <file-field 
+            :field-data="fieldsData.coverImg" 
+            v-model="fieldsValues.coverImg" 
+            defaultError="Файл должен быть в формате jpeg, jpg или png"
+        />     
         <song-select 
             :getSongsURL="getSongsURL"
             :initialSongIds="songIds"
@@ -27,25 +32,30 @@ import TextField from '../UI/form/TextField.vue'
 import SongSelect from '../UI/form/SongSelect.vue';
 import axios from 'axios';
 import { CreatePlaylistDto } from '@/dtos/createPlaylist.dto';
+import FileField from '../UI/form/FileField.vue';
 
 export default defineComponent({
     name: 'AddSongForm',
     components: {
         TextField,
         Form,
-        // Field,
+        FileField,
         SongSelect
     },
     setup(){
         const schema = {
             name: 'required',
+            // проверка заполненности песен
             songIds: (value) => {
                 if (value && value.length) {
                     return true;
                 }
                 
                 return 'Выберите хотя бы одну песню';
-                }
+            },
+            coverImg: "mimes:image/jpeg,image/jpg,image/png",
+
+
       }
 
         const { errors } = useForm({
@@ -70,6 +80,10 @@ export default defineComponent({
                     name: 'description',
                     label: 'Описание'
                 },
+                coverImg: {
+                    name: 'coverImage',
+                    label: 'Обложка'
+                }
             },
             // songs: [],
             songIds: [],
@@ -77,16 +91,30 @@ export default defineComponent({
         }
     },
     methods: {
+        //валидация и отправка формы
         onSubmit(){
-            this.fieldsValues.isPublic = true;
-            this.fieldsValues.songIds = this.songIds.map((songId, id) => {
+            this.fieldsValues.isPublic = false;
+            this.fieldsValues.songIds =JSON.stringify(this.songIds.map((songId, id) => {
                 return {
                     songId: songId,
                     songIndex: id,
                 }
-            });
-        axios.post(this.addPlaylistURL, this.fieldsValues, { 
-            withCredentials: true}
+            }));
+            var formData = new FormData();
+            for ( const [key, value] of Object.entries(this.fieldsValues) ) {
+                if(key === 'coverImg'){
+                    formData.append(key, this.fieldsValues[key][0]);
+                    
+                }else{
+                    formData.append(key, this.fieldsValues[key]);
+                }
+            }
+        axios.post(this.addPlaylistURL, formData, { 
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'multipart/form-data'
+                }
+        }
             )
           .then(
             (response) => {
@@ -103,8 +131,8 @@ export default defineComponent({
               }
           })
         },
+        //добавление песни при выборе в song-select
         handleSongIdsChange(songIds){
-            console.log('chenged', songIds)
             this.songIds = songIds;
         },
     },

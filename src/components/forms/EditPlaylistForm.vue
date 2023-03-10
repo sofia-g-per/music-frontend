@@ -8,6 +8,11 @@
             :field-data="fieldsData.description" 
             v-model="fieldsValues.description"
         />
+        <file-field 
+            :field-data="fieldsData.coverImg" 
+            v-model="fieldsValues.coverImg" 
+            defaultError="Файл должен быть в формате jpeg, jpg или png"
+        />  
         <song-select 
             v-if="initialSelectedSongs"
             :getSongsURL="getSongsURL"
@@ -43,7 +48,8 @@ export default defineComponent({
                 }
                 
                 return 'Выберите хотя бы одну песню';
-            }
+            },
+            coverImg: "mimes:image/jpeg,image/jpg,image/png",
       }
 
         const { errors } = useForm({
@@ -67,6 +73,10 @@ export default defineComponent({
                     name: 'description',
                     label: 'Описание'
                 },
+                coverImg: {
+                    name: 'coverImage',
+                    label: 'Обложка'
+                }
             },
             songs: [],
             initialData: {},
@@ -77,7 +87,7 @@ export default defineComponent({
     },
     methods: {
         onSubmit(){
-            this.fieldsValues.isPublic = true;
+            this.fieldsValues.isPublic = false;
             this.fieldsValues.songIds = this.songIds.map((songId, id) => {
                 let item:any = {
                     songId: songId,
@@ -90,8 +100,22 @@ export default defineComponent({
                 return item
             });
             this.fieldsValues.songIds = JSON.stringify(this.fieldsValues.songIds);
+
+            var formData = new FormData();
+            for ( const [key, value] of Object.entries(this.fieldsValues) ) {
+                if(key === 'coverImg'){
+                    formData.append(key, this.fieldsValues[key][0]);
+                    
+                }else{
+                    formData.append(key, this.fieldsValues[key]);
+                }
+            }
         axios.post(this.addPlaylistURL, this.fieldsValues, { 
-            withCredentials: true}
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'multipart/form-data'
+                }
+        }
             )
           .then(
             (response) => {

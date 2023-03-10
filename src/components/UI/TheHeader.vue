@@ -107,6 +107,7 @@ export default defineComponent({
     .main-header{
         min-height: 3vh;
         padding: 2rem;
+        width: 100%;
     }
 
   .site-nav,

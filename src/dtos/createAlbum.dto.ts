@@ -6,5 +6,8 @@ export class CreateAlbumDto{
     
     description: string;
 
-    genreIds: number[];
+    coverImg: string;
+
+    releaseDate: string;
+
 }

@@ -5,10 +5,6 @@
             v-model="fieldsValues.name"
         />
         <text-field 
-            :field-data="fieldsData.surname" 
-            v-model="fieldsValues.surname"
-        />
-        <text-field 
             :field-data="fieldsData.username" 
             v-model="fieldsValues.username"
         />
@@ -17,6 +13,12 @@
             v-model="fieldsValues.email"
             rules="email"
         />
+        <file-field 
+            :field-data="fieldsData.avatar" 
+            v-model="fieldsValues.avatar" 
+            rules="mimes:image/jpg, image/png, image/jpeg"
+            defaultError="Файл должен быть в формате jpg, png или jpeg"
+        > </file-field>
 
         <text-field 
             :field-data="fieldsData.password" 
@@ -24,12 +26,12 @@
         />
         <div class="form-field boolean-field">
             <label class="form-field__label">
-                {{fieldsData.roleId.label}}
+                {{fieldsData.roleName.label}}
             </label>
-            <Field :name="fieldsData.roleId.name" type="checkbox" v-model="fieldsValues.roleId" value="artist" checked-value="artist" unchecked-value="listener" />
+            <Field :name="fieldsData.roleName.name" type="checkbox" v-model="fieldsValues.roleName" value="artist" checked-value="artist" unchecked-value="listener" />
         </div>
         <div
-            v-if="fieldsValues.roleId && fieldsValues.roleId === fieldsData.roleId.value"
+            v-if="fieldsValues.roleName && fieldsValues.roleName === fieldsData.roleName.value"
             :fieldsValues="fieldsValues"
             :fieldsData="fieldsData"
         >
@@ -91,16 +93,16 @@ export default defineComponent({
                     name: 'name',
                     label: 'Имя'
                 },
-                surname: {
-                    name: 'surname',
-                    label: 'Фамилия'
+                avatar:{
+                    name: 'avatar',
+                    label: 'Загрузить аватар'
                 },
                 username: {
                     name: 'username',
                     label: 'Имя пользователя'
                 },
-                roleId: {
-                    name: 'roleId',
+                roleName: {
+                    name: 'roleName',
                     value: 'artist',
                     label: 'Вы хотите быть артистом?'
                 },

@@ -114,6 +114,9 @@ export default defineComponent({
   }
   #app{
     min-height: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   .icon-btn{
     background: none;
@@ -224,6 +227,7 @@ export default defineComponent({
     min-height: 100%;
     transition: .3s;
     padding-top: 2rem;
+    width: fit-content;
   }
 
   .page-wrapper--collapsed{

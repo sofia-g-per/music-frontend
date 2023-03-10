@@ -9,20 +9,23 @@
             :field-data="fieldsData.description" 
             v-model="fieldsValues.description"
         />
+        <date-select 
+            :field-data="fieldsData.releaseDate"
+            defaultError="Заполните, начиная с 01/01/1900 и до нынешней даты"
+            v-model="fieldsValues.releaseDate"
+        />
+        <file-field 
+            :field-data="fieldsData.coverImg" 
+            v-model="fieldsValues.coverImg" 
+            defaultError="Файл должен быть в формате jpeg, jpg или png"
+        />  
         <song-select 
             :getSongsURL="getSongsURL"
             :initialSongIds="songIds"
             :initialSelectedSongs="[]"
             @onSongIdsChange="handleSongIdsChange"
         />
-        
-        <p class="form-field__label"> Жанры: </p>
-        <div class="song-select">
-            <div v-for="option in genreOptions" :key="option.id" class="music-list-item">
-                <label :for="option.id">{{option.name}}</label>
-                <Field type="checkbox" :id="option.id" v-model="genreIds" name="genreIds" :value="option.id"/>
-            </div>
-        </div>
+
         <!-- <p class="form-field__error-label" v-show="errors.songIds">{{errors.songIds}}</p> -->
         <button :disabled="!meta.valid" class="main-btn main-btn--fill" type="submit">Добавить</button>
     </Form>
@@ -35,6 +38,8 @@ import TextField from '../UI/form/TextField.vue'
 import SongSelect from '../UI/form/SongSelect.vue';
 import axios from 'axios';
 import {CreateAlbumDto} from '@/dtos/createAlbum.dto'
+import DateSelect from '../UI/form/DateSelect.vue';
+import FileField from '../UI/form/FileField.vue';
 
 export default defineComponent({
     name: 'AddAlbumForm',
@@ -42,18 +47,24 @@ export default defineComponent({
         TextField,
         Form,
         SongSelect,
-        Field
+        DateSelect,
+        FileField
     },
     setup(){
         const schema = {
             name: 'required',
+            releaseDate: {
+                "required": true,
+                "isReleaseDateValid": true
+            },
+            coverImg: "mimes:image/jpeg,image/jpg,image/png",
             songIds: (value) => {
                 if (value && value.length) {
                     return true;
                 }
                 
                 return 'Выберите хотя бы одну песню';
-                }
+            }
       }
 
         const { errors } = useForm({
@@ -78,35 +89,27 @@ export default defineComponent({
                     name: 'description',
                     label: 'Описание'
                 },
+                releaseDate: {
+                    name: 'releaseDate',
+                    label: 'Дата выпуска'
+                },
+                coverImg: {
+                    name: 'coverImg',
+                    label: 'Обложка'
+                }
             },
             songs: [],
             songIds: [],
-            genreOptions: [],
-            genreIds: [],
             formError: ''
         }
     },
     computed: {
         getSongsURL() {
-            
             return this.$store.getters.fullURL('getCurrentArtistSongs');
         },
         addAlbumURL(){
             return this.$store.getters.fullURL('createAlbum')
         }
-    },
-    mounted(){
-        // жанры
-        axios.get(`${this.$store.state.APIURL}${this.$store.state.APIExtensions.getGenres}`)
-        .then((response) => {
-          if(response.status === 200 && response.data){
-              this.genreOptions =  response.data;
-          }
-       })
-        .catch((error)=>{
-              console.log(error)
-          })
-
     },
     methods: {
         onSubmit(){
@@ -116,11 +119,24 @@ export default defineComponent({
                     songIndex: id,
                 }
             });
-            if(this.genreIds){
-                this.fieldsValues.genreIds = this.genreIds;
+            this.fieldsValues.songIds = JSON.stringify(this.fieldsValues.songIds)
+            var formData = new FormData();
+            for ( const [key, value] of Object.entries(this.fieldsValues) ) {
+                if( key === 'coverImg'){
+                    formData.append(key, this.fieldsValues[key][0]);
+                    
+                }else if(key === 'releaseDate'){
+                    formData.append(key, new Date(this.fieldsValues.releaseDate).toUTCString());
+                }else{
+                    formData.append(key, this.fieldsValues[key]);
+                }
             }
-            axios.post(this.addAlbumURL, this.fieldsValues, { 
-                withCredentials: true
+
+            axios.post(this.addAlbumURL, formData, { 
+                withCredentials: true,
+                headers: {
+                'Content-Type': 'multipart/form-data'
+                }
             })
           .then(
             (response) => {

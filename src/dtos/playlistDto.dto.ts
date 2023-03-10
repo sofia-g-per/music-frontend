@@ -1,3 +1,4 @@
+import { SongDto } from "./songDto.dto";
 
 
 export class PlaylistDto{

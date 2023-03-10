@@ -7,4 +7,6 @@ export class CreatePlaylistDto{
     
     description: string;
 
+    coverImg: string;
+
 }
