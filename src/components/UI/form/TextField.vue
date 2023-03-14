@@ -5,7 +5,7 @@
         </label>
         <Field  class="form-field__input" :name="fieldData.name"  autcomplete="off" v-bind="$attrs" />
         <p class="form-field__error-label" v-show="errorMessage" :name="fieldData.name">
-          {{'Заполните данное поле'}}
+          {{errorMessage? defaultError?defaultError: 'Заполните данное поле' : ''}}
         </p>
     </div>
 </template>
@@ -21,7 +21,7 @@ export default defineComponent({
   components: {
     Field,
   },  
-  props: ['fieldData', 'errors'], 
+  props: ['fieldData', 'errors', 'defaultError'], 
     setup(props) {
     const { errorMessage } = useField(props.fieldData.name as string);
     return {

@@ -3,17 +3,20 @@
         <text-field 
             :field-data="fieldsData.name" 
             v-model="fieldsValues.name"
-            rules="required"
+            defaultError="Заполните поле (максимум 35 символов)"
+
         />
         <text-field 
             :field-data="fieldsData.username" 
             v-model="fieldsValues.username"
-            rules="required"
+            defaultError="Заполните поле (максимум 35 символов)"
+
         />
         <text-field 
             :field-data="fieldsData.email" 
             v-model="fieldsValues.email"
-            rules="required"
+            defaultError="Проверьте корректность почты"
+
         />
 
         <div class="form-field">
@@ -77,9 +80,9 @@ export default defineComponent({
     },
     setup(){
         const schema = {
-            name: 'required',
-            username: 'required',
-            email: 'required',
+            name: 'required|max:35',
+            username: 'required|max:35',
+            email: 'required|125',
             password: 'required',
             // avatar:
             // stagename: 'validateArtist'

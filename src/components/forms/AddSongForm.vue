@@ -3,6 +3,7 @@
         <text-field 
             :field-data="fieldsData.name" 
             v-model="fieldsValues.name"
+            defaultError="Заполните поле (максимум 70 символов)"
         />
         <text-field 
             :field-data="fieldsData.description" 
@@ -102,7 +103,7 @@ export default defineComponent({
     },
     setup(){
         const schema = {
-            name: 'required',
+            name: 'required|max:70',
             audioFile: "required|mimes:audio/mpeg",
             releaseDate: {
                 "required": true,

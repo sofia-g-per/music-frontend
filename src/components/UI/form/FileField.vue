@@ -16,6 +16,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { Field, ErrorMessage, useField } from 'vee-validate'
+import { file } from '@babel/types';
 
 export default defineComponent({
     name: "FileField",
@@ -26,11 +27,6 @@ export default defineComponent({
     components: {
         Field
     }, 
-    computed:{
-        file(){
-            return this.errorMessage;
-        }
-    } ,
     setup(props) {
         const { errorMessage } = useField(props.fieldData.name as string);
         return {

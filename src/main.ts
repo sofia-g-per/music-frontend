@@ -3,12 +3,13 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import { defineRule } from 'vee-validate'
-import { required, email, mimes } from '@vee-validate/rules';
+import { required, email, mimes, max } from '@vee-validate/rules';
 // import "@vueform/multiselect/themes/default.css"
 //для валидации данных в формах
 defineRule('required', required)
 defineRule('email', email)
 defineRule('mimes', mimes)
+defineRule('max', max)
 
 defineRule('validateArtist', (value, [target]:any, ctx) => {
     if(ctx.form[target], value ){

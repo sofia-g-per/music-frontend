@@ -38,7 +38,7 @@
             </div>
         </div>
         <p class="form-field__error-label">{{formError}}</p>
-        <button  class="main-btn main-btn--fill" type="submit">Добавить</button>
+        <button  class="main-btn main-btn--fill" type="submit">Сохранить</button>
     </Form>
 </template>
 
@@ -49,13 +49,15 @@ import TextField from '../UI/form/TextField.vue'
 import FileField from '../UI/form/FileField.vue';
 import axios from 'axios';
 import { CreateSongDto } from '@/dtos/createSong.dto';
+import DateSelect from '../UI/form/DateSelect.vue';
 export default defineComponent({
     name: 'AddSongForm',
     components: {
         TextField,
         Form,
         FileField,
-        Field
+        Field,
+        DateSelect
     },
     data(){
         return{
@@ -163,18 +165,18 @@ export default defineComponent({
             var formData = new FormData();
         for ( const [key, value] of Object.entries(this.fieldsValues) ) {
             if(key === 'audioFile' || key === 'coverImg' || key === 'lyrics'){
-                formData.append(key, this.fieldsValues[key][0]);
-                
+                if(this.fieldsValues[key]){
+                    formData.append(key, this.fieldsValues[key][0]);
+                }                
             }else if(key === 'releaseDate'){
                 formData.append(key, new Date(this.fieldsValues.releaseDate).toUTCString());
-            }else{
+            }else if(key !== 'artists'){
                 formData.append(key, this.fieldsValues[key]);
             }
         }
         if(this.genreIds && this.genreIds.length > 0){
             formData.append('genreIds', JSON.stringify(toRaw(this.genreIds)));
         }
-        
         axios.post(this.fullApiUrl, formData, { 
             withCredentials: true,  
             headers: {
@@ -189,7 +191,7 @@ export default defineComponent({
             }
           )            
           .catch((error)=>{
-              if(error.response && error.reponse.status === 400){
+              if(error && error.statusCode === 400){
                   this.errors = error.data;
               }else{
                   this.formError = 'Простите, произошла ошибка при загрузке данных'

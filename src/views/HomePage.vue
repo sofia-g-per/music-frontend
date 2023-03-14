@@ -8,7 +8,9 @@
         <playlist-item 
             v-for="playlist in generatedPlaylists" 
             :key="playlist.name" 
-            :itemData="playlist">
+            :itemData="playlist"
+            :likedSongs="likedSongs"
+            >
         </playlist-item>
     </div>
     <div v-if="songs && songs.length > 0" class="song-list">
@@ -66,7 +68,7 @@
                 </button>
             </template>
         </music-list-item>
-    </div>
+    </div>   
     <div v-else class="page-error">
         <!-- К сожалению, по вашему запросу ничего не найдено -->
         <span></span>
@@ -107,7 +109,7 @@ export default defineComponent({
         getSongsURL(){
             return this.$store.getters.fullURL('getSongs')
         },
-        getGenreatedPlaylistURL(){
+        getGeneratedPlaylistURL(){
             return this.$store.getters.fullURL('getGeneratedPlaylist')
         },
         searchUrl(){
@@ -214,22 +216,22 @@ export default defineComponent({
                     })
 
                     axios.get(`${this.$store.state.APIURL}${this.$store.state.APIExtensions.getGenres}`)
-                    .then((response) => {
-                    if(response.status === 200 && response.data){
-                        this.genres =  response.data;
-                    }
-                })
+                        .then((response) => {
+                        if(response.status === 200 && response.data){
+                            this.genres =  response.data;
+                        }
+                    })
                     .catch((error)=>{
                         console.log(error)
                     })
         },
         getGeneratedPlaylist(){
             if(this.isAuth){
-                axios.get(this.getGenreatedPlaylistURL,{withCredentials:true})
+                axios.get(this.getGeneratedPlaylistURL,{withCredentials:true})
                 .then((res) => {
                     console.log(res);
                     if(res.status === 200 && res.data){
-                        this.generatedPlaylists.push(res.data);
+                        this.generatedPlaylists.push({...res.data, type: "generated/playlist"});
                     }
                 })
                 .catch((e)=>{
@@ -242,3 +244,9 @@ export default defineComponent({
 
 })
 </script>
+
+<style scoped>
+    .item-grid{
+        align-self: flex-start;
+    }
+</style>
