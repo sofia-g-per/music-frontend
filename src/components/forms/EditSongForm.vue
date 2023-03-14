@@ -13,7 +13,7 @@
             v-model="fieldsValues.audioFile" 
             rules="mimes:audio/mpeg"
             defaultError="Прикрепите файл в формате mp3"
-        >   
+        />   
         <date-select 
             :field-data="fieldsData.releaseDate"
             defaultError="Заполните, начиная с 01/01/1900 и до нынешней даты"
@@ -43,13 +43,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, toRaw } from 'vue'
 import { Form, Field } from 'vee-validate'
 import TextField from '../UI/form/TextField.vue'
 import FileField from '../UI/form/FileField.vue';
 import axios from 'axios';
 import { CreateSongDto } from '@/dtos/createSong.dto';
-
 export default defineComponent({
     name: 'AddSongForm',
     components: {
@@ -161,18 +160,19 @@ export default defineComponent({
     },
     methods: {
         onSubmit(){
-        var formData = new FormData();
+            var formData = new FormData();
         for ( const [key, value] of Object.entries(this.fieldsValues) ) {
-            if(key === 'audioFile' && value){
+            if(key === 'audioFile' || key === 'coverImg' || key === 'lyrics'){
                 formData.append(key, this.fieldsValues[key][0]);
                 
-            }else if(value && value!== this.initialData[key]){
+            }else if(key === 'releaseDate'){
+                formData.append(key, new Date(this.fieldsValues.releaseDate).toUTCString());
+            }else{
                 formData.append(key, this.fieldsValues[key]);
             }
         }
-        formData.append('id', this.initialData.id)
         if(this.genreIds && this.genreIds.length > 0){
-            formData.append('genreIds', JSON.stringify(this.genreIds));
+            formData.append('genreIds', JSON.stringify(toRaw(this.genreIds)));
         }
         
         axios.post(this.fullApiUrl, formData, { 
