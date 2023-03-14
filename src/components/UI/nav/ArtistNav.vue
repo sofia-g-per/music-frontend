@@ -1,6 +1,12 @@
 <template>
-    <router-link to="/my-songs">Мои песни</router-link>    
-    <router-link to="/my-albums">Мои альбомы</router-link>    
+    <router-link to="/my-albums" class="icon-link">
+        <img src="@/assets/images/add_album_icon.svg" alt="Мои альбомы">
+        <span class="icon-link__text"><span>Мои альбомы</span></span> 
+    </router-link>    
+    <router-link to="/my-songs" class="icon-link">
+        <img src="@/assets/images/add_song_icon.svg" alt="Мои песни">
+        <span class="icon-link__text"><span>Мои песни</span></span>
+    </router-link>    
 </template>
 
 <script lang="ts">
@@ -10,3 +16,4 @@ export default defineComponent({
     name: "ArtistNav"
 })
 </script>
+

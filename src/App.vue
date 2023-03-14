@@ -245,20 +245,58 @@ export default defineComponent({
     padding: 20vw 0;
   }
 
-  a{
-    color: var(--font-color);
+  .icon-link{
+    text-decoration: none;
     font-size: 1.8rem;
     display: flex;
     align-items: center;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: .3s;
-    text-align: center;
+    text-transform: uppercase; 
+    /* width: min-content;  */
+    display: flex;
+    gap: 0.5rem;
   }
 
-  a:hover{
-      opacity: .5;
+  .icon-link__text{
+    color: var(--accent-color-1);
+    display: block;
+    width: fit-content;
+    width: 0%;
+    overflow: hidden;
+    position: relative;
   }
+
+  .icon-link__text>span{
+    z-index: 1;
+    position: relative;
+    display: block;
+    width: 0%;
+    overflow: hidden;
+  }
+
+  .icon-link__text:after{
+    display: block;
+    position: absolute;
+    content: '';
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    color: var(--background-color);
+    top: 0;
+    left: 0;
+    transition: 1s;
+    transition-delay: 1s;
+  } 
+
+  .icon-link:hover .icon-link__text,
+  .icon-link:hover .icon-link__text>span{
+
+    width: fit-content;
+    overflow: auto;
+  }
+
+  /* .icon-link:hover .icon-link__text:after{
+    width: 0%;
+  }  */
   
   /* ------------------------------ */
   /* CONTAINERS */
