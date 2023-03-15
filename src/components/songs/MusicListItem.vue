@@ -48,38 +48,5 @@ export default defineComponent({
 })
 </script>
 <style scoped>
-    .music-list-item{
-        width: 80%;
-        padding: 1vw 1vw 2vw 1vw;
-        display: flex;
-        border-bottom: 1px solid var(--font-color);
-        cursor: pointer;
-        transition: .3s;
-    }
 
-    .music-list-item:hover{
-        transform: scale(1.025) translate(-1px, -2px);
-    }
-
-    .music-list-item__info{
-        width: 100%;
-    }
-
-    .music-list-item__info__title{
-        font-size: 1.8rem;
-    }
-
-    .music-list-item__artist-wrapper{
-        padding: 1rem 1rem 0 1rem;
-        display: flex;
-        flex-direction: column;
-        gap: .5rem;
-
-    }
-
-    .music-list-item__info__artist{
-        opacity: .8;
-        font-size: 1.4rem;
-
-    }
 </style>

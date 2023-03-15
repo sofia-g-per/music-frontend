@@ -110,76 +110,7 @@ export default defineComponent({
 
 
 <style scoped>
-
-    .search-and-filters{
-        display: flex;
-        flex-direction: column;
-        gap: 1.8rem;
-    }
-
-    .search-bar__wrapper{
-        display: flex;
-        width: fit-content;
-        min-width: 70rem;
-        position: relative;
-        gap: .5rem;
-    }
-    .search-bar{
-        background: var(--bg-color);
-        width: 100%;
-        padding: .8rem;
-        border: none;
-        color: var(--font-color);
-        transition: .3s;
-        border-bottom: 2px solid;
-        border-image: var(--basic-gradient) 1;
-    }
-
-    .search-bar::placeholder{
-        color: var(--font-color);
-        opacity: 0.5;
-    }
-
-    .search-bar:focus{
-        outline: none;
-        /* transform: scale(1.015); */
-    }
-    .search-bar__wrapper::before{
-        content:'';
-        display: block;
-        /* background: url('../../assets/images/search_icon.svg') no-repeat; */
-        background-size: 100% auto;
-        width: 2rem;
-    }
-
-    .genre-filters{
-        display: flex;
-        gap: 2rem;
-    }
-
-    .genre-filter{
-        /* border: solid 3px var(--accent-color-2); */
-        background: var(--accent-color-1);
-        border-radius: 5rem;
-        padding: .7rem;
-        min-width: 7rem;
-        display: flex;
-        justify-content: center;
-        font-size: 1.3rem;
-        font-weight: 700;
-        cursor: pointer;
-        transition: .3s;
-    }
-    .genre-filter:hover{
-        transform: scale(0.9);
-    }
-
-    .genre-filter--active{
-        background: var(--accent-color-2);
-    }
-    .genre-filter input{
-        display: none;
-    }
+    
 
 
 </style>

@@ -1,5 +1,6 @@
 <template>
-    <Form method="post" :validation-schema="schema" @submit="onSubmit" class="form" v-slot="{meta}">
+    <Form method="post" :validation-schema="schema" @submit="onSubmit" class="form-1-clmn" v-slot="{meta}">
+        <h1 class="page-title gradient-text">Вход</h1>
         <text-field 
             :field-data="fieldsData.email" 
             v-model="fieldsValues.email"

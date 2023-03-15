@@ -1,7 +1,7 @@
 <template>
     <div class="song-select-wrapper">
         <div class="select-wrapper">
-            <p class="form-field__label">Выберите песни: </p>
+            <p class="page-title">Выберите песни: </p>
             <div class="song-select">
                 <!-- вынести в отдельный элемент  -->
                 <div v-for="(song) in songs" :key="song.id" class="music-list-item">
@@ -18,7 +18,7 @@
             </div>
         </div>
         <div class="select-wrapper">
-            <p class="form-field__label">Ваш плейлист: </p>
+            <p class="page-title chosen-title">Ваш плейлист: </p>
                 <draggable 
                     class="song-select" 
                     v-model="selectedSongs"
@@ -27,7 +27,7 @@
                     item-key="id"
                 >
                 <template #item="{element, index}">
-                    <div :key="element" class="music-list-item">
+                    <div :key="element" class="music-list-item music-list-item--accent">
                         <div class="music-list-item__info">
                             <h2 class="music-list-item__info__title heading-tretriary">{{index + 1}} {{element.name}}</h2>
                             <div class="music-list-item__artist-wrapper">
@@ -41,7 +41,7 @@
                 </template>
                 </draggable>
             </div>
-        </div>
+    </div>
         <!-- <p class="form-field__error-label" v-show="errors.songIds">{{errors.songIds}}</p> -->
 </template>
 
@@ -157,7 +157,12 @@ export default defineComponent({
     padding: 1rem;
 }
 
+
 .music-list-item__artist-wrapper{
     padding-left: 1rem;
+}
+
+.chosen-title{
+    color: var(--accent-color-2)
 }
 </style>

@@ -1,5 +1,6 @@
 <template>
     <header class="main-header">
+        <the-search-bar></the-search-bar>
         <div class="site-nav" v-if="isAuth">
             <listener-nav ></listener-nav>
             <artist-nav v-if="isArtist"></artist-nav>
@@ -64,15 +65,19 @@
                 <router-link to="/">
                     <img src="@/assets/images/logo.svg" alt="Домой">
                 </router-link>
+
             </div>
 
 
         </div>
         <div class="main-header__auth-links" v-if="!isAuth" >
-            <router-link to="/"><img  class="logo" src="@/assets/images/logo.png" alt="Домой"></router-link>
-            <router-link class="gradient-text" to="/login">Вход</router-link>
-            <router-link class="gradient-text" to="/sign-up">Регистрация</router-link>
+            <router-link class="gradient-text icon-link" to="/login">Вход</router-link>
+            <router-link class="gradient-text icon-link" to="/sign-up">Регистрация</router-link>
+            <router-link to="/">
+                    <img src="@/assets/images/logo.svg" alt="Домой">
+            </router-link>
         </div>
+
     </header>
 </template>
 
@@ -80,11 +85,13 @@
 import { defineComponent } from 'vue'
 import ArtistNav from './nav/ArtistNav.vue'
 import ListenerNav from '@/components/UI/nav/ListenerNav.vue'
+import TheSearchBar from './TheSearchBar.vue'
 export default defineComponent({
     name: "TheHeader",
     components: {
         ArtistNav,
-        ListenerNav
+        ListenerNav,
+        TheSearchBar
     },
     computed:{
         isAuth(){
@@ -113,6 +120,8 @@ export default defineComponent({
         min-height: 3vh;
         padding: 2rem;
         width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
     }
 
   .site-nav,

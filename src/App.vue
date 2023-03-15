@@ -112,6 +112,11 @@ export default defineComponent({
     margin: 0;
         box-sizing: border-box;
   }
+
+  a{
+    text-decoration: none;
+    color: white;
+  }
   #app{
     min-height: 70%;
     display: flex;
@@ -123,6 +128,11 @@ export default defineComponent({
     outline: none;
     border: none;
     cursor:pointer;
+    max-width: 3rem;
+  }
+
+  .icon-btn>img{
+    max-width: 100%;
   }
 
     .icon-btn:focus,
@@ -136,22 +146,21 @@ export default defineComponent({
       border: none;
       border-radius: 1rem;
       text-transform: uppercase;
+      cursor: pointer;
+      letter-spacing: 0.3rem;
     }
 
     .main-btn--fill{
       background: var(--basic-gradient);
       color: white;
-      /* cursor: pointer; */
       transition: .5s;
-      padding: 1rem 6rem;
+      padding: 1rem 4rem;
       width: fit-content;
-      align-self: flex-end;
+      cursor:pointer;
     }
 
     .main-btn--fill:hover{
-      background: rgb(38, 0, 78);
-      color: white !important;
-
+      /* opacity: 1;  */
     }
 
     .main-btn--fill:disabled{
@@ -164,6 +173,11 @@ export default defineComponent({
       border: 4px solid;
       border-image: var(--basic-gradient) 1;
       width: fit-content;
+      cursor:pointer;
+
+      /* border-radius: 1rem;
+      background-origin: border-box;
+      background-clip: content-box, border-box; */
     }
 
     .gradient-text{
@@ -216,7 +230,10 @@ export default defineComponent({
   }
 
   .page-title{
-    padding: 2rem;
+    text-transform: uppercase;
+    font-weight: normal;
+    font-size: 2.8rem;
+    letter-spacing: 0.4rem;
   }
 
   .page-wrapper{
@@ -224,10 +241,11 @@ export default defineComponent({
     /* justify-content: center; */
     align-items: center;
     flex-direction: column;
-    min-height: 100%;
+    min-height: 80vh;
     transition: .3s;
     padding-top: 2rem;
     width: fit-content;
+    min-width: 100%;
   }
 
   .page-wrapper--collapsed{
@@ -297,6 +315,81 @@ export default defineComponent({
   /* .icon-link:hover .icon-link__text:after{
     width: 0%;
   }  */
+
+    /* ------------------------------ */
+  /* SEARCH */
+  /* ------------------------------ */
+  .search-and-filters{
+        display: flex;
+        flex-direction: column;
+        gap: 1.8rem;
+    }
+
+    .search-bar__wrapper{
+        display: flex;
+        width: fit-content;
+        /* min-width: 70rem; */
+        position: relative;
+        gap: .5rem;
+    }
+    .search-bar{
+        background: var(--bg-color);
+        width: 100%;
+        padding: .8rem;
+        border: none;
+        color: var(--font-color);
+        transition: .3s;
+        border-bottom: 2px solid;
+        border-image: var(--basic-gradient) 1;
+    }
+
+    .search-bar::placeholder{
+        color: var(--font-color);
+        opacity: 0.5;
+    }
+
+    .search-bar:focus{
+        outline: none;
+        /* transform: scale(1.015); */
+    }
+    .search-bar__wrapper::before{
+        content:'';
+        display: block;
+        /* background: url('../../assets/images/search_icon.svg') no-repeat; */
+        background-size: 100% auto;
+        width: 2rem;
+    }
+
+    .genre-filters{
+        display: flex;
+        gap: 2rem;
+        /* max-width: 100vw; */
+        overflow: hidden;
+    }
+
+    .genre-filter{
+        /* border: solid 3px var(--accent-color-2); */
+        background: var(--accent-color-1);
+        border-radius: 5rem;
+        padding: .7rem;
+        min-width: 7rem;
+        display: flex;
+        justify-content: center;
+        font-size: 1.3rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: .3s;
+    }
+    .genre-filter:hover{
+        transform: scale(0.9);
+    }
+
+    .genre-filter--active{
+        background: var(--accent-color-2);
+    }
+    .genre-filter input{
+        display: none;
+    }
   
   /* ------------------------------ */
   /* CONTAINERS */
@@ -307,14 +400,61 @@ export default defineComponent({
       gap: 1rem;
     }
 
+    
+    .music-list-item:first-child(){
+        background: linear-gradient(to bottom, rgba(187, 0, 255, 0.7) 0, transparent 30%)
+        linear-gradient(to top, rgba(187, 0, 255, 0.85) 0, transparent 20%);
+    }
+    
+    .music-list-item{
+        width: 100%;
+        padding: 1vw 1vw 2vw 1vw;
+        display: flex;
+        background: linear-gradient(to top, rgba(187, 0, 255, 0.6) 0, transparent 30%);
+        cursor: pointer;
+        transition: .3s;
+    }
+
+    
+    .music-list-item--accent{
+      background: linear-gradient(to top, var(--accent-color-2) 0, transparent 30%);
+
+    }
+
+
+    .music-list-item:hover{
+        transform: scale(1.025) translate(-1px, -2px);
+    }
+
+    .music-list-item__info{
+        width: 100%;
+    }
+
+    .music-list-item__info__title{
+        font-size: 1.8rem;
+    }
+
+    .music-list-item__artist-wrapper{
+        padding: 1rem 1rem 0 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+
+    }
+
+    .music-list-item__info__artist{
+        opacity: .8;
+        font-size: 1.4rem;
+
+    }
+
   .song-list{
     border-radius: 1rem;
         display: flex;
     flex-direction: column;
     align-items: center;
     padding: 2rem 0;
-    min-width: 60vw;
-
+    min-width: 100%;
   }
   /* ------------------------------ */
   /* FORM */
@@ -329,13 +469,22 @@ export default defineComponent({
 
   }
 
+  .form-1-clmn{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+  }
+
   .form-field{
     display: flex;
     flex-direction: column;
     gap: 1rem;
     /* min-width: 20vw; */
     padding: 1rem;
-    
+    max-width: 25vw;
+    height: min-content;
   }
 
 
@@ -371,6 +520,7 @@ export default defineComponent({
   
   .form-field__label{
     font-size: 1.8rem;
+    letter-spacing: 0.3rem;
     color: var(--accent-color-1);
   }
   

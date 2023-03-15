@@ -1,10 +1,11 @@
 <template>
+    <div class="home-page">
     <the-search-bar :searchAPIURL="searchUrl" 
     @onSearchResponse="handleSearchResponse"
     @onEmptyFilters="getAllSongs" 
     :withFilters="true">
     </the-search-bar>
-    <div v-if="generatedPlaylists && generatedPlaylists.length > 0" class="item-grid">
+    <div v-if="generatedPlaylists && generatedPlaylists.length > 0" class="playlist-list">
         <playlist-item 
             v-for="playlist in generatedPlaylists" 
             :key="playlist.name" 
@@ -22,6 +23,8 @@
             playlistType="allSongs"
             :songInPlaylistId="key"
         >
+            <button class="icon-btn"><img src="@/assets/images/query_icon.svg"></button>
+
             <template v-if="isAuth">
                 <button class="icon-btn" @click.stop="handleLikeClick( $event, song.id)">
                     <svg :class="{'like-btn': true, 'like-btn--active': isLiked(song.id)}" 
@@ -73,6 +76,7 @@
         <!-- К сожалению, по вашему запросу ничего не найдено -->
         <span></span>
     </div>
+</div>
 </template>
 
 <script lang="ts">
@@ -246,7 +250,21 @@ export default defineComponent({
 </script>
 
 <style scoped>
-    .item-grid{
+    .playlist-list{
+        padding-top: 3rem;
         align-self: flex-start;
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        width: 100%;
+
+    }
+
+    .home-page{
+        width: 100%;
+        padding: 0 6rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 </style>

@@ -1,31 +1,15 @@
 <template>
     <router-link :class="itemMainClass" :to="playlistLink">
         <slot></slot>
-        <p :class="`${itemMainClass}__song-list`">
-            <span  v-for="song in itemData.songs" 
+        <h3 :class="`${itemMainClass}__title`">{{itemData.name}}</h3>
+        <div :class="`${itemMainClass}__song-list`">
+            <p  v-for="song in itemData.songs" 
                 :key="song.id">{{ song.name }} 
                 <span v-for="artist in song.artists" :key="artist.artistId" class="music-list-item__info__artist main-text">
                     {{artist.isFeatured? "feat. "+ artist.artist.stagename: artist.artist.stagename}}
                 </span>
-            </span>
-        </p>
-        <h3 :class="`${itemMainClass}__title`">{{itemData.name}}</h3>
-        <!-- <music-list-item
-        class="playlist__song"
-         v-for="(song, key) in itemData.songs" 
-                :key="song.id"
-                :songData="song.song? song.song : song"
-                :playlist="itemData"
-                playlistType="liked"
-                :songInPlaylistId="key"
-        >
-
-        </music-list-item> -->
-
-
-        <!-- <div class="playlist-wrapper__songs">
-            <p class="playlist-wrapper__songs__song" v-for="(song, id) in itemData.songs" :key="song.id">{{id+1}} {{song.song.name}}</p>
-        </div> -->
+            </p>
+        </div>
     </router-link>
 </template>
 
@@ -62,10 +46,9 @@ export default defineComponent({
     .playlist-card{
         width: 20rem;
         border-radius: 1.5rem;
-        padding-bottom: 40%;
         padding-left: 1.5rem;
         padding-right: 1.5rem;
-        padding-top: 40%;
+        min-height: 28rem;
         display: flex;
         flex-direction: column;
         position: relative;
