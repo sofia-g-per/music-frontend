@@ -1,5 +1,12 @@
 <template>
-  <login-form></login-form>
+  <div class="login-page">
+    <div class="login-page__image-wrapper">
+      <img src="@/assets/images/Vectors-cropped.svg" >
+    </div>
+    
+    <login-form></login-form>
+
+  </div>
 </template>
 
 <script lang="ts">
@@ -34,5 +41,23 @@ li {
 }
 a {
   color: #42b983;
+}
+
+.login-page{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+}
+
+img{
+  max-width: 100%;
+}
+
+.login-page__image-wrapper{
+  padding: 0 3rem;
+  display: flex;
+  justify-content: center;
+  max-height: 83.5vh;
+
 }
 </style>
