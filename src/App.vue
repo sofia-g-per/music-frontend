@@ -271,23 +271,28 @@ export default defineComponent({
     text-transform: uppercase; 
     /* width: min-content;  */
     display: flex;
+    justify-content: flex-end;
     gap: 0.5rem;
+    z-index: 0;
   }
 
   .icon-link__text{
     color: var(--accent-color-1);
     display: block;
     width: fit-content;
-    width: 0%;
+    width: 0;
     overflow: hidden;
     position: relative;
+    z-index: 0;
+    transition: 2s;
+
   }
 
   .icon-link__text>span{
     z-index: 1;
     position: relative;
     display: block;
-    width: 0%;
+    width: 0;
     overflow: hidden;
   }
 
@@ -308,7 +313,7 @@ export default defineComponent({
   .icon-link:hover .icon-link__text,
   .icon-link:hover .icon-link__text>span{
 
-    width: fit-content;
+    width: max-content;
     overflow: auto;
   }
 

@@ -1,5 +1,4 @@
 <template>
-
     <router-link to="/liked" class="icon-link">
         <img src="@/assets/images/liked_icon.svg" alt="Избранное">
         <div class="icon-link__text"><span>Избранное</span></div>
