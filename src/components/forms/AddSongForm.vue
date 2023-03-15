@@ -32,15 +32,21 @@
             defaultError="Файл должен быть в формате srt"
         >     
         </file-field>
-        <p class="form-field__label"> Жанры: </p>
-        <div class="song-select">
+        <genre-select            
+            :initialGenreIds="genreIds"
+            :initialSelectedGenres="[]"
+            @onGenreIdsChange="handleGenreIdsChange"
+        />
+
+        <!-- <p class="form-field__label"> Жанры: </p>
+        <div class="genre-filters">
             <div v-for="option in genreOptions" :key="option.id" class="music-list-item">
-                <div class="genre-select__item">
+                <div class="genre-filter">
                     <label  label :for="option.id">{{option.name}}</label>
                     <Field type="checkbox" :id="option.id" v-model="genreIds" name="genreIds" :value="option.id"/>
                 </div>
             </div>
-        </div>
+        </div> -->
         <p class="form-field__error-label">{{formError}}</p>
         <button :disabled="!meta.valid" class="main-btn main-btn--fill" type="submit">Добавить</button>
     </Form>
@@ -54,14 +60,16 @@ import FileField from '../UI/form/FileField.vue';
 import axios from 'axios';
 import { CreateSongDto } from '@/dtos/createSong.dto';
 import DateSelect from '../UI/form/DateSelect.vue';
+import GenreSelect from '../UI/form/GenreSelect.vue';
 export default defineComponent({
     name: 'AddSongForm',
     components: {
         TextField,
         Form,
         FileField,
-        Field,
-        DateSelect
+        // Field,
+        DateSelect,
+        GenreSelect
     },
     data(){
         return{
@@ -98,7 +106,7 @@ export default defineComponent({
             genreIds: [],
             formError: '',
             // хранит доступные для выбора жанра
-            genreOptions: [],
+            // genreOptions: [],
         }
     },
     setup(){
@@ -116,18 +124,6 @@ export default defineComponent({
         return {
             schema
         }
-    },
-    mounted(){
-        // получение вариантов жанров с сервера
-        axios.get(`${this.$store.state.APIURL}${this.$store.state.APIExtensions.getGenres}`)
-        .then((response) => {
-          if(response.status === 200 && response.data){
-              this.genreOptions =  toRaw(response.data);
-          }
-       })
-        .catch((error)=>{
-              console.log(error)
-          })
     },
     methods: {
         // проверка и отправка формы
@@ -167,8 +163,13 @@ export default defineComponent({
                   this.formError = 'Простите, произошла ошибка при загрузке данных'
               }
           })
-        }
+        },
+        // обновление id жанров
+        handleGenreIdsChange(genreIds){
+            this.genreIds = genreIds;
+        },
     },
+
     computed: {
         // адрес для загрузки песни
         fullApiUrl():string {
