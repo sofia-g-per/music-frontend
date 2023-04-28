@@ -4,7 +4,9 @@ import router from './router'
 import store from './store'
 import { defineRule } from 'vee-validate'
 import { required, email, mimes, max } from '@vee-validate/rules';
-// import "@vueform/multiselect/themes/default.css"
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faBell } from '@fortawesome/free-solid-svg-icons'
 //для валидации данных в формах
 defineRule('required', required)
 defineRule('email', email)
@@ -35,4 +37,13 @@ defineRule('isReleaseDateValid', (value:string, [target]:any, ctx)=>{
     }
     return true
 })
-createApp(App).use(store).use(router).mount('#app')
+
+
+/* add icons to the library */
+library.add(faBell);
+
+createApp(App)
+    .use(store)
+    .use(router)
+    .component('font-awesome-icon', FontAwesomeIcon)
+    .mount('#app')
