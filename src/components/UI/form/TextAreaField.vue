@@ -1,9 +1,11 @@
 <template>
-    <div class="form-field">
+    <div class="form-field form-field--text-area">
         <label :for="fieldData.name" class="form-field__label">
           {{fieldData.label}}
         </label>
-        <Field  class="form-field__input" :name="fieldData.name" aria-autocomplete="off" autcomplete="off" v-bind="$attrs" />
+        <Field v-slot="{ field }" v-bind="$attrs" :name="fieldData.name"   aria-autocomplete="off" autcomplete="off" >
+            <textarea  class="form-field__input form-field__input--text-area" v-bind="field" :name="fieldData.name"/>
+        </Field>
         <p class="form-field__error-label" :name="fieldData.name">
           {{errorMessage? 'Заполните данное поле': ''}}
         </p>
@@ -39,5 +41,9 @@ export default defineComponent({
 .form-field__input{
 padding: .5rem;
 border-radius: .5rem;
+}
+
+.form-field__input--text-area{
+  min-height: 8rem;
 }
 </style>
