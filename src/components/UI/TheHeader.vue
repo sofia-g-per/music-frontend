@@ -155,6 +155,7 @@ export default defineComponent({
   .icon-link{
     flex: initial;
     width: min-content;
+    cursor: pointer
 
   }
   

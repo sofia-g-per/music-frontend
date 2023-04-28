@@ -14,6 +14,7 @@ const EditPlaylistPage = () => import('@/views/EditPlaylistPage.vue')
 const EditAlbumPage = () => import('@/views/EditAlbumPage.vue')
 const EditUserPage = () => import('@/views/EditUserPage.vue')
 const PlaylistPage = () => import('@/views/PlaylistPage.vue')
+const NotificationsPage = () => import('@/views/NotificationsPage.vue')
 import store from '@/store'
 
 const routes: Array<RouteRecordRaw> = [
@@ -105,6 +106,14 @@ const routes: Array<RouteRecordRaw> = [
     path: '/my-albums',
     name: 'my-albums',
     component: UsersAlbumsPage,
+    beforeEnter: (to, from) => {
+      return store.dispatch('isArtistGuard')
+    }
+  },
+  {
+    path: '/notifications',
+    name: 'my-notifications',
+    component: NotificationsPage,
     beforeEnter: (to, from) => {
       return store.dispatch('isArtistGuard')
     }

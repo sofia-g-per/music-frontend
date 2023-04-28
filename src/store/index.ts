@@ -21,6 +21,7 @@ export default createStore({
       editPlaylist: 'edit-playlist',
       editAlbum: 'edit-album',
       editUser: 'edit-user',
+      editNotificationStatus: 'edit/colabrequest/status',
 
       getSongs: 'get-all-songs',
       getSong: 'get-song',
@@ -28,7 +29,9 @@ export default createStore({
       getGenres: 'genres',
       getArtists: 'artists',
       getAlbum: 'get-album',
+      getAlbums: 'albums',
       getUser: 'get-user',
+      getNotifications: 'collabRequests',
 
       getFavouriteSongs: 'liked-songs', 
       getCurrentArtistSongs: 'get-song-by-current-artist',
@@ -218,11 +221,11 @@ export default createStore({
       if(state.currentSongId !== undefined){
         const currentSong = state.currentPlaylist.playlist.songs[state.currentSongId] as any;
         if(currentSong.song){
+          console.log(getters.filePath('songs', currentSong.song.filePath))
           return getters.filePath('songs', currentSong.song.filePath)
-
         }else{
+          console.log(getters.filePath('songs', currentSong.filePath))
           return getters.filePath('songs', currentSong.filePath)
-
         }
     }else{
       return false;
