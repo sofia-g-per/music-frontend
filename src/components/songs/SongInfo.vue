@@ -38,5 +38,6 @@ export default defineComponent({
 <style scoped>
     .img-text{
         display: flex;
+        flex-grow: 1;
     }
 </style>
