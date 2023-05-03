@@ -32,6 +32,7 @@ export default createStore({
       getAlbums: 'albums',
       getUser: 'get-user',
       getNotifications: 'collabRequests',
+      getArtistStats: 'current/artist/statistics',
 
       getFavouriteSongs: 'liked-songs', 
       getCurrentArtistSongs: 'get-song-by-current-artist',
