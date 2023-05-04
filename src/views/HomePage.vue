@@ -10,8 +10,17 @@
             v-for="playlist in generatedPlaylists" 
             :key="playlist.name" 
             :itemData="playlist"
-            :likedSongs="likedSongs"
-            >
+            itemType="playlist"
+        >
+        </playlist-item>
+    </div>
+    <div v-if="albums && albums.length > 0" class="playlist-list">
+        <playlist-item 
+            v-for="album in albums" 
+            :key="album.id" 
+            :itemData="album"
+            itemType="album"
+        >
         </playlist-item>
     </div>
     <div v-if="songs && songs.length > 0" class="song-list">
@@ -24,51 +33,8 @@
             :songInPlaylistId="key"
         >
             <button class="icon-btn"><img src="@/assets/images/query_icon.svg"></button>
-
             <template v-if="isAuth">
-                <button class="icon-btn" @click.stop="handleLikeClick( $event, song.id)">
-                    <svg :class="{'like-btn': true, 'like-btn--active': isLiked(song.id)}" 
-                        version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                         viewBox="0 0 45.743 45.743" style="enable-background:new 0 0 45.743 45.743;"
-                        xml:space="preserve">
-                    <g>
-                        <path d="M34.199,3.83c-3.944,0-7.428,1.98-9.51,4.997c0,0-0.703,1.052-1.818,1.052c-1.114,0-1.817-1.052-1.817-1.052
-                            c-2.083-3.017-5.565-4.997-9.51-4.997C5.168,3.83,0,8.998,0,15.376c0,1.506,0.296,2.939,0.82,4.258
-                            c3.234,10.042,17.698,21.848,22.051,22.279c4.354-0.431,18.816-12.237,22.052-22.279c0.524-1.318,0.82-2.752,0.82-4.258
-                            C45.743,8.998,40.575,3.83,34.199,3.83z"/>
-                    </g>
-                    <g>
-                    </g>
-                    <g>
-                    </g>
-                    <g>
-                    </g>
-                    <g>
-                    </g>
-                    <g>
-                    </g>
-                    <g>
-                    </g>
-                    <g>
-                    </g>
-                    <g>
-                    </g>
-                    <g>
-                    </g>
-                    <g>
-                    </g>
-                    <g>
-                    </g>
-                    <g>
-                    </g>
-                    <g>
-                    </g>
-                    <g>
-                    </g>
-                    <g>
-                    </g>
-                    </svg>
-                </button>
+                <like-btn :songId="song.song? song.songId: song.id"></like-btn>
             </template>
         </music-list-item>
     </div>   
@@ -84,13 +50,15 @@ import { defineComponent } from 'vue'
 import TheSearchBar from '@/components/UI/TheSearchBar.vue'
 import MusicListItem from '@/components/songs/MusicListItem.vue'
 import PlaylistItem from '@/components/songs/PlaylistItem.vue'
+import LikeBtn from '@/components/UI/buttons/LikeBtn.vue'
 import axios from 'axios'
 export default defineComponent({
     name: 'HomePage',
     components:{
         TheSearchBar,
         MusicListItem,
-        PlaylistItem
+        PlaylistItem,
+        LikeBtn
     },
     data() {
         return {
@@ -100,30 +68,26 @@ export default defineComponent({
             likedSongs: [],
             playlists: [],
             generatedPlaylists: [],
+            albums: [],
         }
     },
     mounted(){
         this.getAllSongs();
-        if(this.$store.state.isAuth){
-            this.likedSongs = this.getLiked();
-        }
         this.getGeneratedPlaylist();
+        this.getAlbums();
     },
     computed: {
         getSongsURL(){
             return this.$store.getters.fullURL('getSongs')
+        },
+        getAlbumsURL(){
+            return this.$store.getters.fullURL('getAlbums')
         },
         getGeneratedPlaylistURL(){
             return this.$store.getters.fullURL('getGeneratedPlaylist')
         },
         searchUrl(){
             return this.$store.getters.fullURL('globalSearch')
-        },
-        likeSongUrl(){
-            return this.$store.getters.fullURL('likeSong')
-        },
-        unlikeSongUrl(){
-            return this.$store.getters.fullURL('deleteLiked')
         },
         isAuth(){
             return this.$store.state.isAuth;
@@ -133,83 +97,24 @@ export default defineComponent({
         }
     },
     methods: {
+        getAlbums(){
+            axios.get(this.getAlbumsURL)
+            .then((response) => {
+                    if(response.status === 200 && response.data){
+                        console.log("albums", response.data);
+                        this.albums = response.data;
+                    }else{
+                        console.log(response);
+                    }
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+        },
         handleSearchResponse(response:[]){
             this.songs = response;
         },
-        getLiked(){
-            if(this.$store.getters.user){
-                return this.$store.getters.user.favoriteSongs;
-            }
-            return []
-        },
-        async likeSong(songId:number){
-            const like = {songId: songId}
-            axios.post(this.likeSongUrl, like, {withCredentials: true})
-            .then((response) => {
-                console.log('likeresponse', response.data)
-              return response;
-
-            })
-            .catch((error) =>{
-                console.log(error)
-            })
-        },
-        async unlikeSong(songId:number){
-            const songData= {songId: songId};
-            axios.post(this.unlikeSongUrl, songData, {withCredentials: true})
-            .then((response)=>{
-                console.log('unlike response', response)
-                return response;
-            })
-            .catch((error)=>{
-                console.log(error)
-            })
-        },
-        async handleLikeClick(e, songId:number){
-            const likeBtn = e.target.closest('.like-btn')
-            let response;
-            if(likeBtn){     
-                //если песня в избранном -> убрать из избранного
-               if( likeBtn.classList.contains('like-btn--active')){
-                    // response = await this.unlikeSong(songId)
-                    const songData= {songId: songId};
-                    axios.post(this.unlikeSongUrl, songData, {withCredentials: true})
-                    .then((response)=>{
-                        if(response.status === 201){
-                                let newUserData = this.$store.getters.user;
-                                let newFav = newUserData.favoriteSongs.filter(like=> like.songId !== songId)
-                                newUserData.favoriteSongs = newFav;
-                                this.$store.dispatch('updateUser', {newUserData: newUserData});
-                                this.likedSongs = newFav;
-
-                            }
-                        })
-                        .catch((error)=>{
-                            console.log(error)
-                        }) 
-                }else{
-                    // response = await this.likeSong(songId)
-                    const like = {songId: songId}
-                        axios.post(this.likeSongUrl, like, {withCredentials: true})
-                        .then((response) => {
-                            if(response.status === 201){
-                                let newUserData = this.$store.getters.user;
-
-                                newUserData.favoriteSongs.push(response.data)
-                                this.$store.dispatch('updateUser', {newUserData: newUserData});
-                                this.likedSongs = newUserData.favoriteSongs;
-                            }
-                        })
-                        .catch((error) =>{
-                            console.log(error)
-                        })
-                }
-
-                if(response === 200 || response === 201){
-                    likeBtn.classList.toggle('like-btn--active');
-                }
-            }
-        },
+    
         getAllSongs(){
             axios.get(this.getSongsURL)
                 .then((response) => {
@@ -229,17 +134,16 @@ export default defineComponent({
                         console.log(error)
                     })
         },
+        // загрузка персонализированного плейлиста с сервера
         getGeneratedPlaylist(){
             if(this.isAuth){
                 axios.get(this.getGeneratedPlaylistURL,{withCredentials:true})
+                // обработка результаты запроса
                 .then((res) => {
-                    console.log(res);
                     if(res.status === 200 && res.data){
+                        //добавление плейлиста в массив плейлистов
                         this.generatedPlaylists.push({...res.data, type: "generated/playlist"});
                     }
-                })
-                .catch((e)=>{
-                    console.log(e)
                 })
 
             }
@@ -253,6 +157,7 @@ export default defineComponent({
     .playlist-list{
         padding-top: 3rem;
         align-self: flex-start;
+        flex-wrap: wrap;
         display: flex;
         justify-content: center;
         gap: 2rem;
