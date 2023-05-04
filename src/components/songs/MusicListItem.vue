@@ -1,6 +1,6 @@
 <template>
     <li class="music-list-item" @click="playSong">
-        <song-info :songData="songData"/>
+        <song-info class="img-text--small-img" :songData="songData"/>
             <slot>
                 
             </slot>

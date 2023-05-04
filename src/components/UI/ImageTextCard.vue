@@ -1,6 +1,6 @@
 <template>
     <div class="img-text">
-        <div  class="img-text__img-wrapper">
+        <div class="img-text__img-wrapper">
             <slot name="image">
             </slot>
         </div>
@@ -31,5 +31,10 @@ export default defineComponent({
 
     .img-text__img-wrapper{
         width: 30%;
+    }
+
+
+    .img-text--small-img .img-text__img-wrapper{
+        width: 10%;
     }
 </style>
