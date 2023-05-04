@@ -113,19 +113,21 @@ export default defineComponent({
     },
     methods: {
         onSubmit(){
-            this.fieldsValues.songIds = this.songIds.map((songId, id) => {
+            this.fieldsValues.songs = this.songIds.map((songId, id) => {
                 return {
                     songId: songId,
                     songIndex: id,
                 }
             });
-            this.fieldsValues.songIds = JSON.stringify(this.fieldsValues.songIds)
+            this.fieldsValues.songs = JSON.stringify(this.fieldsValues.songs)
             var formData = new FormData();
+            console.log('album', this.fieldsValues);
             for ( const [key, value] of Object.entries(this.fieldsValues) ) {
                 if( key === 'coverImg'){
                     formData.append(key, this.fieldsValues[key][0]);
                     
                 }else if(key === 'releaseDate'){
+                    console.log('releaseDate', value);
                     formData.append(key, new Date(this.fieldsValues.releaseDate).toUTCString());
                 }else{
                     formData.append(key, this.fieldsValues[key]);

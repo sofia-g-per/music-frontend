@@ -2,7 +2,7 @@
 export class CreateAlbumDto{
     name: string;
 
-    songIds: number[];
+    songs: number[];
     
     description: string;
 
