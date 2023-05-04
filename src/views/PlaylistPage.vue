@@ -3,46 +3,83 @@
     @onSearchResponse="handleSearchResponse"
     @onEmptyFilters="getAllSongs" 
     :withFilters="true"> -->
+
         <div class="playlist-page">
-            <div class="playlist-page__info">
-                <img v-show="playlist.coverImg" :src="coverImgURL" alt="Обложка плейлиста">
-                <h1 class="page-title">{{ playlist.name }}</h1>
-            </div>
-            <div>
+            <image-text-card>
+                <template v-slot:image>
+                    <img v-show="playlist.coverImg" :src="coverImgUrl" alt="Обложка">
+                </template>
+
+                <template v-slot:main-text>
+                    <h1 class="playlist-page__title">{{ playlist.name }}</h1>
+                </template>
+                <template v-slot:secondary-text >
+                    <artists-list v-if="playlist.artists" :artists="playlist.artists"></artists-list>
+
+                    <div v-if="playlist.description">
+                        <h3>Описание</h3>
+                        <p>{{ playlist.description }}</p>
+                    </div>
+                    <div v-if="playlist.releaseDate">
+                        <h3>Дата создания: {{ new Date(playlist.releaseDate).toLocaleDateString() }}</h3>
+                    </div>
+                </template>
+            </image-text-card>
+
+            <!-- <the-search-bar :searchAPIURL="searchUrl" 
+                @onSearchResponse="handleSearchResponse"
+                @onEmptyFilters="getAllSongs" 
+                :withFilters="true">
+            </the-search-bar> -->
+        </div>
+
+            <div class="song-list">
                 <music-list-item 
                     v-for="(song, key) in playlist.songs" 
-                    :key="song.id"
-                    :songData="song"
+                    :key="song.id? song.id : song.song.id"
+                    :songData="song && song.song? song.song : song"
                     :playlist="playlist"
                     :playlistType="playlist.type"
                     :songInPlaylistId="key"
                     class="playlist-page__song"
                 >
+                    <button class="icon-btn"><img src="@/assets/images/query_icon.svg"></button>
+                    <template v-if="isAuth">
+                        <like-btn :id="song.song? song.songId : song.id"></like-btn>
+                    </template>
                 </music-list-item>
             </div>
-        </div>
 
 </template>
 
 <script lang="ts">
     import { defineComponent } from "vue";
     import MusicListItem from "@/components/songs/MusicListItem.vue";
+    import TheSearchBar from "@/components/UI/TheSearchBar.vue";
+    import LikeBtn from "@/components/UI/buttons/LikeBtn.vue";
+    import ImageTextCard from "@/components/UI/ImageTextCard.vue";
+    import ArtistsList from "@/components/songs/ArtistsList.vue"
+
 import axios from "axios";
     export default defineComponent({
         name: "PlaylistPage",
         components: {
-            MusicListItem
+            MusicListItem,
+            // TheSearchBar,
+            LikeBtn,
+            ArtistsList,
+            ImageTextCard
         },
         data(){
             return{
                 playlist: {},
-                playistId: this.$route.params.id,
+                playlistId: this.$route.params.id,
                 error: false,
+                // genres: [],
             }
         },
         mounted(){
             // выбор метода получения данных с сервера по названию данной страницы
-            console.log(this.$route.name);
             if(this.$route.name == "get-generated-playlist"){
                 this.getGeneratedPlaylist();
             }else if(this.$route.name == "get-playlist"){
@@ -50,14 +87,20 @@ import axios from "axios";
             }else{
                 this.getAlbum();
             }
+
+
+
+            // if(this.$store.state.isAuth){
+            //     this.likedSongs = this.getLiked();
+            // }
         },
         computed: {
             // адрес обращения на сервер для плейлиста 
-            getPlaylistURL(){
+            getPlaylistUrl(){
                 return this.$store.getters.fullURL('getPlaylist')
             },
             // адрес обращения на сервер для автоматически созданного плейлиста (функция автоматизации) 
-            getGeneratedPlaylistURL(){
+            getGeneratedPlaylistUrl(){
                 return this.$store.getters.fullURL('getGeneratedPlaylist')
             },
             // адрес обращения на сервер для альбома 
@@ -65,7 +108,7 @@ import axios from "axios";
                 return this.$store.getters.fullURL('getAlbum')
             },
             // адрес обложки плейлиста (хранится на сервере)
-            coverImgURL(){
+            coverImgUrl(){
                 if(this.playlist && this.playlist.coverImg){
                     return this.$store.getters.filePath( 'coverImg', this.playlist.coverImg);
                 }
@@ -75,12 +118,18 @@ import axios from "axios";
             isAuth(){
                 return this.$store.state.isAuth;
             },
+            isLiked(){
+                return songId => this.likedSongs.findIndex((likedSong)=> likedSong.songId === songId) !== -1
+            },
+            searchUrl(){
+            return `${this.$store.state.APIURL}${this.$store.state.APIExtensions.searchFavouriteSongs}`;
+        },
             
         },
         methods:{
             // метод получения плейлиста с сервера
             async getPlaylist(){
-               axios.get(this.getPlaylistURL, { params:{id: this.playlistId}})
+               axios.get(this.getPlaylistUrl, { params:{id: this.playlistId}})
                .then((res)=>{
                     console.log(res);
                     if(res.status === 200 && res.data){
@@ -97,7 +146,7 @@ import axios from "axios";
                 console.log('requestin gen playlist');
                 console.log(this.isAuth);
             if(this.isAuth){
-                axios.get(this.getGeneratedPlaylistURL,{withCredentials:true})
+                axios.get(this.getGeneratedPlaylistUrl,{withCredentials:true})
                 .then((res) => {
                     console.log(res);
                     console.log(res.data);
@@ -113,7 +162,7 @@ import axios from "axios";
             },
             // метод получение альбома с сервера
             async getAlbum() {
-                axios.get(this.getAlbumURL, { params:{id: this.playlistId}})
+                axios.get(this.getAlbumUrl, { params:{id: this.playlistId} })
                .then((res)=>{
                     console.log(res);
                     if(res.status === 200 && res.data){
@@ -124,13 +173,37 @@ import axios from "axios";
                     this.error = true;
                     console.log(e)
                 });
-            }
+            },
+            handleSearchResponse(response:[]){
+                this.songs = response;
+            },
+            // getPlaylistGenres(playlist){
+            //     for(let song of playlist.songs){
+            //         if(song.song.genres){
+
+            //         }
+            //     }
+            // }
         }
     }) 
 </script>
 
 <style scope>
-    .playlist-page__song{
-        min-width: 50vw;
+    .playlist-page{
+        width:100%;
+        padding-left: 9rem;
+        /* min-width: 80vw; */
+        display: flex;
+        flex-direction: column;
+        justify-content: left;
+    }
+
+    .search-and-filters{
+        max-width: 50%;
+    }
+
+    .playlist-page__title{
+        font-size: 2.8rem;
+        letter-spacing: 0.4rem;
     }
 </style>

@@ -28,7 +28,7 @@ export default createStore({
       getPlaylist: 'playlist',
       getGenres: 'genres',
       getArtists: 'artists',
-      getAlbum: 'get-album',
+      getAlbum: 'album',
       getAlbums: 'albums',
       getUser: 'get-user',
       getNotifications: 'collabRequests',
