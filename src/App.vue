@@ -1,6 +1,5 @@
 <template>
   <the-header></the-header>
-
   <div :class="{'page-wrapper':true, 'page-wrapper--collapsed':isSongListOpen}">
     <router-view></router-view>
 
@@ -8,8 +7,10 @@
 
 <!-- проигрываемая песня -->
   <playing-song-footer 
-    v-if="currentSong && !routeExcludesFooter" 
-    :songData="currentSong"
+    v-if="playing && !routeExcludesFooter" 
+    :songData="playing.song"
+    :playlist="playing.playlist"
+    :songAudio="playing.songAudio"
     @onToggleSongList="handleToggleSongList"
   >
   </playing-song-footer>
@@ -19,6 +20,8 @@
 import { defineComponent } from 'vue'
 import PlayingSongFooter from './components/songs/PlayingSongFooter.vue'
 import TheHeader from './components/UI/TheHeader.vue'
+import { PlayingPlaylist } from '@/interfaces/currentPlaylist';
+
 export default defineComponent({
   components:{
     TheHeader,
@@ -26,10 +29,11 @@ export default defineComponent({
   },
   data() {
     return {
+      // playlist: PlayingPlaylist,
       isSongListOpen:false,
       routeExcludesFooter: false,
       //массива наименований маршрутов на которых не показывается элемент проигрывания песни
-      routesToExcudeOn: [
+      routesToExcludeOn: [
         'edit-profile',
         'edit-album',
         'edit-playlist',
@@ -42,27 +46,45 @@ export default defineComponent({
     }
   },
   computed:{
-    currentSong(){
+    playing(){
       if(this.$store.state.currentSongDefined){
-        const song =  this.$store.state.currentPlaylist.playlist.songs[this.$store.state.currentSongId];
-        if(song.song){
-          return song.song;
-        }else{
-          return song
+        const playing = {
+          song: null,
+          playlist: null,
+          songAudio :null
         }
+        const song =  this.$store.state.currentPlaylist.playlist.songs[this.$store.state.currentSongId];
+        playing.songAudio = this.$store.state.currentSongAudio;
+        playing.playlist = this.$store.state.currentPlaylist.playlist;
+        if(song.song){
+          playing.song = song.song;
+        }else{
+          playing.song = song
+        }
+
+        console.log("playing", playing);
+        return playing;
       }else{
-        return null;
+        return {};
       }
     },
+    
   },
   methods: {
     handleToggleSongList(isOpen:boolean){
       this.isSongListOpen = isOpen;
-    }
+    },
+    // updateAudio(){
+    //   if(this.$store.state.currentSongAudio && this.playing){
+    //     this.playing.songAudio = this.$store.state.currentSongAudio;
+    //     console.log("updating audio",this.playing.songAudio.seek());
+
+    //   }
+    // }
   },
   watch:{
       $route(to, from){
-          if (this.routesToExcudeOn.includes(to.name)){
+          if (this.routesToExcludeOn.includes(to.name)){
             this.$store.dispatch('pauseCurrentSong');
             this.routeExcludesFooter = true;
           }else{
@@ -72,9 +94,9 @@ export default defineComponent({
 
       }
   },
-  mounted() {
-    console.log(this.$store.getters.user);
-  }
+  // mounted() {
+  //   setInterval(this.updateAudio, 500);
+  // }
 })
 </script>
 
@@ -139,7 +161,7 @@ export default defineComponent({
     .icon-btn:hover{
       border:none;
       outline: none;
-      padding: 0 1rem;
+      /* padding: 0 1rem; */
     }
 
     .main-btn {
@@ -193,25 +215,34 @@ export default defineComponent({
 
     .circle-btn{
       border: none;
-      width: 5rem;
-      height: 5rem;
+      width: 6.5rem;
+      height: 6.5rem;
       background: var(--accent-color-1);
       border-radius: 50%;
       align-self: flex-end;
-      margin-right: 14vw;
-      margin-top: 2rem;
-      position: relative;
+      position: fixed;
+      bottom: 4rem;
+      right: 10rem;
+      transition: 0.5s;
     }
 
     .circle-btn::before{
       content: '+';
       display: block;
-      font-size: 4rem;
+      font-size: 6rem;
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
     }
+
+    .circle-btn:hover{
+      transform: scale(1.2);
+    }
+/* 
+    .circle-btn:hover:before{
+      transform: rotate(360deg);
+    } */
     
     .btn--grey>*{
         opacity: .7;
@@ -231,9 +262,11 @@ export default defineComponent({
 
   .page-title{
     text-transform: uppercase;
+    text-align: center;
     font-weight: normal;
     font-size: 2.8rem;
     letter-spacing: 0.4rem;
+    padding-bottom: 2rem;
   }
 
   .page-wrapper{
@@ -336,6 +369,7 @@ export default defineComponent({
         /* min-width: 70rem; */
         position: relative;
         gap: .5rem;
+        width: 100%;
     }
     .search-bar{
         background: var(--bg-color);
@@ -412,7 +446,7 @@ export default defineComponent({
     }
     
     .music-list-item{
-        width: 100%;
+        width: 90%;
         padding: 1vw 1vw 2vw 1vw;
         display: flex;
         background: linear-gradient(to top, rgba(187, 0, 255, 0.6) 0, transparent 30%);
@@ -433,6 +467,8 @@ export default defineComponent({
 
     .music-list-item__info{
         width: 100%;
+        padding-left: 2rem;
+
     }
 
     .music-list-item__info__title{
@@ -453,6 +489,20 @@ export default defineComponent({
 
     }
 
+    .music-list-item__img-wrapper{
+      width: 10%;
+    }
+
+    .music-list-item__img-wrapper>img{
+      max-width: 100%;
+      border-radius: 5%;
+    }
+
+    
+    .img-text__img-wrapper>img{
+        max-width: 100%;
+    }
+
   .song-list{
     border-radius: 1rem;
         display: flex;
@@ -465,13 +515,19 @@ export default defineComponent({
   /* FORM */
   /* ------------------------------ */
   .form{
-    width: 25vw;
+    width: min-content;
     max-width: auto;
+    /* justify-items: center; */
     display: grid;
     grid-template-columns: 1fr 1fr;
     justify-content: center;
     gap: 2rem;
+    justify-items: stretch;
+    align-items: center;
+  }
 
+  .span-2{
+    grid-column: 1/span 2;
   }
 
   .form-1-clmn{
@@ -488,7 +544,7 @@ export default defineComponent({
     gap: 1rem;
     /* min-width: 20vw; */
     padding: 1rem;
-    max-width: 25vw;
+    /* max-width: 25vw; */
     height: min-content;
   }
 
