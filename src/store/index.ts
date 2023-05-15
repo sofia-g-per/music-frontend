@@ -36,6 +36,7 @@ export default createStore({
 
       getFavouriteSongs: 'liked-songs', 
       getCurrentArtistSongs: 'get-song-by-current-artist',
+      getCurrentArtistSongDrafts: 'songs/drafts/current/artist',
       getCurrentArtistAlbums: 'albums-by-current-artist',
       getUsersPlaylists: 'users-playlists',
 
@@ -167,10 +168,11 @@ export default createStore({
       }
     },
     updateCurrentPlaylist(state, {newPlaylistOrder}){
+  
       const currentSongDBId = this.state.currentPlaylist.playlist.songs[this.state.currentSongId].id 
       const newSongId = newPlaylistOrder.findIndex((song)=> song.id === currentSongDBId);
       this.state.currentSongId = newSongId;
-      this.state.currentPlaylist.playlist = newPlaylistOrder;
+      this.state.currentPlaylist.playlist.songs = newPlaylistOrder;
     },
 
     saveUser(state, {user}){
