@@ -194,7 +194,7 @@ export default defineComponent({
                         dataSets[currentDataSetId].data.push(object[dataKey]);
                     }else{
                         dataSetIdValue = object[dataSetIdKey];
-                        dataSets.append(                
+                        dataSets.push(                
                             {
                                 label: objectArray[0][dataLabelKey],
                                 showLine: true,
