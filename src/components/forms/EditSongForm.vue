@@ -4,9 +4,15 @@
             :field-data="fieldsData.name" 
             v-model="fieldsValues.name"
         />
-        <text-field 
+        <text-area-field 
+            class="span-2"
             :field-data="fieldsData.description" 
             v-model="fieldsValues.description"
+        />   
+        <date-select 
+            :field-data="fieldsData.releaseDate"
+            defaultError="Заполните, начиная с 01/01/1900 и до нынешней даты"
+            v-model="fieldsValues.releaseDate"
         />
          <file-field 
             :field-data="fieldsData.audioFile" 
@@ -14,11 +20,6 @@
             rules="mimes:audio/mpeg"
             defaultError="Прикрепите файл в формате mp3"
         />   
-        <date-select 
-            :field-data="fieldsData.releaseDate"
-            defaultError="Заполните, начиная с 01/01/1900 и до нынешней даты"
-            v-model="fieldsValues.releaseDate"
-        />
         <file-field 
             :field-data="fieldsData.coverImg" 
             v-model="fieldsValues.coverImg" 
@@ -31,12 +32,11 @@
             defaultError="Файл должен быть в формате srt"
         >       
         </file-field>
-        <div class="song-select">
-            <div v-for="option in genreOptions" :key="option.id" class="music-list-item">
-                <label :for="option.id">{{option.name}}</label>
-                <Field type="checkbox" :id="option.id" v-model="genreIds" name="genreIds" :value="option.id"/>
-            </div>
-        </div>
+        <genre-select            
+            :initialGenreIds="genreIds"
+            :initialSelectedGenres="fieldsValues.genres"
+            @onGenreIdsChange="handleGenreIdsChange"
+        />
         <p class="form-field__error-label">{{formError}}</p>
         <button  class="main-btn main-btn--fill" type="submit">Сохранить</button>
     </Form>
@@ -50,14 +50,18 @@ import FileField from '../UI/form/FileField.vue';
 import axios from 'axios';
 import { CreateSongDto } from '@/dtos/createSong.dto';
 import DateSelect from '../UI/form/DateSelect.vue';
+import GenreSelect from '../UI/form/GenreSelect.vue';
+import TextAreaField from '../UI/form/TextAreaField.vue';
 export default defineComponent({
     name: 'AddSongForm',
     components: {
         TextField,
         Form,
         FileField,
-        Field,
-        DateSelect
+        TextAreaField,
+        // Field,
+        DateSelect,
+        GenreSelect
     },
     data(){
         return{
@@ -126,19 +130,24 @@ export default defineComponent({
         .then((response) => {
           if(response.status === 200 && response.data){
             this.initialData =  response.data;
+            console.log(this.initialData)
             //запись стартовых значений для формы    
             for (const [key, value] of Object.entries(this.initialData)) {
+
                 if(key !== 'genres'){
                     if(key !== 'audioFile'){
                         this.fieldsValues[key] = value; 
                     }
                 }else{
+                    this.fieldsValues[key] = value; 
+
                     this.genreIds = []; 
                     for(const genre of this.initialData.genres){
                         this.genreIds.push(genre.id);
                     }
                 }
             }
+            console.log('fieldsVAlues', this.fieldsValues)
           }
        })
         .catch((error)=>{
@@ -197,7 +206,11 @@ export default defineComponent({
                   this.formError = 'Простите, произошла ошибка при загрузке данных'
               }
           })
-        }
+        },
+                // обновление id жанров
+        handleGenreIdsChange(genreIds){
+            this.genreIds = genreIds;
+        },
     },
 })
 </script>

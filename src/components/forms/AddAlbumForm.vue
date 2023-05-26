@@ -5,7 +5,7 @@
             v-model="fieldsValues.name"
             rules="required"
         />
-        <text-field 
+        <text-area-field 
             :field-data="fieldsData.description" 
             v-model="fieldsValues.description"
         />
@@ -40,7 +40,7 @@ import axios from 'axios';
 import {CreateAlbumDto} from '@/dtos/createAlbum.dto'
 import DateSelect from '../UI/form/DateSelect.vue';
 import FileField from '../UI/form/FileField.vue';
-
+import TextAreaField from '../UI/form/TextAreaField.vue';
 export default defineComponent({
     name: 'AddAlbumForm',
     components: {
@@ -48,7 +48,8 @@ export default defineComponent({
         Form,
         SongSelect,
         DateSelect,
-        FileField
+        FileField,
+        TextAreaField
     },
     setup(){
         const schema = {

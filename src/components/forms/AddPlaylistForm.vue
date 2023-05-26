@@ -5,7 +5,7 @@
             v-model="fieldsValues.name"
             rules="required"
         />
-        <text-field 
+        <text-area-field 
             :field-data="fieldsData.description" 
             v-model="fieldsValues.description"
         />
@@ -28,6 +28,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { Form, Field, useForm, ErrorMessage } from 'vee-validate'
+import TextAreaField from '../UI/form/TextAreaField.vue';
 import TextField from '../UI/form/TextField.vue'
 import SongSelect from '../UI/form/SongSelect.vue';
 import axios from 'axios';
@@ -40,7 +41,8 @@ export default defineComponent({
         TextField,
         Form,
         FileField,
-        SongSelect
+        SongSelect,
+        TextAreaField
     },
     setup(){
         const schema = {
@@ -135,6 +137,7 @@ export default defineComponent({
         handleSongIdsChange(songIds){
             this.songIds = songIds;
         },
+        
     },
     computed: {
         getSongsURL() {
@@ -157,7 +160,8 @@ export default defineComponent({
     gap: 1rem;
 }
 .form-field{
-    max-width: 30vw;
+    /* max-width: 30vw; */
+    width: 100%;
 }
 .song-select{
     /* max-height: 50vh; */
