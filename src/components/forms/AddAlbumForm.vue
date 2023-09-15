@@ -1,5 +1,5 @@
 <template>
-    <Form method="post" :validation-schema="schema" @submit="onSubmit" class="playlist-form" v-slot="{meta}">
+    <Form method="post" :validation-schema="validationSchema" @submit="onSubmit" class="playlist-form" v-slot="{meta}">
         <text-field 
             :field-data="fieldsData.name" 
             v-model="fieldsValues.name"
@@ -21,18 +21,42 @@
         />  
         <song-select 
             :getSongsURL="getSongsURL"
-            :initialSongIds="songIds"
-            :initialSelectedSongs="[]"
+            :initialSongIds="initialSongIds"
+            :initialSelectedSongs="initialSongs"
             @onSongIdsChange="handleSongIdsChange"
         />
+        <multiple-select
+            v-if="artistOptions"
+            :initialOptionIds="artistIds"
+            :initialSelected="[]"
+            displayProperty="stagename"
+            :optionsProp="artistOptions"
+            title="Другие артисты"
+            @onMultipleSelectChange="handleArtistIdsChange"
+        >
+        </multiple-select>
+
+        <div class="flex">
+            <button class="main-btn main-btn--fill" @click="setStatus('draft')">
+                <span>Сохранить как черновик</span>
+            </button>
+            <button :disabled="!meta.valid || artistIds.length > 0" class="main-btn main-btn--fill" @click="setStatus('released')" >
+                <span>Опубликовать</span>
+            </button>
+        </div>
+
+        <div>
+            <p v-if="artistIds && artistIds.length > 0">Для публикации песни необходимо дождаться подтверждения от выбранных вами артистов.</p>
+            <p v-if="!meta.valid">Для публикования песни исправьте ошибки</p>
+            <p v-if="formError">{{ formError }}</p>
+        </div>
 
         <!-- <p class="form-field__error-label" v-show="errors.songIds">{{errors.songIds}}</p> -->
-        <button :disabled="!meta.valid" class="main-btn main-btn--fill" type="submit">Добавить</button>
     </Form>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, toRaw } from 'vue'
 import { Form, Field, useForm, ErrorMessage } from 'vee-validate'
 import TextField from '../UI/form/TextField.vue'
 import SongSelect from '../UI/form/SongSelect.vue';
@@ -41,6 +65,8 @@ import {CreateAlbumDto} from '@/dtos/createAlbum.dto'
 import DateSelect from '../UI/form/DateSelect.vue';
 import FileField from '../UI/form/FileField.vue';
 import TextAreaField from '../UI/form/TextAreaField.vue';
+import MultipleSelect from '../UI/form/MultipleSelect.vue';
+
 export default defineComponent({
     name: 'AddAlbumForm',
     components: {
@@ -49,34 +75,20 @@ export default defineComponent({
         SongSelect,
         DateSelect,
         FileField,
-        TextAreaField
+        TextAreaField,
+        MultipleSelect
     },
-    setup(){
-        const schema = {
-            name: 'required',
-            releaseDate: {
-                "required": true,
-                "isReleaseDateValid": true
-            },
-            coverImg: "mimes:image/jpeg,image/jpg,image/png",
-            songIds: (value) => {
-                if (value && value.length) {
-                    return true;
-                }
-                
-                return 'Выберите хотя бы одну песню';
-            }
-      }
+    props: {
+        initialData: CreateAlbumDto, 
+        validationSchema: {
 
-        const { errors } = useForm({
-            validationSchema: schema,
-            });
+        },
+        submitURL: String
 
-        return {
-            schema,
-            errors
-        }
     },
+    // emits: [
+    //     'onSubmitSuccessful'
+    // ],
     data(){
         return{
             apiUrlExtension: 'add-album', 
@@ -101,6 +113,10 @@ export default defineComponent({
             },
             songs: [],
             songIds: [],
+            initialSongs: [],
+            initialSongIds: [],
+            artistOptions: [],
+            artistIds: [],
             formError: ''
         }
     },
@@ -108,8 +124,37 @@ export default defineComponent({
         getSongsURL() {
             return this.$store.getters.fullURL('getCurrentArtistSongs');
         },
-        addAlbumURL(){
-            return this.$store.getters.fullURL('createAlbum')
+    },
+    mounted(){
+        // получение вариантов артистов с сервера
+        axios.get(`${this.$store.state.APIURL}${this.$store.state.APIExtensions.getArtists}`, {withCredentials:true})
+        .then((response) => {
+          if(response.status === 200 && response.data){
+            this.artistOptions =  toRaw(response.data);
+          }
+       })
+        .catch((error)=>{
+            this.formError = "Произошла ошибка при загрузки артистов"
+            // console.log(error)
+        })
+        if(this.initialData){
+            this.fieldsValues = this.initialData;
+        
+            if(this.initialData.songs){
+                this.initialSongIds = [];
+                this.initialSongs = [];
+                for(const song of this.initialData.songs){
+                    this.initialSongIds.push(song.songId);
+                    this.initialSongs.push(song.song);
+                }
+            }
+            if(this.initialData.genres){
+                this.genreIds = [];
+                for(const genre of this.initialData.genres){
+                    this.genreIds.push(genre.id);
+                }
+            }
+            // this.meta.validate();
         }
     },
     methods: {
@@ -120,45 +165,65 @@ export default defineComponent({
                     songIndex: id,
                 }
             });
-            this.fieldsValues.songs = JSON.stringify(this.fieldsValues.songs)
-            var formData = new FormData();
-            console.log('album', this.fieldsValues);
+
+            this.fieldsValues.songs = JSON.stringify(this.fieldsValues.songs);
+
+            if(this.artistIds && this.artistIds.length > 0 || this.fieldsValues.artists ){
+                const artists = this.artistIds.map(id => {
+                    return {
+                        artistId: id,
+                        isFeatured: true
+                    }
+                });
+                console.log(artists);
+
+                this.fieldsValues.artists = JSON.stringify(toRaw(artists));
+            }
+            
+            const formData = new FormData();
             for ( const [key, value] of Object.entries(this.fieldsValues) ) {
-                if( key === 'coverImg'){
-                    formData.append(key, this.fieldsValues[key][0]);
-                    
-                }else if(key === 'releaseDate'){
-                    console.log('releaseDate', value);
-                    formData.append(key, new Date(this.fieldsValues.releaseDate).toUTCString());
-                }else{
-                    formData.append(key, this.fieldsValues[key]);
+                if(!this.initialData || value !== this.initialData[key]){
+                    if( key === 'coverImg'){
+                        formData.append(key, this.fieldsValues[key][0]);
+                    }else if(key === 'releaseDate'){
+                        formData.append(key, new Date(this.fieldsValues.releaseDate).toUTCString());
+                    }else{
+                        formData.append(key, this.fieldsValues[key]);
+                        console.log(key, this.fieldsValues[key]);
+                    }
                 }
             }
 
-            axios.post(this.addAlbumURL, formData, { 
+            axios.post(this.submitURL, formData, { 
                 withCredentials: true,
                 headers: {
                 'Content-Type': 'multipart/form-data'
                 }
             })
-          .then(
-            (response) => {
-              if(response.status === 201 && response.data){
-                  this.$router.push('/my-albums');
-              }
-            }
-          )            
-          .catch((error)=>{
-              if(error.status === 400){
-                  this.errors = error.data;
-              }else{
-                  this.formError = 'Простите, произошла ошибка при загрузке данных'
-              }
-          })
+            .then(
+                (response) => {
+                if(response.status === 201 && response.data){
+                        this.$emit('onSubmitSuccessful');
+                }
+                }
+            )            
+            .catch((error)=>{
+                if(error.status === 400){
+                    this.formError = error.data;
+                }else{
+                    this.formError = 'Простите, произошла ошибка при загрузке данных'
+                }
+            })
+        },
+        setStatus(status:string){
+            this.fieldsValues.status = status;
         },
         handleSongIdsChange(songIds){
             this.songIds = songIds;
         },
+        handleArtistIdsChange(artistIds){
+            this.artistIds = artistIds;
+        }
         
     },
     
@@ -173,7 +238,12 @@ export default defineComponent({
     gap: 1rem;
 }
 .form-field{
-    max-width: 20vw;
+    width: 100%;
+}
+
+.flex{
+    display: flex;
+    justify-content: space-between;
 }
 .song-select{
     /* max-height: 50vh; */

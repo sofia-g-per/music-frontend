@@ -1,8 +1,9 @@
 <template>
-    <Form method="post" :validation-schema="schema" @submit="onSubmit" class="playlist-form">
+    <Form method="post" :validation-schema="schema" @submit="onSubmit" class="playlist-form" v-slot="{meta}">
         <text-field 
             :field-data="fieldsData.name" 
             v-model="fieldsValues.name"
+            rules="required"
         />
         <text-area-field 
             :field-data="fieldsData.description" 
@@ -17,16 +18,32 @@
             :field-data="fieldsData.coverImg" 
             v-model="fieldsValues.coverImg" 
             defaultError="Файл должен быть в формате jpeg, jpg или png"
-        /> 
+        />  
         <song-select 
             :getSongsURL="getSongsURL"
             :initialSongIds="songIds"
             :initialSelectedSongs="initialSelectedSongs"
             @onSongIdsChange="handleSongIdsChange"
         />
-        <p class="form-field__error-label" v-show="errors.songIds">{{errors.songIds}}</p>
-        <button class="main-btn main-btn--fill" type="submit">Добавить</button>
-    </Form>
+
+        <multiple-select
+            v-if="artistOptions"
+            :initialOptionIds="artistIds"
+            :initialSelected="[]"
+            displayProperty="stagename"
+            :optionsProp="artistOptions"
+            title="Другие артисты"
+            @onMultipleSelectChange="handleArtistIdsChange"
+        >
+        </multiple-select>
+        <button :disabled="!meta.valid || artistIds.length > 0" class="main-btn main-btn--fill" @click="setStatus('released')" >
+            <span>Сохранить</span>
+        </button>
+        <div>
+            <p v-if="!meta.valid">Для публикования песни исправьте ошибки</p>
+            <p v-if="formError">{{ formError }}</p>
+        </div>
+        </Form>
 </template>
 
 <script lang="ts">
@@ -38,6 +55,8 @@ import {CreateAlbumDto} from '@/dtos/createAlbum.dto'
 import FileField from '../UI/form/FileField.vue';
 import DateSelect from '../UI/form/DateSelect.vue';
 import TextAreaField from '../UI/form/TextAreaField.vue';
+import SongSelect from '../UI/form/SongSelect.vue';
+import MultipleSelect from '../UI/form/MultipleSelect.vue';
 export default defineComponent({
     name: 'AddAlbumForm',
     components: {
@@ -45,7 +64,9 @@ export default defineComponent({
         Form,
         FileField,
         DateSelect,
-        TextAreaField
+        TextAreaField, 
+        SongSelect,
+        MultipleSelect
     },
     setup(){
         const schema = {
@@ -95,58 +116,66 @@ export default defineComponent({
             songs: [],
             songIds: [],
             formError: '',
-            initialSelectedSongs: []
+            initialSelectedSongs: [],
+            artistOptions: [],
+            artistIds: [],
+            albumId: 0,
         }
     },
     computed: {
         getSongsURL() {
             return this.$store.getters.fullURL('getCurrentArtistSongs');
         },
-        editAlbumURL(){
-            return this.$store.getters.fullURL('editAlbum')
-        }
+
     },
     mounted(){
-        // загрузка редактируемого альбома
-        const albumId = this.$route.params.id;
-        axios.get(`${this.$store.state.APIURL}${this.$store.state.APIExtensions.getAlbum}`,
-            { 
-                params: {
-                albumId: albumId
-            }
-        })
-        .then((response) => {
-          if(response.status === 200 && response.data){
-            this.initialData =  response.data;
-            //запись стартовых значений для формы    
-            for (const [key, value] of Object.entries(this.initialData)) {
-                if(key === 'songs'){
+    //     // загрузка редактируемого альбома
+    //     this.albumId = this.$route.params.id;
+    //     axios.get(`${this.$store.state.APIURL}${this.$store.state.APIExtensions.getAlbum}`,
+    //         { 
+    //             params: {
+    //             id: this.albumId
+    //         }
+    //     })
+    //     .then((response) => {
+    //       if(response.status === 200 && response.data){
+    //         this.initialData =  response.data;
+    //         //запись стартовых значений для формы    
+    //         for (const [key, value] of Object.entries(this.initialData)) {
+                if(this.initialData.songs){
                     this.songIds = [];
                     this.initialSelectedSongs = [];
                     for(const song of this.initialData.songs){
                         this.songIds.push(song.songId);
                         this.initialSelectedSongs.push(song.song);
                     }
-                }else if(key === 'genres'){
+                }
+                if(this.initialData.genres){
                     this.genreIds = [];
                     for(const genre of this.initialData.genres){
                         this.genreIds.push(genre.id);
                     }
-                }else{
-                    this.fieldsValues[key] = value; 
-                    
                 }
-                console.log(key, value, this.fieldsValues)
-            }
+    //             }else if(key === 'releaseDate'){
+    //                 console.log('date before', value);
+    //                 this.fieldsValues[key] = new Date(Date.parse(value as string)).toLocaleDateString('en-CA');
+    //                 console.log('date after',this.fieldsValues[key]);
+    //             }
+    //             else{
+    //                 this.fieldsValues[key] = value; 
+    //             }
 
-          }
-       })
-        .catch((error)=>{
-            console.log(error)
-            if(error.response.status === 403){
-                this.$router.push({name: 'login'})
-              }
-        })
+    //             this.meta.validate();
+    //         }
+
+    //       }
+    //    })
+    //     .catch((error)=>{
+    //         console.log(error)
+    //         if(error.response.status === 403){
+    //             this.$router.push({name: 'login'})
+    //           }
+    //     })
 
         // загрузка жанров
         axios.get(`${this.$store.state.APIURL}${this.$store.state.APIExtensions.getGenres}`)
@@ -179,7 +208,11 @@ export default defineComponent({
                 }else{
                     formData.append(key, this.fieldsValues[key]);
                 }
+                console.log('key', key, formData.get(key));
+
             }
+
+        // formData.append('id', this.albumId);
         axios.post(this.editAlbumURL, formData, { 
             withCredentials: true,
             headers: {
@@ -189,7 +222,10 @@ export default defineComponent({
           .then(
             (response) => {
               if(response.status === 201 && response.data){
-                  this.$router.push('/my-albums');
+                // 
+              }else{
+                this.formError = 'Простите, произошла ошибка при загрузке данных'
+
               }
             }
           )            
@@ -201,8 +237,14 @@ export default defineComponent({
               }
           })
         },
+        setStatus(status:string){
+            this.fieldsValues.status = status;
+        },
         handleSongIdsChange(songIds){
             this.songIds = songIds;
+        },
+        handleArtistIdsChange(artistIds){
+            this.artistIds = artistIds;
         }
     },
     
