@@ -1,5 +1,7 @@
 <template>
     <div class="add-song-page-wrapper">
+        <h1 class="page-title gradient-text">Редактирование плейлиста</h1>
+
         <edit-playlist-form>
 
         </edit-playlist-form>
@@ -16,3 +18,4 @@ export default defineComponent({
     },
 })
 </script>
+

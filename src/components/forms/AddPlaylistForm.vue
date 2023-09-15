@@ -1,5 +1,6 @@
 <template>
-    <Form method="post" :validation-schema="schema" @submit="onSubmit" class="playlist-form" v-slot="{meta}">
+    <!-- :validation-schema="schema"  -->
+    <Form method="post"  @submit="onSubmit" class="playlist-form" v-slot="{meta}">
         <text-field 
             :field-data="fieldsData.name" 
             v-model="fieldsValues.name"
@@ -16,8 +17,8 @@
         />     
         <song-select 
             :getSongsURL="getSongsURL"
-            :initialSongIds="songIds"
-            :initialSelectedSongs="[]"
+            :initialSongIds="initialSongIds"
+            :initialSelectedSongs="initialSongs"
             @onSongIdsChange="handleSongIdsChange"
         />
 
@@ -44,31 +45,31 @@ export default defineComponent({
         SongSelect,
         TextAreaField
     },
-    setup(){
-        const schema = {
-            name: 'required',
-            // проверка заполненности песен
-            songIds: (value) => {
-                if (value && value.length) {
-                    return true;
-                }
+    // setup(){
+    //     const schema = {
+    //         name: 'required',
+    //         // проверка заполненности песен
+    //         songIds: (value) => {
+    //             if (value && value.length) {
+    //                 return true;
+    //             }
                 
-                return 'Выберите хотя бы одну песню';
-            },
-            coverImg: "mimes:image/jpeg,image/jpg,image/png",
+    //             return 'Выберите хотя бы одну песню';
+    //         },
+    //         coverImg: "mimes:image/jpeg,image/jpg,image/png",
 
 
-      }
+    //   }
 
-        const { errors } = useForm({
-            validationSchema: schema,
-            });
+    //     const { errors } = useForm({
+    //         validationSchema: schema,
+    //         });
 
-        return {
-            schema,
-            errors
-        }
-    },
+    //     return {
+    //         schema,
+    //         errors
+    //     }
+    // },
     data(){
         return{
             apiUrlExtension: 'add-playlist', 
@@ -89,6 +90,8 @@ export default defineComponent({
             },
             // songs: [],
             songIds: [],
+            initialSongIds: [],
+            initialSongs: [],
             formError: ''
         }
     },

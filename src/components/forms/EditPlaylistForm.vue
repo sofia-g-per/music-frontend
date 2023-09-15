@@ -4,7 +4,7 @@
             :field-data="fieldsData.name" 
             v-model="fieldsValues.name"
         />
-        <text-field 
+        <text-area-field 
             :field-data="fieldsData.description" 
             v-model="fieldsValues.description"
         />
@@ -20,7 +20,7 @@
             :initialSelectedSongs="initialSelectedSongs"
             @onSongIdsChange="handleSongIdsChange"
         />
-        <button class="main-btn main-btn--fill" type="submit">Добавить</button>
+        <button class="main-btn main-btn--fill" type="submit">Сохранить</button>
     </Form>
 </template>
 
@@ -31,13 +31,15 @@ import SongSelect from '../UI/form/SongSelect.vue';
 import TextField from '../UI/form/TextField.vue'
 import axios from 'axios';
 import { CreatePlaylistDto } from '@/dtos/createPlaylist.dto';
+import TextAreaField from '../UI/form/TextAreaField.vue';
 
 export default defineComponent({
     name: 'AddSongForm',
     components: {
         TextField,
         Form,
-        SongSelect
+        SongSelect,
+        TextAreaField
         // Field
     },
     setup(){
@@ -190,6 +192,14 @@ export default defineComponent({
     align-items: center;
     gap: 1rem;
 }
-
-
+.form-field{
+    /* max-width: 30vw; */
+    width: 100%;
+}
+.song-select{
+    /* max-height: 50vh; */
+    min-height: 20vh;
+    min-width: 35vw;
+    /* overflow-y: scroll; */
+}
 </style>
