@@ -1,5 +1,5 @@
 <template>
-    <Form method="post" :validation-schema="schema" @submit="onSubmit" class="form" v-slot="{meta}">
+    <Form method="post" :validation-schema="validationSchema" @submit="onSubmit" class="form" v-slot="{meta}">
         <text-field 
             :field-data="fieldsData.name" 
             v-model="fieldsValues.name"
@@ -50,16 +50,18 @@
         >
         </multiple-select>
 
-        <p class="form-field__error-label">{{formError}}</p>
-        <button :disabled="!meta.valid" class="main-btn main-btn--fill" @click="setStatus('draft')">
+        <button class="main-btn main-btn--fill" @click="setStatus('draft')">
             <span>Сохранить как черновик</span>
         </button>
-        <p v-if="artistIds && artistIds.length > 0">Для публикования песни необходимо дождатся подтверждения от выбранных вами артистов.</p>
 
-
-        <button v-if="!artistIds || artistIds.length == 0" :disabled="!meta.valid" class="main-btn main-btn--fill" @click="setStatus('released')" >
+        <button :disabled="!meta.valid || artistIds.length > 0" class="main-btn main-btn--fill" @click="setStatus('released')" >
             <span>Опубликовать</span>
         </button>
+        <div>
+            <p v-if="artistIds && artistIds.length > 0">Для публикации песни необходимо дождаться подтверждения от выбранных вами артистов.</p>
+            <p v-if="!meta.valid">Для публикования песни исправьте ошибки</p>
+            <p v-if="formError">{{ formError }}</p>
+        </div>
 
     </Form>
 </template>
@@ -87,9 +89,15 @@ export default defineComponent({
         GenreSelect,
         MultipleSelect
     },
+    props: {
+        validationSchema: {
+
+        },
+        fullApiUrl: String,
+
+    },
     data(){
         return{
-            apiUrlExtension: 'add-song', 
             fieldsValues: new CreateSongDto,
             // объект с названиями полей формы
             fieldsData: {
@@ -127,41 +135,53 @@ export default defineComponent({
             artistOptions: [],
             formError: '',
             // хранит доступные для выбора жанра
-            // genreOptions: [],
+            genreOptions: [],
         }
     },
-    setup(){
-        const schema = {
-            name: 'required|max:70',
-            audioFile: "required|mimes:audio/mpeg",
-            releaseDate: {
-                "required": true,
-                "isReleaseDateValid": true
-            },
-            coverImg: "mimes:image/jpeg,image/jpg,image/png",
-            lyrics:"mimes:text/plain"
-
-        };
-        return {
-            schema
+    watch: {
+        initialSong(){
+            if(this.initialSong !== undefined){
+                this.fieldsValues = this.initialSong;
+                console.log(this.initialUser.artist);
+                if(this.initialSong.genres){
+                    // this.fieldsValues.roleName = "artist";
+                    // this.artistFieldsValues = this.initialUser.artist;
+                }
+                if(this.initialSong.artists){
+                    // this.fieldsValues.roleName = "artist";
+                    // this.artistFieldsValues = this.initialUser.artist;
+                }
+            }
         }
     },
     mounted(){
         // получение вариантов артистов с сервера
         axios.get(`${this.$store.state.APIURL}${this.$store.state.APIExtensions.getArtists}`, {withCredentials:true})
         .then((response) => {
-            console.log(response);
           if(response.status === 200 && response.data){
             this.artistOptions =  toRaw(response.data);
           }
        })
         .catch((error)=>{
-            console.log(error)
+            this.formError = "Произошла ошибка при загрузки артистов"
+            // console.log(error)
+        })
+        // получение вариантов жанров с сервера
+        axios.get(`${this.$store.state.APIURL}${this.$store.state.APIExtensions.getGenres}`)
+        .then((response) => {
+          if(response.status === 200 && response.data){
+            this.genreOptions =  toRaw(response.data);
+          }
+       })
+        .catch((error)=>{
+            this.formError = "Произошла ошибка при загрузки жанров"
+            // console.log(error)
         })
     },
     methods: {
         // проверка и отправка формы
         onSubmit(){
+            // форматирование объекта для отправки
         var formData = new FormData();
 
         for ( const [key, value] of Object.entries(this.fieldsValues) ) {
@@ -194,7 +214,7 @@ export default defineComponent({
             formData.append('artists', JSON.stringify(toRaw(artists)));
         }
 
-
+// отправка в сереврную часть
         axios.post(this.fullApiUrl, formData, { 
             withCredentials: true,  
             headers: {
@@ -204,7 +224,9 @@ export default defineComponent({
           .then(
             (response) => {
               if(response.status === 201 && response.data){
-                  this.$router.push('/my-songs');
+                this.$emit('onSubmitSuccessful', response);
+              }else {
+                  this.formError = 'Простите, произошла ошибка при загрузке данных'
               }
             }
           )            
@@ -226,13 +248,6 @@ export default defineComponent({
         handleArtistIdsChange(artistIds){
             this.artistIds = artistIds;
         }
-    },
-
-    computed: {
-        // адрес для загрузки песни
-        fullApiUrl():string {
-            return `${this.$store.state.APIURL}${this.$store.state.APIExtensions.uploadSong}`;
-        },
     },
 
 })
