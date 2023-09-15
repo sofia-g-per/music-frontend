@@ -122,33 +122,7 @@ export default defineComponent({
             formError: ''
         }
     },
-    mounted() {
-        const userId =  this.$store.getters.user.id;
-        // получение информации о пользователе
-        axios.get(this.getUserUrl, {
-            params:{
-                userId: userId
-            }
-        })
-        .then((response)=>            
-            {
-                console.log(response)
-                if(response.status === 200 && response.data){
 
-                    this.initialUser = response.data;
-                    this.fieldsValues = response.data;
-                    console.log(this.initialUser.artist)
-                    if(this.initialUser.artist){
-                        this.fieldsValues.roleId = "artist";
-                        this.artistFieldsValues = this.initialUser.artist;
-                    }
-                }
-            }
-        )
-        .catch((error)=>{
-            console.log(error)
-        })
-    },
     methods: {
         onSubmit(){
             if(this.fieldsValues.roleId){

@@ -1,18 +1,19 @@
 <template>
-    <div class="add-song-page-wrapper">
+    <div class="vertical-flex">
         <signup-form :submitURL="fullApiUrl" :initialUser="initialUser" @onSubmitSuccessful="handleSuccessfulSubmit">
 
         </signup-form>
+        <router-link v-if="isArtist" to="/my/stats" class="main-btn main-btn--fill">Просмотреть статистику</router-link>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import SignupForm from '@/components/forms/SignupForm.vue'
-import axios from 'axios';
+import SignupForm from '@/components/forms/SignupForm.vue';
 import { UserDto } from '@/dtos/userDto.dto';
+import axios from 'axios';
+import { defineComponent } from 'vue'
 export default defineComponent({
-    name: "EditAlbumPage",
+    name: "ProfilePage",
     components: {
         SignupForm
     },
@@ -21,7 +22,13 @@ export default defineComponent({
             initialUser: new UserDto(),
         }
     },
-    computed: {
+    computed:{
+        isAuth(){
+            return this.$store.state.isAuth;
+        },
+        isArtist(){
+            return this.isAuth && this.$store.state.isArtist;
+        },
         getUserUrl(){
             return this.$store.getters.fullURL('getUser');
         },
@@ -57,8 +64,16 @@ export default defineComponent({
         handleSuccessfulSubmit(response){
             this.$store.dispatch('saveUser', {user: response.data});
             this.$router.push('/');
-        }
+        },
     }
-    
 })
 </script>
+
+<style scoped>
+    .vertical-flex{
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        align-items: center;
+    }
+</style>
