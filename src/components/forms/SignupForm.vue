@@ -1,5 +1,5 @@
 <template>
-    <Form method="post" :validation-schema="schema" @submit="onSubmit" class="form" v-slot="{meta}">
+    <Form method="post" :validation-schema="validationSchema" @submit="onSubmit" class="form" v-slot="{meta}">
         <text-field 
             :field-data="fieldsData.name" 
             v-model="fieldsValues.name"
@@ -69,31 +69,29 @@ import FileField from '../UI/form/FileField.vue';
 import axios from 'axios';
 import { CreateUserDto } from '@/dtos/createUser.dto';
 import { CreateArtistDto } from '@/dtos/createArtist.dto';
+import { UserDto } from '@/dtos/userDto.dto';
 
 export default defineComponent({
     name: 'SignUpForm',
+    props: {
+        submitURL: String,
+        initialUser: {
+            type: UserDto,
+            default: null
+        },
+        validationSchema: {
+            
+        }
+    },
+    emits: ['onSubmitSuccessful'],
     components: {
         TextField,
         Field,
         Form,
         FileField
     },
-    setup(){
-        const schema = {
-            name: 'required|max:35',
-            username: 'required|max:35',
-            email: 'required|125',
-            password: 'required',
-            // avatar:
-            // stagename: 'validateArtist'
-        };
-        return {
-            schema
-        }
-    },
     data(){
         return{
-            apiUrlExtension: 'sign-up', 
             fieldsValues: new CreateUserDto,
             artistFieldsValues: new CreateArtistDto,
             isArtist: false,
@@ -138,40 +136,47 @@ export default defineComponent({
             formError: ''
         }
     },
+    watch: {
+        initialUser(){
+            if(this.initialUser !== undefined){
+                this.fieldsValues = this.initialUser;
+                console.log(this.initialUser.artist);
+                if(this.initialUser.artist){
+                    this.fieldsValues.roleName = "artist";
+                    this.artistFieldsValues = this.initialUser.artist;
+                }
+            }
+        }
+    },
     methods: {
         onSubmit(){
             if(this.fieldsValues.roleName){
                 this.fieldsValues.artist = this.artistFieldsValues;
             }
-        axios.post(this.fullApiUrl, this.fieldsValuesy
-        )
-          .then((response) => {
-            console.log(response);
-              if(response.status === 201 && response.data){
-                  this.$router.push('/login');
-              }else{
-                // if(response.message){
-                //   this.formError = response.message[0];
-            //   }else{
-                  this.formError = 'Простите, произошла ошибка при загрузке данных'
-            //   }
-              }
+            axios.post(this.submitURL, this.fieldsValues)
+            .then((response) => {
+                console.log(response);
+                if(response.status === 201 && response.data){
+                    this.$emit('onSubmitSuccessful', response);
+                }else{
+                    // if(response.message){
+                    //   this.formError = response.message[0];
+                //   }else{
+                    this.formError = 'Простите, произошла ошибка при загрузке данных'
+                //   }
+                }
+                })
+                .catch((error)=>{
+                    console.log(error);
+                if(error.response.message){
+                    this.formError = error.response.message[0];
+                }else{
+                    this.formError = 'Простите, произошла ошибка при загрузке данных'
+                }
             })
-            .catch((error)=>{
-                console.log(error);
-              if(error.response.message){
-                  this.formError = error.response.message[0];
-              }else{
-                  this.formError = 'Простите, произошла ошибка при загрузке данных'
-              }
-          })
-        }
+            }
     },
-    computed: {
-        fullApiUrl():string {
-            return `${this.$store.state.APIURL}${this.apiUrlExtension}`;
-        }
-    },
+
 
 })
 </script>

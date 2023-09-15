@@ -1,6 +1,8 @@
 <template>
     <div class="sign-up-page-wrapper">
-        <signup-form>
+        <h1 class="page-title gradient-text">Регистрация</h1>
+
+        <signup-form :submitURL="fullApiUrl" :initialUser="undefined" :validationSchema="schema" @onSubmitSuccessful="handleSuccessfulSubmit">
 
         </signup-form>
     </div>
@@ -14,5 +16,33 @@ export default defineComponent({
     components: {
         SignupForm
     },
+    setup(){
+        const schema = {
+            name: 'required|max:35',
+            username: 'required|max:35',
+            email: 'required|email',
+            password: 'required',
+            // avatar:
+            // stagename: 'validateArtist'
+        };
+        return {
+            schema
+        }
+    },
+    data(){
+        return{
+            apiUrlExtension: 'sign-up', 
+        }
+    },
+    computed: {
+        fullApiUrl():string {
+            return `${this.$store.state.APIURL}${this.apiUrlExtension}`;
+        }
+    },
+    methods: {
+        handleSuccessfulSubmit(){
+            this.$router.push('/login');
+        }
+    }
 })
 </script>

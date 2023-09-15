@@ -19,6 +19,7 @@
 
         </Field>
         <p class="form-field__error-label">{{formError}}</p>
+        <router-link class="link" to="/">Забыли пароль?</router-link>
 
         <button :disabled="!meta.valid" class="main-btn main-btn--fill" type="submit">Войти</button>
 
@@ -78,7 +79,6 @@ export default defineComponent({
             }
           )
           .catch((error)=>{
-            console.log("error", error);
               if(error.response.status === 400){
                   this.formError = 'Проверьте правильность заполненных данных';
               }else{
@@ -97,5 +97,13 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.link{
+    color : var(--accent-color-2);
+    transition: 0.5s;
+    text-decoration: underline;
+}
 
+.link:hover{
+    color: var(--accent-color-2--light);
+}
 </style>
