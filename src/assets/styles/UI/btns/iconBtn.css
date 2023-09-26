@@ -1,0 +1,18 @@
+.icon-btn{
+    background: none;
+    outline: none;
+    border: none;
+    cursor:pointer;
+    max-width: 3rem;
+  }
+
+  .icon-btn>img{
+    max-width: 100%;
+  }
+
+    .icon-btn:focus,
+    .icon-btn:hover{
+      border:none;
+      outline: none;
+      /* padding: 0 1rem; */
+    }

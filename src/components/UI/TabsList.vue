@@ -34,20 +34,5 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-.tabs{
-    display: flex;
-    gap: 0.5rem;
-}
-
-.tab-heading{
-    border-top-right-radius: 2rem; 
-    border-top-left-radius: 2rem; 
-    background: var(--accent-color-1);
-    padding: 1rem;
-}
-
-.tab-heading--active{
-    background: var(--basic-gradient);
-}
+<style scoped src="@/assets/styles/UI/tabsList.css">
 </style>

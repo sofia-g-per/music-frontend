@@ -24,17 +24,4 @@ export default defineComponent({
     name: "ImageTextCard",
 })
 </script>
-<style scoped>
-    .img-text{
-        display: flex;
-    }
-
-    .img-text__img-wrapper{
-        width: 30%;
-    }
-
-
-    .img-text--small-img .img-text__img-wrapper{
-        width: 10%;
-    }
-</style>
+<style scoped src="@/assets/styles/UI/imageTextCard.css"></style>

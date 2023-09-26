@@ -1,0 +1,30 @@
+.circle-btn{
+    border: none;
+    width: 6.5rem;
+    height: 6.5rem;
+    background: var(--accent-color-1);
+    border-radius: 50%;
+    align-self: flex-end;
+    position: fixed;
+    bottom: 4rem;
+    right: 10rem;
+    transition: 0.5s;
+  }
+
+  .circle-btn::before{
+    content: '+';
+    display: block;
+    font-size: 6rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .circle-btn:hover{
+    transform: scale(1.2);
+  }
+/* 
+  .circle-btn:hover:before{
+    transform: rotate(360deg);
+  } */

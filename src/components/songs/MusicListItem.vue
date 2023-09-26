@@ -1,9 +1,9 @@
 <template>
-    <li class="music-list-item" @click="playSong">
-        <song-info class="img-text--small-img" :songData="songData"/>
-            <slot>
-                
-            </slot>
+    <li class="music-list-item img-text--small-img" @click="playSong">
+        <song-info  :songData="songData">
+            <slot></slot>
+        </song-info>
+
     </li>
 </template>
 
@@ -27,12 +27,13 @@ export default defineComponent({
         playSong(){
             let playlistToPlay = new PlayingPlaylist;
             playlistToPlay.type = this.playlistType;
+            playlistToPlay.isShuffled = false;
             if(this.playlist.songs[0].song){
                 playlistToPlay.playlist = this.playlist.songs.map(song=>{
                     return song = song.song
                 })
             }else{
-                playlistToPlay.playlist = this.playlist;
+                playlistToPlay.playlist = JSON.parse(JSON.stringify(this.playlist));
 
             }
             this.$store.dispatch('handleClickSong', {

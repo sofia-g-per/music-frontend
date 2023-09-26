@@ -214,3 +214,4 @@ export default defineComponent({
     },
 })
 </script>
+<style src="@/assets/styles/UI/form/genreSelect.css"></style>

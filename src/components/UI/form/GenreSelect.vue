@@ -4,12 +4,12 @@
             <span class="select-title">Жанры: </span>
             <div class="genre-filters" v-if="genres">
                     <label v-for="option in genres" 
-                    :key="option.id" 
+                    :key="uniqueElementId(option.id)" 
                     class="genre-filter" 
-                    :for="option.id" 
+                    :for="uniqueElementId(option.id)" 
                     >
                         <span>{{option.name}}</span>
-                        <Field type="checkbox" :id="option.id" v-model="genreIds" @change="onAddGenre($event, option)"  name="genreIds" :value="option.id"/>
+                        <Field type="checkbox" :id="uniqueElementId(option.id)" v-model="genreIds" @change="onAddGenre($event, option)"  name="genreIds" :value="option.id"/>
                     </label>
             </div>
         </div>
@@ -17,12 +17,12 @@
             <span class="select-title chosen-title">Выбранные жанры: </span>
             <div class="genre-filters" v-if="genres">
                     <label v-for="(option, index) in selectedGenres" 
-                    :key="index" 
+                    :key="uniqueElementId(index)" 
                     class="genre-filter genre-filter--active" 
-                    :for="option" 
+                    :for="uniqueElementId(option.id)" 
                     >
                         <span>{{option.name}}</span>
-                        <Field type="checkbox" :id="option.id" v-model="selectedGenres" @change="onRemoveGenre($event, option)"  name="genreIds" :value="option.id"/>
+                        <Field type="checkbox" :id="uniqueElementId(option.id)" v-model="selectedGenres" @change="onRemoveGenre($event, option)"  name="genreIds" :value="option.id"/>
                     </label>
             </div>
         </div>
@@ -60,6 +60,12 @@ export default defineComponent({
         .catch((error)=>{
               console.log(error)
           })
+          console.log('initial', this.initialSelectedGenres)
+          if(this.initialSelectedGenres){
+            this.initialSelectedGenres.forEach(genre => {
+                this.onAddGenre(null, genre);
+            })
+        }
 
     },
     watch:{
@@ -69,13 +75,17 @@ export default defineComponent({
             })
             this.$emit('onGenreIdsChange', genreIds)
         },
-        // initialgenreIds(){
-        //     this.genreIds = this.initialgenreIds;
-        //     // selected
-        // },
-        // initialselectedGenres(){
-        //     this.selectedGenres = this.initialselectedGenres;
-        // }
+        initialGenreIds(){
+            this.genreIds = this.initialGenreIds;
+        },
+        initialSelectedGenres(){
+            this.initialSelectedGenres.forEach((genre)=>{
+                this.selectedGenres.push(genre);
+                const index = this.genres.findIndex((item)=> item.id === genre.id)
+                this.genres.splice(index, 1);
+            })
+
+        },
     },
     methods:{
         onAddGenre(e, genre){
@@ -90,68 +100,12 @@ export default defineComponent({
             this.selectedGenres.splice(index, 1);
             this.genres.push(genre);
             this.$emit('onGenreIdsChange', this.genreIds)
-        }
+        },
+        uniqueElementId(id){
+            return 'genre-' + id;
+        },
     }
 })
 </script>
 
-<style scoped>
-/*
-.genre-select-wrapper{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    width: 50vw;
-}
-.song-select{
-    min-height: 20vh;
-    max-width: 100%;
-}
-
-.select-wrapper{
-    max-width: 25vw;
-
-}
-.music-list-item{
-    max-width: 25vw;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    padding: 1rem;
-}
-
-
-.music-list-item__artist-wrapper{
-    padding-left: 1rem;
-}
-*/
-.genre-select-wrapper{
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-.select-wrapper{
-    display: flex;
-    gap: 2rem;
-    grid-column: 1/ span 2 ;
-
-}
-
-.genre-filter{
-    height: min-content;
-    white-space: nowrap;
-
-}
-
-.select-title{
-    font-size: 1.5rem;
-    color: var(--accent-color-1);
-    letter-spacing: 0.3rem;
-
-} 
-
-.chosen-title{
-    color: var(--accent-color-2)
-}
-
-</style>
+<style src="@/assets/styles/UI/form/genreSelect.css"></style>

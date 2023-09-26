@@ -279,3 +279,5 @@ export default defineComponent({
     padding-left: 1rem;
 }
 </style>
+
+<style  src="@/assets/styles/UI/form/genreSelect.css"></style>

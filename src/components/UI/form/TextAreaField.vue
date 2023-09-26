@@ -33,17 +33,6 @@ export default defineComponent({
 })
 </script>
 
-<style>
-.form-field__label{
-  font-size: 1.8rem;
-}
+<style src="@/assets/styles/UI/form/textAreaField.css">
 
-.form-field__input{
-padding: .5rem;
-border-radius: .5rem;
-}
-
-.form-field__input--text-area{
-  min-height: 8rem;
-}
 </style>

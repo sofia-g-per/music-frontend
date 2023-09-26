@@ -37,8 +37,5 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-.file-input{
-    visibility: hidden;
-}
+<style scoped src="@/assets/styles/UI/form/fileField.css">
 </style>

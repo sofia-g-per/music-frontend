@@ -65,10 +65,14 @@ export default defineComponent({
                 })
         },
         changeStatus(notifId: number, indexInArray: number, status: string){
+            console.log("new status", status);
             axios.post(this.changeNotifStatusURL, {id: notifId, status: status}, {withCredentials: true})
                 .then((response)=>{
-                    if(response.status == 200){
+                    if(response.status == 201){
+                        console.log("initial", indexInArray, this.notifications);
+                        console.log("response", response.data);
                         this.notifications[indexInArray] = response.data;
+                        console.log("res", this.notifications[indexInArray]);
                     }
                 })
                 .catch(error=>
@@ -81,18 +85,6 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-    .notif-container{
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        font-size: 1.8rem;
-        background: linear-gradient(to top, var(--accent-color-2), transparent 20%);
-        padding: 0 1rem 1.5rem  1rem;
-    }
+<style scoped src="@/assets/styles/pages/notificationsPage.css">
 
-    .flex{
-        display: flex;
-        align-content: space-around;
-    }
 </style>

@@ -1,5 +1,6 @@
 <template>
     <router-link class="circle-btn align-right" to="/add-playlist"></router-link>
+    <h1 class="page-title gradient-text">Мои плейлисты</h1>
 
     <div v-if="playlists  && playlists.length > 0" class="item-grid">
         <playlist-item 
@@ -9,7 +10,7 @@
             <template v-slot>
                 <div class="playlist__edit-buttons">
                     <edit-btn :link="'/edit-playlist/'+playlist.id"></edit-btn>
-                    <xbtn @click.stop="handleDelete(playlist.id)"></xbtn>
+                    <xbtn @click.prevent="handleDelete(playlist.id)"></xbtn>
                 </div>
             </template>
         </playlist-item>
@@ -43,6 +44,7 @@ export default defineComponent({
        .then((response) => {
               if(response.status === 200 && response.data){
                   this.playlists = response.data;
+                  console.log("playlists", this.playlists);
               }
         })
     },
@@ -76,30 +78,6 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-    .item-grid{
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 5rem;
-        min-width: 60vw;
-    }
+<style scoped src="@/assets/styles/pages/usersPlaylistsPage.css">
 
-    .playlist__edit-buttons{
-        display: flex;
-        gap: 1rem;
-        justify-content: flex-end;
-        align-content: center;
-        position: relative;
-        right: -1rem;
-        top: -1rem;
-    }
-
-    .playlist__edit-buttons>*{
-        background: var(--accent-color-2);
-        border-radius: 50%;
-        width: 3rem;
-        height: 3rem;
-        display: flex;
-        align-items: center;
-    }
 </style>

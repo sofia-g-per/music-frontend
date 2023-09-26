@@ -1,0 +1,136 @@
+ /* ------------------------------ */
+  /* VARIABLES */
+  /* ------------------------------ */
+  :root{
+    --bg-color: black;
+    --font-color: white;
+    --accent-color-1--light: #c956ff;
+    /* --accent-color-1: #9810ce; */
+    --accent-color-1: #C001F1;
+    --accent-color-2: #FF008A;
+    --accent-color-2--vibrant: #FF004C;
+    --accent-color-2--dark: rgb(17, 0, 36);
+    
+    --basic-gradient: linear-gradient(to right, rgba(187, 0, 255, 1),rgba(255, 0, 77, 1));
+
+    --main-font-family: sans-serif;
+    font-size: 62.5%;
+  }
+  /* ------------------------------ */
+  /* GENERAL */
+  /* ------------------------------ */
+  body{
+    background-color: var(--bg-color);
+    color: var(--font-color);
+    font-family: var(--main-font-family);
+    box-sizing: border-box;
+    height: 100vh;
+  }
+
+  *{
+    margin: 0;
+        box-sizing: border-box;
+  }
+
+  a{
+    text-decoration: none;
+    color: white;
+  }
+  #app{
+    min-height: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .slide-from-bottom-enter-from{
+    height: 0;
+    overflow: hidden;
+
+  }
+
+  .slide-from-bottom-enter-to{
+    height: 14vh;
+    overflow: auto;
+  }
+  .slide-from-bottom-enter-active{
+    transition: 1s ease-in-out;  
+    overflow: hidden;
+  }
+
+ 
+   
+
+    .gradient-text{
+      background: var(--basic-gradient);
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    
+    .btn--grey>*{
+        opacity: .7;
+        background: none;
+        outline: none;
+    }
+    .btn--grey:hover>*{
+        opacity: 1;
+    }
+
+  /* ------------------------------ */
+  /* TEXT */
+  /* ------------------------------ */
+  .no-results{
+    font-size: 2rem;
+  }
+
+  .page-title{
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: normal;
+    font-size: 2.8rem;
+    letter-spacing: 0.4rem;
+    padding-bottom: 2rem;
+  }
+
+  .page-wrapper{
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    flex-direction: column;
+    min-height: 80vh;
+    transition: .3s;
+    padding-top: 2rem;
+    width: fit-content;
+    min-width: 100%;
+  }
+
+  .page-wrapper--collapsed{
+    height: 0%;
+    min-height: 0%;
+    display: none;
+    overflow: hidden;
+  }
+
+  .page-error{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--accent-color-2);
+    padding: 20vw 0;
+  }
+
+
+
+  /* ------------------------------ */
+  /* CONTAINERS */
+  /* ------------------------------ */
+  
+    
+    .img-text__img-wrapper>img{
+        max-width: 100%;
+    }
+
+.logo{
+    height: 3rem;
+}

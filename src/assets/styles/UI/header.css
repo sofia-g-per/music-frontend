@@ -1,0 +1,46 @@
+
+.main-header{
+    min-height: 3vh;
+    padding: 2rem;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;   
+    align-items: flex-end;
+
+}
+
+.site-nav,
+.main-header__auth-links{
+  display: flex;
+  justify-content: space-around;
+  gap: 3rem;
+  width: min-content;
+  flex: initial;
+
+}
+
+.main-header__auth-links{
+  display: flex;
+  gap: 1rem;
+}
+
+.exit-icon,
+.profile-icon
+{
+ width: 2.8rem;
+ fill: var(--accent-color-1--light);
+}
+
+.profile-links{
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+  justify-content: flex-start;
+}
+
+.icon-link{
+flex: initial;
+width: min-content;
+cursor: pointer
+
+}

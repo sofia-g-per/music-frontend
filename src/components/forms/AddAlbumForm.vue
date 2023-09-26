@@ -230,36 +230,4 @@ export default defineComponent({
 
 })
 </script>
-
-<style scoped>
-.playlist-form{
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-.form-field{
-    width: 100%;
-}
-
-.flex{
-    display: flex;
-    justify-content: space-between;
-}
-.song-select{
-    /* max-height: 50vh; */
-    /* min-height: 20vh;   */
-    padding-bottom: 2rem;
-    min-width: 35vw;
-    /* overflow-y: scroll; */
-}
-
-.music-list-item{
-    display: flex;
-    justify-content: space-between;
-    padding: 1rem;
-}
-
-.music-list-item__artist-wrapper{
-    padding-left: 1rem;
-}
-</style>
+<style scoped src="@/assets/styles/components/addAlbumForm.css"></style>

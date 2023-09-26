@@ -2,6 +2,11 @@
     <div class="song-select-wrapper">
         <div class="select-wrapper">
             <p class="page-title">Выберите песни: </p>
+            <the-search-bar :searchAPIURL="searchUrl" 
+                filterApiUrl=""
+                @onSearchResponse="handleSearchResponse"
+                @onEmptyFilters="getAllSongs"  
+                :withFilters="false"/>
             <div class="song-select">
                 <!-- вынести в отдельный элемент  -->
                 <div v-for="(song) in songs" :key="song.id" class="music-list-item">
@@ -18,7 +23,7 @@
             </div>
         </div>
         <div class="select-wrapper">
-            <p class="page-title chosen-title">Ваш плейлист: </p>
+            <p class="page-title chosen-title">Добавлено: </p>
                 <draggable 
                     class="song-select" 
                     v-model="selectedSongs"
@@ -49,13 +54,15 @@
 import { defineComponent } from 'vue'
 import { Field } from 'vee-validate';
 import draggable from 'vuedraggable';
+import TheSearchBar from '../TheSearchBar.vue';
 import axios from 'axios';
 export default defineComponent({
     props: ['getSongsURL', 'initialSongIds', 'initialSelectedSongs'],
     emits: ['onSongIdsChange'],
     components:{
         Field,
-        draggable
+        draggable,
+        TheSearchBar
     },
     data() {
         return {
@@ -70,7 +77,11 @@ export default defineComponent({
         axios.get(this.getSongsURL, {withCredentials:true})
        .then((response) => {
               if(response.status === 200 && response.data){
-                  this.songs = response.data;
+                if(response.data.songs){
+                    this.songs = response.data.songs;
+                }else{
+                    this.songs = response.data;
+                }
               }
 
         })
@@ -82,6 +93,11 @@ export default defineComponent({
               }
           })
 
+    },    
+    computed:{
+        searchUrl(){
+            return this.$store.getters.fullURL('globalSearch');
+        }
     },
     watch:{
         selectedSongs(){
@@ -92,19 +108,21 @@ export default defineComponent({
                     return song.id
                 }
             })
-            this.$emit('onSongIdsChange', songIds)
+            this.$emit('onSongIdsChange', songIds);
         },
-        // initialSongIds(){
-        //     this.songIds = this.initialSongIds;
-        //     // selected
-        // },
-        // initialSelectedSongs(){
-        //     this.selectedSongs = this.initialSelectedSongs;
-        // }
+        initialSongIds(){
+            console.log('intiial ids',this.initialSongIds);
+            this.songIds = this.initialSongIds;
+            // selected
+        },
+        initialSelectedSongs(){
+            console.log('intiial songs',this.initialSelectedSongs);
+
+            this.selectedSongs = this.initialSelectedSongs;
+        }
     },
     methods:{
         onToggleCheckbox(e, song){
-            console.log('toggled')
             if(e.target && e.target.checked){
                 this.selectedSongs.push(song);
             }else{
@@ -125,44 +143,15 @@ export default defineComponent({
                 }
             })
         },
+        handleSearchResponse(){
+// 
+        },
+        getAllSongs(){
+            // this.songs = this.songs;
+        }
     }
 })
 </script>
 
-<style scoped>
-
-.song-select-wrapper{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    width: 50vw;
-}
-.song-select{
-    /* max-height: 50vh; */
-    min-height: 20vh;
-    /* min-width: 35vw; */
-    max-width: 100%;
-    /* overflow-y: scroll; */
-}
-
-.select-wrapper{
-    max-width: 25vw;
-
-}
-.music-list-item{
-    max-width: 25vw;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    padding: 1rem;
-}
-
-
-.music-list-item__artist-wrapper{
-    padding-left: 1rem;
-}
-
-.chosen-title{
-    color: var(--accent-color-2)
-}
+<style scoped src="@/assets/styles/UI/form/songSelect.css">
 </style>

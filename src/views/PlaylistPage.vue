@@ -188,22 +188,6 @@ import axios from "axios";
     }) 
 </script>
 
-<style scope>
-    .playlist-page{
-        width:100%;
-        padding-left: 9rem;
-        /* min-width: 80vw; */
-        display: flex;
-        flex-direction: column;
-        justify-content: left;
-    }
+<style scope src="@/assets/styles/pages/playlistPage.css">
 
-    .search-and-filters{
-        max-width: 50%;
-    }
-
-    .playlist-page__title{
-        font-size: 2.8rem;
-        letter-spacing: 0.4rem;
-    }
 </style>

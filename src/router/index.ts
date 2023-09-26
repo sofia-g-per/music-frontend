@@ -15,6 +15,9 @@ const EditAlbumPage = () => import('@/views/EditAlbumPage.vue')
 const EditUserPage = () => import('@/views/EditUserPage.vue')
 const PlaylistPage = () => import('@/views/PlaylistPage.vue')
 const NotificationsPage = () => import('@/views/NotificationsPage.vue')
+// const ProfilePage = () => import('@/views/ProfilePage.vue')
+const ArtistStatsPage = () => import('@/views/ArtistStatsPage.vue')
+
 import store from '@/store'
 
 const routes: Array<RouteRecordRaw> = [
@@ -119,13 +122,21 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: '/edit-profile',
+    path: '/edit/profile',
     name: 'edit-profile',
     component: EditUserPage,
     beforeEnter: (to, from) => {
       return store.dispatch('authorizedGuard')
     }
   },
+  // {
+  //   path: '/profile',
+  //   name: 'profile',
+  //   component: ProfilePage,
+  //   beforeEnter: (to, from) => {
+  //     return store.dispatch('authorizedGuard')
+  //   }
+  // },
   {
     path: '/playlist/:id',
     name: 'get-playlist',
@@ -140,6 +151,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/generated/playlist',
     name: 'get-generated-playlist',
     component: PlaylistPage,
+  },
+  {
+    path: '/my/stats',
+    name: 'get-current-artist-stats',
+    component: ArtistStatsPage,
   },
 ]
 

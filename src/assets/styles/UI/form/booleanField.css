@@ -1,0 +1,9 @@
+.boolean-field{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .boolean-field input{
+    margin-right: 1rem;
+  }

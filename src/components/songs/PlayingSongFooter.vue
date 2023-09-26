@@ -1,4 +1,5 @@
 <template>
+    
     <footer v-if="songData" :class="{'footer': true, 'footer--open':isOpenList}" >
         <div class="music-list-item playing-song-footer" @click="toggleSongList">
             <div class="music-list-item__buttons">
@@ -100,25 +101,24 @@
             </div> -->
             <!-- </div> -->
             <div class="music-list-item__progress-bar-wrapper">
-                <p>{{songProgressTime.toFixed(2)}}</p>
+                <p>{{songProgressTime}}</p>
                 <div class="music-list-item__progress-bar">
                     <div class="progress-bar progress-bar-bg"></div>
                     <div class="progress-bar progress-bar-progress" :style="'width:'+ songProgressPercent +'%;'"></div>
                 </div>
-                <p>{{songAudio? songAudio.duration().toFixed(2): ''}}</p>
+                <p>{{songAudio? songDuration: ''}}</p>
             </div>
             <like-btn :songId="songData && songData.song? songData.songId : songData.id" />
 
         </div>
-
-        <div :class="{'footer__list-wrapper': true, 'footer__list-wrapper--active':isOpenList}">
-            <h1 class="title" :hidden="!playlist || !playlist.name">Вы слушаете плейлист: {{ playlist.name }}</h1>
-            <rearrangable-song-list>
-                
-            </rearrangable-song-list>
-        </div>
+            <!-- <div v-if="isOpenList"> -->
+            <div :class="{'footer__list-wrapper': true, 'footer__list-wrapper--active':isOpenList}">
+                <h1 class="title" :hidden="!playlist || !playlist.name">Вы слушаете плейлист: {{ playlist.name }}</h1>
+                <rearrangable-song-list>
+                    
+                </rearrangable-song-list>
+            </div>
     </footer>
-
 </template>
 
 <script lang="ts">
@@ -126,6 +126,7 @@ import { defineComponent } from 'vue'
 import RearrangableSongList from '../RearrangableSongList.vue';
 import SongInfo from './SongInfo.vue';
 import LikeBtn from '../UI/buttons/LikeBtn.vue';
+
 export default defineComponent({
     name: "PlayingSongFooter",
     components:{
@@ -142,9 +143,10 @@ export default defineComponent({
     data() {
         return {
             isOpenList: false,
-            songProgressTime: 0,
+            songProgressTime: '0:0',
             songProgressPercent: 0,
-            songProgressIntervalId: null
+            songProgressIntervalId: null,
+            songDuration: '0:0',
         }
     },
     computed: {
@@ -162,8 +164,7 @@ export default defineComponent({
     },
     methods: {
         onClickPlay(){
-            this.$store.dispatch('playCurrentSong')
-            console.log(this.isPlaying);
+            this.$store.dispatch('playCurrentSong');
             if(this.isPlaying) {
                 this.songProgressIntervalId = setInterval(this.getAudioProgress, 500);
             }else if(this.songProgressIntervalId !== null){
@@ -175,143 +176,40 @@ export default defineComponent({
             this.$emit('onToggleSongList', this.isOpenList);
         },
         onPlayNext(){
+            this.onClickPlay();
+            this.songProgressTime = 0;
+            this.songProgressPercent = 0;
             this.$store.dispatch('playNextSong');
+            this.onClickPlay();
+
         },
         onPlayPrevious(){
+            this.onClickPlay();
+            this.songProgressTime = 0;
+            this.songProgressPercent = 0;
             this.$store.dispatch('playPreviousSong');
+            this.onClickPlay();
         },
         getAudioProgress(){
+            console.log("getting");
             if(this.songAudio){
-                this.songProgressTime = this.songAudio.seek();
-                this.songProgressPercent = (this.songProgressTime/this.songAudio.duration())*100;
+                this.songProgressTime = this.formatTime(this.songAudio.seek());
+                this.songProgressPercent = (this.songAudio.seek()/this.songAudio.duration())*100;
+                this.songDuration = this.formatTime(this.songAudio.duration());
             }
+        },
+        formatTime(seconds: number){
+            const min = Math.floor(seconds/60);
+            const sec = Math.floor(seconds - min * 60);
+            return `${min}:${sec}`
         }
 
     },
     mounted(){
-        this.songProgressIntervalId = setInterval(this.getAudioProgress, 500)
+        this.songProgressIntervalId = setInterval(this.getAudioProgress, 250);
     }
 
 })
 </script>
-<style scoped>
-
-    .music-list-item__progress-bar-wrapper{
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        font-size: 1.2rem;
-    }
-    .music-list-item__progress-bar{
-        width: 40vw;
-    /* flex-grow: 1; */
-        display: flex;
-        align-items: center;
-        position: relative;
-    }
-
-    .progress-bar{
-        border-radius: 0.2rem;
-        height: 0.7rem;
-    }
-
-    .progress-bar-bg{
-        background: grey;
-        width: 100%;
-    }
-
-    .progress-bar-progress{
-        background: var(--accent-color-1);
-        position: absolute;
-    }
-.title{
-    padding-left: 7rem;
-}
-    .footer{
-        position: fixed;
-        z-index: 10;
-        width: 100%;
-        bottom: 0;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .footer--open{
-        height: calc(100% - 6.2rem);
-        top: 0;
-        bottom: auto;
-    }
-    .playing-song-footer{
-        /* border-top: white 1px solid; */
-        box-sizing: border-box;
-        padding: 2rem 2rem !important;
-        background: linear-gradient(var(--accent-color-1), var(--bg-color) 50%);
-        display: flex;
-    }
-    .playing-song-footer:hover{
-        transform: none;
-    }
-    .music-list-item{
-        padding: 1rem 0;
-        width: 100%;
-        display: flex;
-    }
-
-    .music-list-item__info{
-        width: 100%;
-    }
-    .music-list-item__info__title{
-        font-size: 2rem;
-    }
-    .music-list-item__info__artist{
-        font-size: 1.4rem;
-    }
-
-    /* buttons */
-    .music-list-item__buttons{
-        display: flex;
-        justify-content: flex-start;
-    
-    }
-    .play-btn{
-        color: var(--font-color);
-        background: none;
-        width: 5rem;
-        transition: .3s;
-        opacity: .6;
-    }
-
-    .play-btn:hover{
-        /* transform: scale(1.1); */
-        opacity: 1;
-    }
-    .play-next-btn img{
-        width: 5rem !important;
-    }
-
-    .music-list-item__artist-wrapper{
-        padding: 1rem 1rem 0 1rem;
-        display: flex;
-        flex-direction: column;
-        gap: .5rem;
-
-    }
-
-    .music-list-item__info__artist{
-        opacity: .8;
-    }
-
-    /* footer song list */
-    .footer__list-wrapper{
-        height: 0;
-        background: var(--bg-color);
-        overflow-y:hidden;
-    }
-    .footer__list-wrapper--active{
-        height: 100%;
-    }
-
-    .icon-btn{
-        max-width: 50rem !important;
-    }
+<style scoped src="@/assets/styles/components/playingSongFooter.css">
 </style>

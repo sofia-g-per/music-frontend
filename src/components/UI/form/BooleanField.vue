@@ -29,14 +29,6 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-.boolean-field{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
+<style scoped src="@/assets/styles/UI/form/booleanField.css">
 
-.boolean-field input{
-  margin-right: 1rem;
-}
 </style>

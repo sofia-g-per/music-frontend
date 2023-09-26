@@ -1,0 +1,64 @@
+.music-list-item__buttons{
+    display: flex;
+    justify-content: space-evenly;
+    gap: 1rem;
+  }
+
+  
+  .music-list-item:first-child(){
+      background: linear-gradient(to bottom, rgba(187, 0, 255, 0.7) 0, transparent 30%)
+      linear-gradient(to top, rgba(187, 0, 255, 0.85) 0, transparent 20%);
+  }
+  
+  .music-list-item{
+      width: 90%;
+      padding: 1vw 1vw 2vw 1vw;
+      display: flex;
+      background: linear-gradient(to top, rgba(187, 0, 255, 0.6) 0, transparent 30%);
+      cursor: pointer;
+      transition: .3s;
+  }
+
+  
+  .music-list-item--accent{
+    background: linear-gradient(to top, var(--accent-color-2) 0, transparent 30%);
+
+  }
+
+
+  .music-list-item:hover{
+      transform: scale(1.025) translate(-1px, -2px);
+  }
+
+  .music-list-item__info{
+      width: 100%;
+      padding-left: 2rem;
+
+  }
+
+  .music-list-item__info__title{
+      font-size: 1.8rem;
+  }
+
+  .music-list-item__artist-wrapper{
+      padding: 1rem 1rem 0 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+
+  }
+
+  .music-list-item__info__artist{
+      opacity: .8;
+      font-size: 1.4rem;
+
+  }
+
+  .music-list-item__img-wrapper{
+    width: 10%;
+  }
+
+  .music-list-item__img-wrapper>img{
+    max-width: 100%;
+    border-radius: 5%;
+  }

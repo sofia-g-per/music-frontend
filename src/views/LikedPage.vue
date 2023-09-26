@@ -1,9 +1,9 @@
 <template>
-        <the-search-bar :searchAPIURL="searchAPIURL" @onSearchResponse="handleSearchResponse" :withFilters="false" />
         <h1 class="page-title">Ваши избранные песни</h1>
+        <the-search-bar :searchAPIURL="searchAPIURL" @onSearchResponse="handleSearchResponse" @onEmptyFilters="getAllSongs" :withFilters="true" :filterApiUrl="filterApiURL" />
         <ul class="song-list" v-if="songs">
             <music-list-item
-                v-for="(song, key) in songs" 
+                v-for="(song, key) in shownSongs" 
                 :key="song.id"
                 :songData="song.song"
                 :onSearchReponse="handleSearchResponse"
@@ -11,6 +11,7 @@
                 playlistType="liked"
                 :songInPlaylistId="key"
             >
+            <button class="icon-btn"><img src="@/assets/images/query_icon.svg"></button>
             <button class="icon-btn" @click.stop="handleDelete(song.songId)">
                 <svg class="like-btn like-btn--active" 
                     version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -76,6 +77,7 @@ export default defineComponent({
     data(){
         return{
             songs: [],
+            shownSongs: []
         }
     },
     computed: {
@@ -84,6 +86,9 @@ export default defineComponent({
         }, 
         searchAPIURL(){
             return `${this.$store.state.APIURL}${this.$store.state.APIExtensions.searchFavouriteSongs}`;
+        },
+        filterApiURL(){
+            return `${this.$store.state.APIURL}filter/liked`;
         },
         deleteApiURL(){
             return `${this.$store.state.APIURL}${this.$store.state.APIExtensions.deleteLiked}`;
@@ -94,6 +99,7 @@ export default defineComponent({
        .then((response) => {
               if(response.status === 200 && response.data){
                   this.songs = response.data;
+                  this.shownSongs = this.songs;
               }
 
         })
@@ -107,7 +113,7 @@ export default defineComponent({
     },
     methods: {
         handleSearchResponse(response:[]){
-            this.songs = response;
+            this.shownSongs = response;
         },
         handleDelete(songId:number){
             const songData= {songId: songId};
@@ -119,16 +125,19 @@ export default defineComponent({
                     newUserData.favoriteSongs = newFav;
                     this.$store.dispatch('updateUser', {newUserData: newUserData});
                     
-                    let index = this.songs.findIndex((song)=>song.id = songId);
+                    let index = this.songs.findIndex((song)=>song.songId == songId);
                     this.songs.splice(index, 1);
                 }
             })
             .catch((error)=>{
                 console.log(error)
             })
-
+        },
+        getAllSongs(){
+            this.shownSongs = this.songs;
         }
     }
+
     
 })
 </script>

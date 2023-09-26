@@ -1,0 +1,32 @@
+h3 {
+    margin: 40px 0 0;
+  }
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  li {
+    display: inline-block;
+    margin: 0 10px;
+  }
+  a {
+    color: #42b983;
+  }
+  
+  .login-page{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+  }
+  
+  img{
+    max-width: 100%;
+  }
+  
+  .login-page__image-wrapper{
+    padding: 0 3rem;
+    display: flex;
+    justify-content: center;
+    max-height: 83.5vh;
+  
+  }

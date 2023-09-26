@@ -1,0 +1,13 @@
+
+.img-text{
+    display: flex;
+}
+
+.img-text__img-wrapper{
+    width: 30%;
+}
+
+
+.img-text--small-img .img-text__img-wrapper{
+    width: 10%;
+}

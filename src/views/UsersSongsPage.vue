@@ -37,7 +37,7 @@ export default defineComponent({
             drafts: [],
             // список песен выводящейся на экран пользователю
             shownSongs: this.drafts,
-            tabNames: ['Черновики', 'Выпущенное']
+            tabNames: ['Черновики', 'Опубликованное']
         }
     },
     mounted(){
@@ -87,7 +87,6 @@ export default defineComponent({
             })
         },
         handleTabClick(tabName: string){
-            console.log('tabName', tabName);
 
             switch(tabName){
                 case('Черновики'):
@@ -95,7 +94,7 @@ export default defineComponent({
                 console.log('drafts', this.shownSongs, this.drafts);
 
                 break;
-                case('Выпущенное'):
+                case('Опубликованное'):
                     this.shownSongs = this.released;
                 console.log('released', this.shownSongs, this.released);
 

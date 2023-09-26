@@ -47,7 +47,8 @@ export default createStore({
       deleteUser: 'delete-user',
 
       listened: 'listened',
-      getGeneratedPlaylist: 'generated/playlist'
+      getGeneratedPlaylists: 'generated/playlists',
+      getGeneratedPlaylist: 'generated/new'
 
     },
     APIFilePaths:{
@@ -119,6 +120,17 @@ export default createStore({
       }
       this.dispatch('addSongToListenedHistory')
     },
+    addSongToQueue(state, payload){
+      if(this.state.currentPlaylist && this.state.currentPlaylist.playlist && this.state.currentPlaylist.playlist.songs){
+        this.state.currentPlaylist.playlist.songs.splice(this.state.currentSongId+1, 0, payload.song);
+      }
+    },
+    // toggleShuffle(state){
+    //   this.state.currentPlaylist.isShuffled = !this.state.currentPlaylist.isShuffled;
+    //   if(){
+
+    //   }
+    // },
     pauseCurrentSong(){
       this.state.currentSongAudio!.pause();
       this.state.isPlaying = false;
@@ -193,6 +205,8 @@ export default createStore({
     logOut(){
       this.state.isAuth = false;
       this.state.isArtist = false;
+      this.state.currentPlaylist = new PlayingPlaylist();
+      this.state.currentSongDefined = false;
       localStorage.removeItem('user');
     },
     authorizedGuard(){
@@ -239,7 +253,6 @@ export default createStore({
     },
     user(){
       const userString = localStorage.getItem('user')
-      console.log('user from local storage', userString)
       if(userString){
         const user = JSON.parse(userString);
 

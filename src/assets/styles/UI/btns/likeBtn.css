@@ -1,0 +1,15 @@
+
+.like-btn{
+    width: 2rem;
+  }
+  
+  .like-btn{
+    fill: var(--font-color);
+    opacity: .6;
+    transition: .3s;
+  }
+  
+  .like-btn--active{
+    opacity: 1;
+    fill: var(--accent-color-1--light);
+  }

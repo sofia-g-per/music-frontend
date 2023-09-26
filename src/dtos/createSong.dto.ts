@@ -1,7 +1,4 @@
 import { CreateGenreDto } from "@/dtos/createGenre.dto";
-import { AddExistingArtistDto } from "./addExistingArtistDto.dto";
-import { ContentStatusDto } from "./contentStatus.dto";
-
 export class CreateSongDto {  
     name: string; 
 

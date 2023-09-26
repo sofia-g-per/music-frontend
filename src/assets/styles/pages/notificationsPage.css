@@ -1,0 +1,13 @@
+.notif-container{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-size: 1.8rem;
+    background: linear-gradient(to top, var(--accent-color-2), transparent 20%);
+    padding: 0 1rem 1.5rem  1rem;
+}
+
+.flex{
+    display: flex;
+    justify-content: space-between;
+}

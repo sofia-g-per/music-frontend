@@ -1,20 +1,20 @@
 <template>
     <div class="home-page">
     <the-search-bar :searchAPIURL="searchUrl" 
-    @onSearchResponse="handleSearchResponse"
-    @onEmptyFilters="getAllSongs" 
-    :withFilters="true">
+        :filterApiUrl="filterApiURL"
+        @onSearchResponse="handleSearchResponse"
+        @onEmptyFilters="getAllSongs" 
+        :withFilters="true">
     </the-search-bar>
-    <div v-if="generatedPlaylists && generatedPlaylists.length > 0" class="playlist-list">
+    <div  class="playlist-list">
         <playlist-item 
             v-for="playlist in generatedPlaylists" 
             :key="playlist.name" 
             :itemData="playlist"
-            itemType="playlist"
+            itemType="generated/playlist"
         >
         </playlist-item>
-    </div>
-    <div v-if="albums && albums.length > 0" class="playlist-list">
+
         <playlist-item 
             v-for="album in albums" 
             :key="album.id" 
@@ -23,17 +23,17 @@
         >
         </playlist-item>
     </div>
-    <div v-if="songs && songs.length > 0" class="song-list">
+    <div v-if="songs && songs.songs && songs.songs.length > 0" class="song-list">
         <music-list-item
-            v-for="(song, key) in songs" 
+            v-for="(song, key) in songs.songs" 
             :key="song.id" 
             :songData="song"
             :playlist="songs"
             playlistType="allSongs"
             :songInPlaylistId="key"
         >
-            <button class="icon-btn"><img src="@/assets/images/query_icon.svg"></button>
             <template v-if="isAuth">
+                <button class="icon-btn" @click.stop="addToQueue(song)"><img src="@/assets/images/query_icon.svg"></button>
                 <like-btn :songId="song.song? song.songId: song.id"></like-btn>
             </template>
         </music-list-item>
@@ -62,7 +62,7 @@ export default defineComponent({
     },
     data() {
         return {
-            songs: [],
+            songs: {name: 'Популярное'},
             genres: [],
             genreIds: [],
             likedSongs: [],
@@ -83,11 +83,14 @@ export default defineComponent({
         getAlbumsURL(){
             return this.$store.getters.fullURL('getAlbums')
         },
-        getGeneratedPlaylistURL(){
-            return this.$store.getters.fullURL('getGeneratedPlaylist')
+        getGeneratedPlaylistsURL(){
+            return this.$store.getters.fullURL('getGeneratedPlaylists')
         },
         searchUrl(){
             return this.$store.getters.fullURL('globalSearch')
+        },
+        filterApiURL(){
+            return `${this.$store.state.APIURL}global-filter`;
         },
         isAuth(){
             return this.$store.state.isAuth;
@@ -101,7 +104,6 @@ export default defineComponent({
             axios.get(this.getAlbumsURL)
             .then((response) => {
                     if(response.status === 200 && response.data){
-                        console.log("albums", response.data);
                         this.albums = response.data;
                     }else{
                         console.log(response);
@@ -112,14 +114,14 @@ export default defineComponent({
             })
         },
         handleSearchResponse(response:[]){
-            this.songs = response;
+            this.songs.songs = response;
         },
     
         getAllSongs(){
             axios.get(this.getSongsURL)
                 .then((response) => {
                         if(response.status === 200 && response.data){
-                            this.songs = response.data;
+                            this.songs.songs = response.data.songs;
                         }
 
                     })
@@ -137,39 +139,25 @@ export default defineComponent({
         // загрузка персонализированного плейлиста с сервера
         getGeneratedPlaylist(){
             if(this.isAuth){
-                axios.get(this.getGeneratedPlaylistURL,{withCredentials:true})
+                axios.get(this.getGeneratedPlaylistsURL,{withCredentials:true})
                 // обработка результаты запроса
                 .then((res) => {
                     if(res.status === 200 && res.data){
                         //добавление плейлиста в массив плейлистов
-                        this.generatedPlaylists.push({...res.data, type: "generated/playlist"});
+                        this.generatedPlaylists= res.data;
+                        // type: "generated/playlist"});
                     }
                 })
 
             }
+        },
+        addToQueue(song){
+            this.$store.dispatch('addSongToQueue',{song: song});
         }
     }
 
 })
 </script>
 
-<style scoped>
-    .playlist-list{
-        padding-top: 3rem;
-        align-self: flex-start;
-        flex-wrap: wrap;
-        display: flex;
-        justify-content: center;
-        gap: 2rem;
-        width: 100%;
-
-    }
-
-    .home-page{
-        width: 100%;
-        padding: 0 6rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+<style scoped src="@/assets/styles/pages/homePage.css">
 </style>

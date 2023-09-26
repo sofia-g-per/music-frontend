@@ -1,6 +1,7 @@
 <template>
     <div class="search-and-filters">
     <div class="search-bar__wrapper">
+        <img src="@/assets/images/search_icon-cropped.svg"/>
         <input type="text" class="search-bar" placeholder="Поиск..." @keydown.enter="handleSearch" v-model="searchQuery">
     </div>
         <div>
@@ -37,6 +38,7 @@ export default defineComponent({
     ],
     props: [
         'searchAPIURL',
+        'filterApiUrl',
         'withFilters'
     ],
     mounted(){
@@ -51,11 +53,6 @@ export default defineComponent({
               console.log(error)
           })
 
-    },
-    computed: {
-        filterApiUrl(){
-            return this.$store.getters.fullURL('globalFilter')
-        }
     },
     methods:{
         handleSearch(){
@@ -109,8 +106,4 @@ export default defineComponent({
 </script>
 
 
-<style scoped>
-    
-
-
-</style>
+<style scoped src="@/assets/styles/UI/searchbar.css"></style>

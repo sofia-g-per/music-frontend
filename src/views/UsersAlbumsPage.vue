@@ -1,7 +1,8 @@
 <template>
     <router-link class="circle-btn align-right" to="/add-album"></router-link>
+    <tabs-list :tabNames="tabNames" @onTabClick="handleTabClick" />
 
-    <div v-if="albums  && albums.length > 0" class="item-grid">
+    <div v-if="albums  && albums.length > 0 && !drafts" class="item-grid">
         <playlist-item 
             v-for="album in albums" 
             :key="album.id" 
@@ -9,7 +10,7 @@
             <template v-slot>
                 <div class="playlist__edit-buttons">
                     <edit-btn :link="'/edit-album/'+album.id"></edit-btn>
-                    <xbtn @click.stop="handleDelete(album.id)"></xbtn>
+                    <xbtn @click.prevent="handleDelete(album.id)"></xbtn>
                 </div>
             </template>
         </playlist-item>
@@ -25,17 +26,21 @@ import { defineComponent } from 'vue'
 import PlaylistItem from '@/components/songs/PlaylistItem.vue'
 import Xbtn from '@/components/UI/buttons/Xbtn.vue'
 import EditBtn from '@/components/UI/buttons/EditBtn.vue'
+import TabsList from '@/components/UI/TabsList.vue'
 import axios from 'axios'
 export default defineComponent({
     name:"UsersAlbumsPage",
     components:{
         PlaylistItem,
         Xbtn,
-        EditBtn
+        EditBtn,
+        TabsList
     },
     data() {
         return {
             albums: [],
+            tabNames: ["Черновики", "Опубликованные"],
+            drafts: true
         }
     },
     mounted(){
@@ -73,35 +78,22 @@ export default defineComponent({
                     this.albums.splice(index, 1);
                 }
             })
+        },
+        handleTabClick(tabName: string){
+
+            switch(tabName){
+                case('Черновики'):
+                     this.drafts = true;
+                break;
+                case('Опубликованные'):
+                    this.drafts = false;
+                break;
+            }
         }
     }
 })
 </script>
 
-<style scoped>
-    .item-grid{
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 5rem;
-        min-width: 60vw;
-    }
+<style scoped src="@/assets/styles/pages/usersAlbumsPage.css">
 
-    .playlist__edit-buttons{
-        display: flex;
-        gap: 1rem;
-        justify-content: flex-end;
-        align-content: center;
-        position: relative;
-        right: -1rem;
-        top: -1rem;
-    }
-
-    .playlist__edit-buttons>*{
-        background: var(--accent-color-2);
-        border-radius: 50%;
-        width: 3rem;
-        height: 3rem;
-        display: flex;
-        align-items: center;
-    }
 </style>
